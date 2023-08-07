@@ -5,12 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/CodeArena/css/code_arena.css">
-    <link rel="stylesheet" href="/CodeChat/css/pop_chat.css" />
 
     <script src="https://kit.fontawesome.com/3c792eb2a9.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+    
     <!-- CodeMirror API 및 CSS -->
     <script src="/js/codemirror.js"></script>
     <link rel="stylesheet" href="/css/codemirror.css">
@@ -171,108 +171,10 @@
     </div>
     <!-- code arena 부분 끝 -->
 
-    <!-- 채팅방 시작 -->
-    <!-- chat 버튼 -->
-    <div id="chat_open" class="chat_open">
-      <button class="chat_open_btn">
-        <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
-      </button>
-    </div>
-
-    <!-- chat 메인 -->
-    <div id="chat" class="chat">
-      <div class="chat_1">
-        <div class="chat_main">
-          <!-- 채팅방 이름 -->
-          <div class="c_roomname">
-            <div class="c_roomname_1">
-              <div class="c_content_name">
-                <div class="c_c_name">{{roomName}}</div>
-                <div class="c_content_num">(인원)</div>
-              </div>
-              <div id="c_content_mini" class="c_content_mini">
-                <button class="c_content_mini_btn">
-                  <i
-                    class="fa-solid fa-caret-down fa-lg"
-                    style="color: #ffffff"
-                  ></i>
-                </button>
-              </div>
-              <div class="c_content_close">
-                <button class="c_content_close_btn">
-                  <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- 채팅내용 -->
-          <div class="c_main_content">
-            <div class="chat1">
-              <ul>
-                <!-- 동적 생성 -->
-              </ul>
-            </div>
-          </div>
-
-          <div class="chat1 format">
-            <ul>
-              <li>
-                <div class="sender">
-                  <span></span>
-                </div>
-                <div class="message">
-                  <span></span>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <!-- 채팅작성 및 전송 -->
-          <div class="c_chatting">
-            <form name="c_chatting_form" class="c_chatting_form" action="">
-              <div class="c_chatting_1">
-                <textarea
-                  id="form_input"
-                  class="form_input"
-                  placeholder="댓글을 입력하세요"
-                ></textarea>
-              </div>
-              <div class="c_chatting_2">
-                <div class="c_chatting_22">
-                  <button onclick="send()" class="c_chatting_2_btn">
-                    <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="chat_mini" id="chat_mini">
-      <div class="chat_mini_1">
-        <div class="chat_mini_1_1">
-          <div class="chat_mini_1_11">
-            <p>{{roomName}}</p>
-          </div>
-          <div class="chat_mini_1_21">
-            <p>4/6</p>
-          </div>
-        </div>
-        <div class="chat_mini_1_2">
-          <button class="chat_mini_1_2btn">
-            <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    
+    <script src="/CodeArena/js/popArenaChatRoom.js"></script>
     
     <!-- js 파일 경로 -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/CodeArena/js/popCodeChatRoom.js"></script>
     <script>
         const textjs = document.querySelector('#js')
         const textpy = document.querySelector('#python')
