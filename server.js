@@ -135,8 +135,10 @@ ChatNamespace.on("connection", (socket) => {
         createdDate: new Date().toISOString().slice(0, 10),
       };
 
+      console.log("roomInfo",roomInfo);
       rooms.set(room_name, roomInfo)
       const updateRooms = Array.from(rooms.values())
+      console.log("updateRooms",updateRooms);
   
       ChatNamespace.emit("update_room_list", updateRooms);
     });
@@ -242,7 +244,7 @@ ChatNamespace.on("connection", (socket) => {
         createdBy: socket.nickname,
         createdDate: new Date().toISOString().slice(0, 10),
       };
-  
+      console.log(roomInfo);
       rooms.set(room_name, roomInfo);
       const updateRooms = Array.from(rooms.values());
       // 새로운 방 정보를 클라이언트에게 전달
