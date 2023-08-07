@@ -23,6 +23,7 @@ dotenv.config()
 
 // 동적 페이지 사용
 const nunjucks = require('nunjucks')
+const { log } = require('console')
 app.set('view engine', 'html')
 nunjucks.configure('views',{
     express: app,
@@ -100,20 +101,47 @@ ChatNamespace.on("connection", (socket) => {
     const countRoomUsers = (room_name) => {
       return ChatNamespace.adapter.rooms.get(room_name)?.size || 0;
     };
-  
+
+    // 현재 열려있는 방 리스트를 업데이트 하는 함수
+    const updateOpenRoomList = () => {
+      const openRooms = Array.from(rooms.values())
+        .filter((room) => io.of("/CodeChat").adapter.rooms.has(room.room_name));
+      io.of("/CodeChat").emit("update_open_rooms", openRooms);
+    };
+
+    // 퍼블릭룸 모으기
+const publicRooms = () => {
+  const { sids, rooms } = io.sockets.adapter;
+  /*   const sids = io.sockets.adapter.sids;
+    const rooms = io.sockets.adapter.rooms; */
+
+  // console.log(rooms);
+  const public_rooms = [];
+  rooms.forEach((_, key) => {
+    if (sids.get(key) === undefined) {
+      public_rooms.push({
+        room_name: key,
+        user_count: countRoomUsers(key),
+      });
+    }
+  });
+  console.log(public_rooms);
+  return public_rooms;
+};
     // 함수 정의 끝
-  
     console.log("Chat 네임스페이스에 클라이언트가 연결되었습니다.");
     console.log("입장하기 전 소켓이 들어간 방", socket.rooms);
     socket.onAny((event) => {
       console.log(`backSocket Event: ${event}`);
     });
+
+    io.sockets.emit("current_rooms", { public_rooms: publicRooms() });
     // 닉네임 설정 받고 다시 보내기
     socket.on("nickname", (nickname) => {
       console.log("서버 nickname 이벤트 활성화");
       console.log("사용자의 닉네임 : ", nickname);
       socket["nickname"] = nickname; // 소켓 객체에 "nickname"이라는 속성 추가
-      io.to(socket.id).emit("nickname", { nickname });
+      io.of("/CodeChat").to(socket.id).emit("nickname", { nickname });
     });
 
     socket.on("get_room_list", () => {
@@ -129,6 +157,7 @@ ChatNamespace.on("connection", (socket) => {
         chatRoomMethod = "오픈채팅";
       }
       console.log(chatRoomMethod);
+      
   
       const roomInfo = {
         room_number: generateRoomNumber(),
@@ -140,10 +169,14 @@ ChatNamespace.on("connection", (socket) => {
       };
 
       console.log("roomInfo",roomInfo);
+
       rooms.set(room_name, roomInfo)
-      
-      const updateRooms = Array.from(rooms.values())
-      ChatNamespace.emit("update_room_list", updateRooms);
+    // 현재 열려있는 방 목록 갱신
+    const openRooms = Array.from(rooms.values()).filter((room) =>
+    io.of("/CodeChat").adapter.rooms.has(room.room_name)
+  );
+
+  io.of("/CodeChat").emit("update_room_list", openRooms);
     });
   
     // 방 입장 enter_room 감지하기
@@ -165,9 +198,12 @@ ChatNamespace.on("connection", (socket) => {
   
         socket.join(room_name); // 방에 입장하기
         console.log("입장한 후 소켓이 들어간 방", socket.rooms);
+        console.log("adapter.rooms : ",io.of("/Chat").adapter.rooms);
         const user_count = countRoomUsers(room_name);
         console.log(user_count);
-        ChatNamespace.to(room_name).emit("user_count", {user_count : user_count})
+        updateOpenRoomList()
+        io.of("/CodeChat").sockets.emit("current_rooms", { public_rooms: publicRooms() }); //채팅방 갱신
+        io.of("/CodeChat").to(room_name).emit("user_count", {user_count : user_count})
         socket.emit("welcome", {nickname : nickname})
       }
     );
