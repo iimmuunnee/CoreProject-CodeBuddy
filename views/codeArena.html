@@ -12,19 +12,19 @@
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <!-- CodeMirror API 및 CSS -->
-    <script src="/lib/codemirror.js"></script>
-    <link rel="stylesheet" href="/lib/codemirror.css">
+    <script src="/js/codemirror.js"></script>
+    <link rel="stylesheet" href="/css/codemirror.css">
     <!-- CodeMirror Mode JavaScript -->
-    <script src="/public/js/javascript.js"></script>
+    <script src="/js/javascript.js"></script>
     <!-- CodeMirror Mode python -->
-    <script src="/public/js/python.js"></script>
+    <script src="/js/python.js"></script>
 
     <!-- Theme -->
-    <link rel="stylesheet" href="/public/css/darcula.css">
+    <link rel="stylesheet" href="/css/darcula.css">
     <!-- autocomplete -->
-    <link rel="stylesheet" href="/public/css/show-hint.css">
-    <script src="/public/js/javascript-hint.js"></script>
-    <script src="/public/js/show-hint.js"></script>
+    <link rel="stylesheet" href="/css/show-hint.css">
+    <script src="/js/javascript-hint.js"></script>
+    <script src="/js/show-hint.js"></script>
     <title>code_arena</title>
 </head>
 
@@ -175,7 +175,7 @@
     <!-- chat 버튼 -->
     <div id="chat_open" class="chat_open">
       <button class="chat_open_btn">
-        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
+        <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
       </button>
     </div>
 
@@ -268,11 +268,11 @@
         </div>
       </div>
     </div>
-
-
+    
+    
     <!-- js 파일 경로 -->
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/coreproject-master/public/app.js"></script>
+    <script src="/CodeArena/js/popCodeChatRoom.js"></script>
     <script>
         const textjs = document.querySelector('#js')
         const textpy = document.querySelector('#python')
@@ -314,7 +314,6 @@
 
     </script>
 
-    <script src="/CodeArena/js/popCodeChatRoom.js"></script>
 
 </body>
 

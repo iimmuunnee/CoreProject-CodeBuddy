@@ -65,7 +65,7 @@ body{
 
 /* 문제 및 코드 작성 시작 */
 .c_a_center{
-    width: 80%;
+    width: 77%;
     height: 93%;
     display: flex;
     justify-content: space-evenly;
@@ -284,7 +284,7 @@ body{
 
 /* 참가자 현상황 */
 .c_a_under{
-    width: 17%;
+    width: 18%;
     height: 93%;
     display: flex;
     flex-direction: column;
@@ -390,3 +390,8 @@ body{
     align-content: center;
 }
 
+.cm-s-darcula{
+    height:38dvh;
+    /* height:616px; */
+    
+  }
