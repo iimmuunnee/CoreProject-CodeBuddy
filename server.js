@@ -78,9 +78,8 @@ app.use(kakao)
 
 // "Chat" namespace에 접속한 클라이언트 처리
 ChatNamespace.on("connection", (socket) => {
-    const rooms = new Map(); // 방 정보를 저장할 Map
     const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
-    
+    const rooms = new Map()
     // 함수 정의
     // 방의 인원수를 세는 함수
     // const countRoomUsers = (room_name) => {
@@ -99,7 +98,7 @@ ChatNamespace.on("connection", (socket) => {
   
     // 방의 인원수를 세는 함수
     const countRoomUsers = (room_name) => {
-      return io.of("/CodeChat").adapter.rooms.get(room_name)?.size || 0;
+      return ChatNamespace.adapter.rooms.get(room_name)?.size || 0;
     };
   
     // 함수 정의 끝
@@ -135,12 +134,11 @@ ChatNamespace.on("connection", (socket) => {
         createdBy: socket.nickname,
         createdDate: new Date().toISOString().slice(0, 10),
       };
+
+      rooms.set(room_name, roomInfo)
+      const updateRooms = Array.from(rooms.values())
   
-      rooms.set(room_name, roomInfo);
-      // callback(rooms)
-      // 새로운 방 정보를 클라이언트에게 전달
-      const updateRooms = Array.from(rooms.values());
-      io.of("/CodeChat").emit("update_room_list", updateRooms);
+      ChatNamespace.emit("update_room_list", updateRooms);
     });
   
     // 방 입장 enter_room 감지하기
@@ -164,7 +162,7 @@ ChatNamespace.on("connection", (socket) => {
         console.log("입장한 후 소켓이 들어간 방", socket.rooms);
         const user_count = countRoomUsers(room_name);
         console.log(user_count);
-        io.of("/CodeChat").to(room_name).emit("user_count", {user_count : user_count})
+        ChatNamespace.to(room_name).emit("user_count", {user_count : user_count})
         socket.emit("welcome", {nickname : nickname})
       }
     );
@@ -246,10 +244,9 @@ ChatNamespace.on("connection", (socket) => {
       };
   
       rooms.set(room_name, roomInfo);
-      // callback(rooms)
-      // 새로운 방 정보를 클라이언트에게 전달
       const updateRooms = Array.from(rooms.values());
-      io.of("/CodeArena").emit("update_room_list", updateRooms);
+      // 새로운 방 정보를 클라이언트에게 전달
+      ArenaNamespace.emit("update_room_list", updateRooms);
     });
   
     // 방 입장 enter_room 감지하기
@@ -271,7 +268,9 @@ ChatNamespace.on("connection", (socket) => {
         socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
   
         socket.join(room_name); // 방에 입장하기
-        // const user_count = countRoomUsers(room_name);
+        const user_count = countRoomUsers(room_name);
+        ArenaNamespace.to(room_name).emit("user_count", {user_count: user_count});
+        
       }
     );
   
@@ -284,7 +283,7 @@ ChatNamespace.on("connection", (socket) => {
     });
   });
 
-console.log('휘훈이바보')
+
 
 http.listen(3000, function(){
     console.log('Code Buddy server listening on port http://localhost:3000/page')

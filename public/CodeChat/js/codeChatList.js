@@ -1,4 +1,3 @@
-
 // socket.io 사용
 const chatSocket = io("/CodeChat");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
@@ -23,7 +22,7 @@ const $mini_room_name = document.getElementById("mini_room_name")
 const $c_content_num = $c_content_name.querySelector(".c_content_num") // 방 인원수 적는 곳
 const $mini_room_users = document.getElementById("mini_room_users")
 
-$popCodeChat.style.display = "none"
+// $popCodeChat.style.display = "none"
 
 // 방 만들기 버튼 함수
 const handleRoomSubmit = (event) => {
@@ -60,10 +59,6 @@ const handleRoomSubmit = (event) => {
   })
 
   chatSocket.emit("welcome", { room_name: room_name, nickname: nickname });
-    // 페이지 이동
-  $codeChatList.style.display = "none";
-  $popCodeChat.style.display = ""
-
 };
 // 방 만들기 버튼  함수 끝
 // 방 만들기 버튼 클릭 시
@@ -98,16 +93,14 @@ const addRoomToTable = (room) => {
 
 
 
-chatSocket.on("update_room_list", (rooms) => {
-  console.log(rooms);
+chatSocket.on("update_room_list", (updateRooms) => {
+  console.log(updateRooms);
   console.log("update_room_list 이벤트 프론트로 도착");
-  for (const room of rooms) {
-    addRoomToTable(room);
-  }
+    addRoomToTable(updateRooms);
 });
 
 
-
+// ---------------------------------------------------------------------------------------------------------------------------------------------
 
 // 페이징 js
 
@@ -315,4 +308,4 @@ function closeModal() {
   modal.style.display = "none";
 }
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------
+
