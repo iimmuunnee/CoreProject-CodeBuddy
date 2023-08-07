@@ -1,0 +1,161 @@
+body {
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  height: 100%;
+
+}
+/* header */
+.m_header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff; 
+  z-index: 999; 
+  border-bottom: 1px solid;
+}
+
+
+.m_logo_img {
+  width: 7%;
+}
+
+.m_logo {
+  margin-left: 3%;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+}
+
+.m_btn_c{
+  margin-left: 10%;
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+}
+
+.m_btn_a{
+  margin-left: 10%;
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+}
+
+.m_btn{
+  margin-left: 10%;
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+}
+.m_title_btn {
+  display: flex;
+}
+
+/*  title div */
+.m_c_img {
+  text-align: center;
+  
+}
+
+.m_c_img img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.m_c_p{
+  position: absolute;
+  top: 30%;
+  left: 15%;
+  color: white;
+  font-size: 3.2rem;
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+.m_c_p1{
+  position: absolute;
+  top: 40%; 
+  left: 15%;
+  color: white;
+  font-size: 3.2rem;
+  font-family: 'Nanum Myeongjo', serif;
+}
+
+/* 내용 div */
+.m_sodyd {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  /* margin-top: 5px;  */
+  border: 1px solid;
+}
+
+.m_sodyd_a {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; 
+  /* margin-top: 5px;  */
+  border: 1px solid;
+}
+
+.m_s_img {
+  flex: 3; 
+}
+
+.m_s_p {
+  flex: 1; 
+  text-align: center;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.m_s_img img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.m_s_p1,
+.m_s_p2 {
+  font-family: 'Nanum Myeongjo', serif;
+  font-size: 1.5rem;
+  margin: 5px 0;
+}
+
+/* 버튼 css */
+button {
+  margin: 20px;
+  outline: none;
+}
+.custom-btn {
+  width: 230px;
+  height: 60px;
+  padding: 10px 25px;
+  border: 2px solid #000;
+  font-family: 'Lato', sans-serif;
+  font-weight: 500;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  display: inline-block;
+  font-size: 1.1rem;
+}
+
+/* 1 */
+.btn-1 {
+  transition: all 0.3s ease;
+}
+.btn-1:hover {
+   box-shadow:
+   -7px -7px 20px 0px #fff9,
+   -4px -4px 5px 0px #fff9,
+   7px 7px 20px 0px #0002,
+   4px 4px 5px 0px #0001;
+}

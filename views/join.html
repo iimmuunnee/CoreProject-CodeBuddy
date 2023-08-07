@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/join.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="login-page" ng-app="">
+
+        <div class="login-content login-content-signin" ng-hide="showSignIn">
+            <div>
+                <h2>로그인</h2>
+                <form class="wrapper-box" role="form" ng-submit="login()" action="/user/login" method="post">
+                    <input type="id" ng-model="id" class="form-control form-control-id" placeholder="ID" required name="userId">
+                    <input type="password" ng-model="password" class="form-control form-control-password" name='userPw'
+                        placeholder="Password" required>
+                    <!-- <div class="checkbox pull-left">
+                <label>
+                  <input type="checkbox"> Remember me.
+                </label>
+              </div> -->
+                    <a class="outer-link pull-left" href="#/forgot">비밀번호를 잊으셨나요?</a>
+                    <button type="submit" class="btn btn-submit btn-default pull-right">로그인</button>
+                    <a href="/kakao"><img src="/img/kakao_login.png" alt="카카오계정 로그인" class="kakako_login"/></a>
+                    <a href="javascript:kakaoLogout()">로그아웃</a>
+                    <a href="javascript:secession()">탈퇴</a>
+                </form>
+            </div>
+        </div>
+
+        <div class="login-content login-content-signup ng-hide" ng-show="showSignIn">
+            <div>
+                <h2>회원가입</h2>
+                <form action="/user/join" method="post" class="wrapper-box" role="form" ng-submit="register()" id="myform">
+                    <input type="id" ng-model="id" class="form-control form-control-id" placeholder="ID입력" required name="userId" id="inputId">
+                    <button type="button" class="duplicate" id="idBtn">ID중복확인</button>
+                    <span id="idCk"></span>
+                    <input type="password" ng-model="password" class="form-control form-control-password" placeholder="Password입력" required name="userPw">
+                        <input type="text" ng-model="name" class="form-control form-control-name" placeholder="이름"
+                        required name="userName">
+                    <input type="text" ng-model="username" class="form-control form-control-username" placeholder="닉네임"
+                        required name="userNick">
+                    <div>
+                        <select name="dev_year" id="dev_year">
+                            <option value="new_dev">신입 개발자</option>
+                            <option value="old_dev">경력 개발자</option>
+                        </select>
+
+                        <select name="school" id="school">
+                            <option value="teach">멘토</option>
+                            <option value="student">멘티</option>
+                        </select>
+                    </div>
+
+                    <div class="login_lang">
+                        <label for="lang">언어</label><br>
+                        <input type="checkbox" name="js" value="Y" class="check"> JavaScript  
+                        <input type="checkbox" name="py" value="Y"> Python
+                    </div>
+                    <span id="checkMsg"></span>
+                    <!-- <div class="checkbox pull-left">
+                <label>
+                  <input type="checkbox"> Remember me.
+                </label>
+              </div> -->
+                    <button type="submit" class="btn btn-submit btn-default pull-right" id="subBtn">회원가입</button>
+                </form>
+            </div>
+        </div>
+
+
+
+        <div class="login-switcher">
+            <div class="login-switcher-signin" ng-show="showSignIn">
+                <h3>계정이 있으신가요?</h3>
+                <button ng-click="showSignIn=false" id="loginCk">로그인</button>
+            </div>
+            <div class="login-switcher-signup" ng-hide="showSignIn">
+                <h3>회원가입을 아직 안하셨나요?</h3>
+                <button ng-click="showSignIn=true">회원가입</button>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- <script src="https://developers.kakao.com/sdk/js/kakao.js"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.5/angular.min.js"></script>
+    <!-- 비동기 통신 axios -->
+    <script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
+    <!-- <script src="/js/kakaoLogin.js"></script> -->
+    <script src="/js/join.js"></script>
+</body>
+
+</html>

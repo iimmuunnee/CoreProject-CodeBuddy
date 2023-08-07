@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/CodeArena/css/pop_chat.css" />
+    <script
+      src="https://kit.fontawesome.com/3c792eb2a9.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"
+    ></script>
+    <title>{{roomName}}</title>
+  </head>
+  <body>
+    <!-- 임시) 나가기 버튼 -->
+    <div class="chat_leave" id="chat_leave">
+      <button class="chat_leave_btn">나가기</button>
+    </div>
+
+    <!-- chat 버튼 -->
+    <div class="chat_open">
+      <button class="chat_open_btn">
+        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
+      </button>
+    </div>
+
+    <!-- chat 메인 -->
+    <div id="chat" class="chat">
+      <div class="chat_1">
+        <div class="chat_main">
+          <!-- 채팅방 이름 -->
+          <div class="c_roomname">
+            <div class="c_roomname_1">
+              <div class="c_content_name">
+                <div class="c_c_name">{{roomName}}</div>
+                <div class="c_content_num"></div>
+            </div>
+            <div id="c_content_mini" class="c_content_mini">
+                <button class="c_content_mini_btn"><i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff;"></i></button>
+            </div>
+              <div id="c_content_mini" class="c_content_mini">
+                <button class="c_content_mini_btn">
+                  <i
+                    class="fa-solid fa-caret-down fa-lg"
+                    style="color: #ffffff"
+                  ></i>
+                </button>
+              </div>
+              <div class="c_content_close">
+                <button class="c_content_close_btn">
+                  <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 채팅내용 -->
+          <div class="c_main_content">
+            
+          </div>
+
+          <!-- 채팅작성 및 전송 -->
+          <div class="c_chatting">
+            <form class="c_chatting_form">
+              <div class="c_chatting_1">
+                <textarea
+                  id="form_input"
+                  class="form_input"
+                  placeholder="댓글을 입력하세요"
+                ></textarea>
+              </div>
+              <div class="c_chatting_2">
+                <div class="c_chatting_22">
+                  <button type="submit" class="c_chatting_2_btn">
+                    <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- chat 축소판 -->
+    <div class="chat_mini" id="chat_mini">
+      <div class="chat_mini_1">
+        <div class="chat_mini_1_1"><p>다시열기</p></div>
+        <div class="chat_mini_1_2">
+          <button class="chat_mini_1_2btn">
+            <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/CodeArena/js/popArenaChatRoom.js"></script>
+  </body>
+</html>

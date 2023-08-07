@@ -1,0 +1,36 @@
+{
+  "name": "webcode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "author": "jihun",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "chokidar": "^3.5.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "mysql2": "^3.5.2",
+    "nunjucks": "^3.2.4",
+    "passport": "^0.6.0",
+    "passport-kakao": "^1.0.1",
+    "qs": "^6.11.2",
+    "socket.io": "^4.7.1",
+    "@socket.io/admin-ui": "^0.5.1",
+    "mime": "^3.0.0",
+    "socket.io-client": "^4.7.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/node": "^7.22.6",
+    "@babel/preset-env": "^7.22.9",
+    "nodemon": "^3.0.1"
+  }
+}

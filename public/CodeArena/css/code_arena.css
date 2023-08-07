@@ -1,0 +1,392 @@
+/*flex-direction : column*/
+
+@font-face {
+    font-family: 'Pretendard-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+.fa{
+    font-weight: 900 !important;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Pretendard-Regular';
+
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+/* code arena 페이지 시작 */
+.code_arena_zip {
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    font-family: 'Pretendard-Regular';
+    background-color: #24283b;
+
+}
+.code_arena{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+}
+
+/* 나가기 버튼 */
+.c_a_above2 {
+    width: 3%;
+    height: 93%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+.arrow{
+    width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.arrow button{
+    border: 0;
+    background-color: transparent;
+}
+
+/* 문제 및 코드 작성 시작 */
+.c_a_center{
+    width: 80%;
+    height: 93%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+
+    border-radius: 1.375rem;
+    background-color: rgba(255,255,192,0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 7px 15px 8px rgba(0,0,0,0.3);
+
+}
+/* 문제 제시 */
+.c_a_left{
+    width: 45%;
+    height: 98%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    border-radius: 0.5rem;
+}
+.c_a_l_title{
+    width: 95%;
+    height: 7%;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: white;
+    font-size: 1.5vw;
+    font-weight: bold;
+}
+.c_a_l_que{
+    width: 95%;
+    height: 60%;
+    display: flex;
+    color: white;
+    font-size: 1vw;
+}
+/* pre{
+    width: ;
+} */
+.c_a_l_que pre{
+    white-space: break-spaces;
+    overflow: auto;
+    padding: 2%;
+}
+.c_a_l_que pre::-webkit-scrollbar {
+    width: 11px;
+}
+.c_a_l_que pre::-webkit-scrollbar-thumb {
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 2px solid transparent;
+}
+
+.c_a_l_ans{
+    width: 95%;
+    height: 25%;
+    display: flex;
+    text-align: center;
+    color: white;
+    border: 1px solid black;
+}
+.c_a_right{
+    width: 45%;
+    height: 98%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    border-radius: 0.5rem;
+}
+.c_a_right_form{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 문제 코드 작성 */
+.c_a_right_1{
+    width: 95%;
+    height: 58%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+}
+.c_a_right_1_1{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
+
+}
+.c_a_r_Codelang1{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+.c_a_r_Codelang_n1{
+    width: 95%;
+    height: 15%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    font-size: 1vw;
+    color: white;
+}
+.c_a_r_Codewrite1{
+    width: 100%;
+    height: 100%;
+}
+.c_a_r_Codewrite1_edi1{
+    width: 100%;
+    height: 100%;
+}
+.c_a_right_1_2{
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    justify-content: space-around;
+
+}
+.c_a_r_Codelang2{
+    width: 100%;
+    height: 15%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.c_a_r_Codelang_n2{
+    width: 98%;
+    height: 15%;
+    display: flex;
+    align-items: center;
+    font-size: 1vw;
+    color: white;
+}
+.c_a_r_Codewrite2{
+    width: 100%;
+    height: 100%;
+}
+.c_a_r_Codewrite2_edi2{
+    width: 100%;
+    height: 100%;
+}
+
+/* 코드에디터 */
+.content-container__content {
+    display: none;
+}
+.content-container__content.target {
+    display: block;
+}
+.c_a_right_2{
+    width: 95%;
+    height: 41%;
+    display: flex;
+    flex-direction: column;
+}
+.output_txt{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+.txt_main{
+    width: 20%;
+    color: white;
+}
+.sendBtn{
+    width: 70%;
+    float: right;
+    display: flex;
+    justify-content: flex-end;
+
+}
+.btn-dark{
+    background-color: transparent;
+    border: transparent;
+}
+#live {
+    width:100%;
+    height:100%;
+    /* border:0; */
+    outline:0;
+    border: 1px solid black;
+    border-radius: 5px;
+    background-color: white;
+}
+.outputDiv{
+    height: 78%;
+    width: 100%;
+}
+
+.cm-s-darcula{
+    height:38dvh;
+}
+
+/* 참가자 현상황 */
+.c_a_under{
+    width: 17%;
+    height: 93%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+
+}
+.c_a_above1{
+    width: 80%;
+    height: 84%;
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    align-content: center;
+    background-color: rgba(255,255,192,0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 1px 0px 12px 8px white;
+}
+
+.c_a_time{
+    width: 100%;
+    height: 13%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.c_a_p_user{
+    width: 88%;
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    border-radius: 1.375rem;
+    background-color: rgba(255,255,192,0.1);
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 7px 15px 8px rgba(0,0,0,0.3);
+}
+.c_a_p_u1, .c_a_p_u2, .c_a_p_u3, .c_a_p_u4{
+    width: 90%;
+    height: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.u_info{
+    width: 70%;
+    height: 70%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    white-space: nowrap;
+}
+.u_i_img{
+    width: 15%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9vw;
+    color: white;
+}
+.u_i_nick{
+    width: 65%;
+    height: 100%;
+    color: white;
+    font-size: 0.9vw;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+}
+.u_remain{
+    width: 15%;
+    height: 80%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-content: center;
+    flex-direction: column;
+    color: white;
+    font-size: 0.8vw;
+}
+.u_r_ques{
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    flex-direction: column;
+}
+.u_r_circle{
+    width: 82%;
+    height: 85%;
+    border-radius: 50%;
+    background-color: green;
+    /* background-color: white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8">
+  <title>CodeBuddy</title>
+  <link rel="stylesheet" href="/css/main.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto+Mono"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
+      rel="stylesheet"
+    />
+</head>
+
+<body>
+  <header>
+    <div class="m_header">
+      <p class="m_logo">CodeBuddy</p>
+      <button class="m_btn_c">Code Chat</button>
+      <button class="m_btn_a">Code Arena</button>
+      <button class="m_btn" id="login_btn">Login</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{user}}님</button>
+    </div>
+  </header>
+
+  <div class="m_content">
+    <div class="m_c_img">
+      <img src="/img/new.jpg" alt="" />
+      <p class="m_c_p">Coding with Buddy</p>
+      <p class="m_c_p1">Boosts Development</p>
+    </div>
+
+    <div class="m_sodyd" id="m_sodyd_chat">
+      <div class="m_s_img">
+        <img src="/img/share2.jpg" alt="" />
+      </div>
+      <div class="m_s_p">
+        <p class="m_s_p1">
+          서로의 코드를 공유하고 코딩 스킬을 향상시킬 수 있는 Code Chat! 멘토
+          멘티 기능도 제공합니다.
+        </p>
+        <p class="m_s_p2">함께 코딩해보세요!</p>
+        <button id="codeChat_btn" class="custom-btn btn-1">
+          Code Chat 시작하기
+        </button>
+      </div>
+    </div>
+
+    <div class="m_sodyd_a" id="m_sodyd_arena">
+      <div class="m_s_p">
+        <p class="m_s_p1">
+          코딩 문제풀이, 랭킹 경쟁 <br />그리고 상품 증정까지
+        </p>
+        <p class="m_s_p2">Code Arena에서 코딩 역량을 뽐내보세요!</p>
+        <button id="codeArena_btn" class="custom-btn btn-1">Code Arena 시작하기</button>
+      </div>
+      <div class="m_s_img">
+        <img src="/img/arena.jpg" alt="" />
+      </div>
+    </div>
+  </div>
+  <script src="/js/main.js"></script>
+  <script>
+    let login = '{{login}}'
+    if(login){
+      $login_btn.style.display ='none'
+      $userInfo_btn.style.display='inline'
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeBuddy</title>
+
+    <!-- CodeMirror API -->
+    <script src="/js/codemirror.js"></script>
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="/css/codemirror.css">
+
+    <!-- 언어별 모드  -->
+    <!-- CodeMirror HTML -->
+    <script src="/js/htmlmixed.js"></script>
+    <!-- CodeMirror CSS -->
+    <script src="/js/css.js"></script>
+    <!-- CodeMirror JavaScript -->
+    <script src="/js/javascript.js"></script>
+    
+    <!-- Theme -->
+    <link rel="stylesheet" href="/css/darcula.css">    
+    <!-- autocomplete -->
+    <link rel="stylesheet" href="/css/show-hint.css">
+    <script src="/js/html-hint.js"></script>
+    <script src="/js/javascript-hint.js"></script>
+    <script src="/js/show-hint.js"></script>
+
+    <!-- jQurey -->
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <link rel="stylesheet" href="/css/index.css">
+
+    <!-- 부트스트랩 -->
+    <link href="/https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+</head>
+<body>
+<form action="/page/codeEditor" id="inputForm">
+
+    <div id="container">    
+        <div class="left">
+            <!-- 탭 버튼 -->
+            <div class="container">
+                <ul class="tab-container">
+                <li class="tab-container__item active" data-tab="tab1">
+                    <a class="tab-container__item--title">HTML</a>
+                </li>
+                <li class="tab-container__item " data-tab="tab2">
+                    <a class="tab-container__item--title" >CSS</a>
+                </li>
+                <li class="tab-container__item" data-tab="tab3">
+                    <a class="tab-container__item--title" >JavaScript</a>
+                </li>
+                </ul>
+                <!-- 코드 에디터  -->
+                <section class="content-container">
+                <article id="tab1" class="content-container__content target">
+                    <textarea id="html" name="html"></textarea>
+                </article>
+                <article id="tab2" class="content-container__content">
+                    <textarea id="css" name="css"></textarea>
+                </article>
+                <article id="tab3" class="content-container__content">
+                    <textarea id="js" name="js"></textarea>
+                </article>
+                </section>
+
+                <!-- bottom output -->
+                <div class="outputDiv">
+                    <ul class="tab-container bottom">
+                        <li class="tab-container__item active" data-tab="tab1">
+                            <a class="tab-container__item--title">OUTPUT</a>
+                        </li>
+                    </ul>
+                    <!-- Output -->
+                    <iframe id="live"></iframe>
+                </div>
+            </div>
+            <!-- 전송버튼 -->
+            <div class="text-center sendBtn">
+                <button id="submit" class="btn btn-dark">전송</button>
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="container">
+                <ul class="tab-container">
+                    <li class="tab-container__item2 active" data-tab="tab4">
+                        <a class="tab-container__item2--title">HTML</a>
+                    </li>
+                    <li class="tab-container__item2 " data-tab="tab5">
+                        <a class="tab-container__item2--title" >CSS</a>
+                    </li>
+                    <li class="tab-container__item2" data-tab="tab6">
+                        <a class="tab-container__item2--title" >JavaScript</a>
+                    </li>
+                </ul>
+                <!-- 코드 에디터  -->
+                <section class="content-container2 rightCode">
+                    <article id="tab4" class="content-container__content2 target">
+                        <textarea id="html2" name="html"></textarea>
+                    </article>
+                    <article id="tab5" class="content-container__content2 ">
+                        <textarea id="css2" name="css"></textarea>
+                    </article>
+                    <article id="tab6" class="content-container__content2">
+                        <textarea id="js2" name="js"></textarea>
+                    </article>
+                </section>
+                <div class="outputDiv">
+                    <ul class="tab-container bottom">
+                        <li class="tab-container__item2 active" data-tab="tab1">
+                            <a class="tab-container__item2--title">OUTPUT</a>
+                        </li>
+                    </ul>
+                    <!-- Output -->
+                    <iframe id="live2"></iframe>
+                </div>
+                <div class="text-center sendBtn">
+                    <button id="submit" class="btn btn-dark">전송</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
+</form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/CodeChat/js/codeEditor.js"></script>
+    
+    <script>
+        const texthtml = document.querySelector('#html')
+        const textcss = document.querySelector('#css')
+        const textjs = document.querySelector('#js')
+        const outPut = document.querySelector('#live')
+
+        let html = CodeMirror.fromTextArea(texthtml, {
+        mode:"html",
+        theme:"darcula",
+        lineNumbers: true,
+        extraKeys:{"Ctrl-Space": "autocomplete"}
+        })
+
+        let css = CodeMirror.fromTextArea(textcss, {
+        mode:"text/css",
+        theme:"darcula",
+        lineNumbers: true,
+        spellcheck: true,
+        extraKeys:{"Ctrl-Space": "autocomplete"}
+        })
+
+        let js = CodeMirror.fromTextArea(textjs, {
+        mode:"text/javascript",
+        theme:"darcula",
+        lineNumbers: true,
+        spellcheck: true,
+        extraKeys:{"Ctrl-Space": "autocomplete"}
+        })
+
+   
+        //우측 에디터 
+        const texthtml2 = document.querySelector('#html2')
+        const textcss2 = document.querySelector('#css2')
+        const textjs2 = document.querySelector('#js2')
+        const outPut2 = document.querySelector('#live2')
+
+        let html2 = CodeMirror.fromTextArea(texthtml2, {
+            mode:"text/html",
+            theme:"darcula",
+            lineNumbers: true,
+            extraKeys:{"Ctrl-Space": "autocomplete"}
+            })
+    
+            let css2 = CodeMirror.fromTextArea(textcss2, {
+            mode:"text/css",
+            theme:"darcula",
+            lineNumbers: true,
+            spellcheck: true,
+            extraKeys:{"Ctrl-Space": "autocomplete"}
+            })
+    
+            let js2 = CodeMirror.fromTextArea(textjs2, {
+            mode:"text/javascript",
+            theme:"darcula",
+            lineNumbers: true,
+            spellcheck: true,
+            extraKeys:{"Ctrl-Space": "autocomplete"}
+            })
+
+
+
+
+        
+        // 입력한 코드 출력
+        CodeMirror.on(html, 'change', function () {
+            outPut.contentWindow.document.body.innerHTML = html.getValue()
+          })
+        CodeMirror.on(css, 'change', function () {
+            outPut.contentWindow.document.body.innerHTML = html.getValue()  + "<style>" + css.getValue() + "</style>"
+          })
+          CodeMirror.on(js, 'change', function () {
+            const scriptElement = document.createElement("script");
+            scriptElement.innerHTML = js.getValue();
+           /* outPut.contentWindow.document.body.innerHTML = html.getValue() + "<style>" + css.getValue() + "</style>"; */
+            outPut.contentWindow.document.body.appendChild(scriptElement);
+        });
+
+
+
+        CodeMirror.on(html2, 'change', function () {
+            outPut2.contentWindow.document.body.innerHTML = html2.getValue()
+          })
+        CodeMirror.on(css2, 'change', function () {
+            outPut2.contentWindow.document.body.innerHTML = html2.getValue()  + "<style>" + css.getValue() + "</style>"
+          })
+          CodeMirror.on(js2, 'change', function () {
+            const scriptElement = document.createElement("script");
+            scriptElement.innerHTML = js2.getValue();
+           /* outPut.contentWindow.document.body.innerHTML = html.getValue() + "<style>" + css.getValue() + "</style>"; */
+            outPut2.contentWindow.document.body.appendChild(scriptElement);
+        });
+                
+    </script>
+
+
+      <!-- 탭메뉴 JS -->
+      <script>
+        const tabItem = document.querySelectorAll(".tab-container__item");
+        const tabContent = document.querySelectorAll(".content-container__content");
+        
+        tabItem.forEach((item) => {
+          item.addEventListener("click", tabHandler);
+        });
+        
+        function tabHandler(item) {
+          const tabTarget = item.currentTarget;
+          const target = tabTarget.dataset.tab;
+          tabItem.forEach((title) => {
+            title.classList.remove("active");
+          });
+          tabContent.forEach((target) => {
+            target.classList.remove("target");
+          });
+          document.querySelector("#" + target).classList.add("target");
+          tabTarget.classList.add("active");
+        }
+    </script>
+
+
+    <!-- 탭 메뉴 2  -->
+    <script>
+        const tabItem2 = document.querySelectorAll(".tab-container__item2");
+        const tabContent2 = document.querySelectorAll(".content-container__content2");
+        
+        tabItem2.forEach((item) => {
+          item.addEventListener("click", tabHandler);
+        });
+        
+        function tabHandler(item) {
+          const tabTarget2 = item.currentTarget;
+          const target2 = tabTarget2.dataset.tab;
+          tabItem2.forEach((title) => {
+            title.classList.remove("active");
+          });
+          tabContent2.forEach((target2) => {
+            target2.classList.remove("target");
+          });
+          document.querySelector("#" + target2).classList.add("target");
+          tabTarget2.classList.add("active");
+        }
+    </script>
+
+    <!-- 부트스트랩 js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+</body>
+</html>
