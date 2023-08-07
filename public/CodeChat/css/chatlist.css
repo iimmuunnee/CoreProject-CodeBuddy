@@ -1,10 +1,71 @@
+body {
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  height: 100%;
+  /* overflow: hidden; */
+}
+/* header */
+.m_header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #ffffff; 
+  z-index: 999; 
+  border-bottom: 1px solid;
+  height: 70px;
+}
+
+
+.m_logo_img {
+  width: 7%;
+}
+
+.m_logo {
+  margin-left: 3%;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-top: 1%;
+}
+
+.m_btn_c{
+  margin-left: 8%;
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+}
+
+.m_btn_a{
+  margin-left: 10%;
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+}
+
+.m_btn{
+  margin-left: 10%;
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+}
+.m_title_btn {
+  display: flex;
+}
+
+
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
 section.notice {
-  padding: 40px 0;
+  padding: 7% 0;
 }
 
 .page-title {
@@ -308,12 +369,14 @@ button {
 
 .write {
   position: absolute;
-  bottom: 30%;
+  bottom: 27%;
   right: 5%;
   border: 1px solid;
   width: 8%;
   font-size: 0.9rem;
   height: 40%;
+  background-color: #24283B;
+  color: white;
 }
 
 /* 모달 스타일 */
@@ -333,7 +396,7 @@ button {
   margin: 15% auto;
   padding: 40px;
   border: 1px solid #888;
-  width: 50%;
+  width: 40%;
   border-radius: 10px;
   border: 1px solid #7ac142;
 }
@@ -346,7 +409,7 @@ button {
   font-weight: bold;
   position: relative;
   top: -12px;
-  right: 10px;
+  right: -4px;
 }
 
 .close:hover,
@@ -360,9 +423,9 @@ button {
   margin-top: 3%;
 }
 
-#room-name {
+#room_name {
   height: 30px;
-  width: 80%;
+  width: 60%;
 }
 
 .make-h2{
@@ -370,10 +433,12 @@ button {
 }
 
 .make-btn{
-  width: 12%;
-  color: #7ac142;
-  border: 1px solid #7ac142;
+  width: 13%;
+  background-color: #24283B;
+  /* border: 1px solid #24283B; */
+  color: white;
   border-radius: 5px;
   float: right;
   font-size: 1.0rem;
+  height: 28px;
 }
