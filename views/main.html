@@ -5,27 +5,19 @@
   <meta charset="utf-8">
   <title>CodeBuddy</title>
   <link rel="stylesheet" href="/css/main.css" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto+Mono"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
-      rel="stylesheet"
-    />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
+    rel="stylesheet" />
 </head>
 
 <body>
   <header>
     <div class="m_header">
       <p class="m_logo">CodeBuddy</p>
-      <button class="m_btn_c">Code Chat</button>
-      <button class="m_btn_a">Code Arena</button>
+      <button class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
+      <button class="m_btn_a" onclick="scrollToCodeArena()">CodeArena</button>
       <button class="m_btn" id="login_btn">Login</button>
       <button id="userInfo_btn" class="m_btn" style="display : none">{{user}}님</button>
     </div>
@@ -70,9 +62,9 @@
   <script src="/js/main.js"></script>
   <script>
     let login = '{{login}}'
-    if(login){
-      $login_btn.style.display ='none'
-      $userInfo_btn.style.display='inline'
+    if (login) {
+      $login_btn.style.display = 'none'
+      $userInfo_btn.style.display = 'inline'
     }
 
   </script>
