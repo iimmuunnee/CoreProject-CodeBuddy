@@ -1,3 +1,5 @@
+const { Socket } = require("socket.io");
+
 // socket.io 사용
 const chatSocket = io("/CodeChat");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
@@ -66,22 +68,22 @@ $make_room_form.addEventListener("submit", handleRoomSubmit);
 
 
 // 방 목록에 새로운 방 추가하는 함수
-const addRoomToTable = (room) => {
-  console.log("addRoomToTable 함수 작동");
+const addRoomToTable = (updateRooms) => {
+  console.log("addRoomToTable 함수 작동", updateRooms);
   const newRow = document.createElement("tr");
-  newRow.id = "room_" + room.room_number;
+  newRow.id = "room_" + updateRooms.room_number;
 
   // 방 정보를 td에 추가
   newRow.innerHTML = `
-    <td>${room.room_number}</td>
-    <td>${room.chatRoomMethod}</td>
-    <td>${room.dev_lang}</td>
+    <td>${updateRooms[0].room_number}</td>
+    <td>${updateRooms[0].chatRoomMethod}</td>
+    <td>${updateRooms[0].dev_lang}</td>
     <th>
-      <a href="#">${room.room_name}</a>
+      <a href="#">${updateRooms[0].room_name}</a>
       <p>테스트</p>
      </th>
-    <td>${room.createdBy}</td>
-    <td>${room.createdDate}</td>
+    <td>${updateRooms[0].createdBy}</td>
+    <td>${updateRooms[0].createdDate}</td>
 `;
 
   // 새로운 행을 테이블의 맨 위에 추가
@@ -91,13 +93,13 @@ const addRoomToTable = (room) => {
   $tbody.prepend(newRow);
 };
 
-
-
 chatSocket.on("update_room_list", (updateRooms) => {
   console.log(updateRooms);
   console.log("update_room_list 이벤트 프론트로 도착");
     addRoomToTable(updateRooms);
 });
+
+chatSocket.emit("get_room_list")
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
