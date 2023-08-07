@@ -284,7 +284,7 @@ ChatNamespace.on("connection", (socket) => {
     });
   });
 
-
+console.log('휘훈이바보')
 
 http.listen(3000, function(){
     console.log('Code Buddy server listening on port http://localhost:3000/page')
