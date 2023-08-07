@@ -1,3 +1,5 @@
+const { Socket } = require("socket.io");
+
 // socket.io 사용
 const chatSocket = io("/CodeChat");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
@@ -91,13 +93,13 @@ const addRoomToTable = (updateRooms) => {
   $tbody.prepend(newRow);
 };
 
-
-
 chatSocket.on("update_room_list", (updateRooms) => {
   console.log(updateRooms);
   console.log("update_room_list 이벤트 프론트로 도착");
     addRoomToTable(updateRooms);
 });
+
+chatSocket.emit("get_room_list")
 
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------

@@ -115,6 +115,10 @@ ChatNamespace.on("connection", (socket) => {
       socket["nickname"] = nickname; // 소켓 객체에 "nickname"이라는 속성 추가
       io.to(socket.id).emit("nickname", { nickname });
     });
+
+    socket.on("get_room_list", () => {
+      
+    })
   
     socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang }) => {
       console.log("create_room 이벤트 서버로 도착");
@@ -137,9 +141,8 @@ ChatNamespace.on("connection", (socket) => {
 
       console.log("roomInfo",roomInfo);
       rooms.set(room_name, roomInfo)
+      
       const updateRooms = Array.from(rooms.values())
-      console.log("updateRooms",updateRooms);
-  
       ChatNamespace.emit("update_room_list", updateRooms);
     });
   
