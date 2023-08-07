@@ -2,7 +2,6 @@ const gameSocket = io("/game"); // io 함수는 알아서 socket.io를 실행하
 
 const $chat_leave = document.getElementById("chat_leave");
 const $chat_leave_btn = $chat_leave.querySelector(".chat_leave_btn"); // 나가기 버튼
-
 const $chat = document.getElementById("chat"); // 전체 div 채팅창 선택
 const $chat_1 = $chat.querySelector(".chat_1"); // 접근 1
 const $chat_main = $chat_1.querySelector(".chat_main"); // 접근 2
@@ -18,32 +17,6 @@ const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채�
 const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
 const roomName = localStorage.getItem("roomName"); // localStorage에서 방 이름을 가져오기
 let nickname = localStorage.getItem("nickname"); // localStorage에서 닉네임을 가져오기
-
-// 1. 팝업창 열기
-$(document).on("click", ".chat_open", (e) => {
-  console.log("팝업창 열기");
-  $("#chat").css("display", "block");
-});
-
-// 1. 팝업창 닫기
-$(document).on("click", ".c_content_close button", (e) => {
-  console.log("팝업창 닫기");
-  $("#chat").css("display", "none");
-});
-
-// 2. chat 축소판 다시 열기
-$(document).on("click", ".c_content_mini_btn", (e) => {
-  console.log("팝업창 키우기");
-  $("#chat_mini").css("display", "flex");
-  $("#chat").css("display", "none");
-});
-
-// 2. chat 축소판 닫기
-$(document).on("click", ".chat_mini_1_2btn", (e) => {
-  console.log("팝업창 줄이기");
-  $("#chat_mini").css("display", "none");
-  $("#chat").css("display", "block");
-});
 
 // 움직이는 모달
 $(document).on("ready", () => {
