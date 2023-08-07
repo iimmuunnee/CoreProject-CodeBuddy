@@ -11,7 +11,7 @@
 .chat_open{
     position: fixed;
     bottom: 1.5rem;
-    right: 1rem;
+    right: 2rem;
     display: none;
     -webkit-box-pack: justify;
     justify-content: center;

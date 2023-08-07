@@ -325,7 +325,6 @@ const publicRooms = () => {
   });
 
 
-
 http.listen(3000, function(){
     console.log('Code Buddy server listening on port http://localhost:3000/page')
 })
