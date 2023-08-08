@@ -6,25 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
 
+  <!-- CodeMirror JavaScript -->
+  <script src="/js/codemirror.js"></script>
+  <link rel="stylesheet" href="/css/codemirror.css">
+
+  <script src="/js/javascript.js"></script>
+  <script src="/js/python.js"></script>
+  <!-- Theme -->
+  <link rel="stylesheet" href="/css/darcula.css">
+  <!-- autocomplete -->
+  <link rel="stylesheet" href="/css/show-hint.css">
+  
+  <script src="/js/javascript-hint.js"></script>
+  <script src="/js/show-hint.js"></script>
+
+  
 
   <!-- jquery -->
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-
-  <!-- Code Mirror -->
-  <script src="/js/codemirror.js"></script>
-  <link rel="stylesheet" href="/css/codemirror.css">
-
-  <script src="/js/javascript.js"></script>
-  <script src="/js/python.js"></script>
-
-  <link rel="stylesheet" href="/css/darcula.css">
-
-  <link rel="stylesheet" href="/css/show-hint.css">
-  <script src="/js/javascript-hint.js"></script>
-  <script src="/js/show-hint.js"></script>
 
   <!-- 폰트어썸 및 폰트 -->
   <script src="https://kit.fontawesome.com/3c792eb2a9.js" crossorigin="anonymous"></script>
@@ -538,7 +540,7 @@
     const textjs = document.querySelector('#js')
     const textpy = document.querySelector('#python')
     const outPut = document.querySelector('#live')
-    
+
 
     let js = CodeMirror.fromTextArea(textjs, {
       mode: "text/javascript",
@@ -579,7 +581,7 @@
     CodeMirror.on(python, 'change', executePython);
 
   </script>
-  <script src="/CodeArena/js/popArenaChatRoom.js"></script>
+
 
   <script>
     // 1. 팝업창 열기
@@ -614,7 +616,7 @@
       $("#chat_mini").css("display", "none");
     });
 
-    
+
   </script>
 
   <script>
@@ -625,8 +627,8 @@
     const question_div = document.getElementById('c_a_left');
     const question_div2 = document.getElementById('c_a_right');
 
-    let time = 120000;
-    let min = 2;
+    let time = 600000;
+    let min = 10;
     let sec = 60;
     let PlAYTIME;
 
@@ -643,20 +645,22 @@
           Timer.value = Math.floor(min) + ':' + (sec < 10 ? '0' : '') + sec;
 
           // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
-          
-          if(min === 0){
+          if (Math.floor(min) === 0) {
             if (sec < 11 && sec >= 0) {
               // 여기에 원하는 CSS 변경 코드를 추가합니다.
-              Timer_zip.style.boxShadow = '1px 0px 12px 8px red'; 
+              Timer_zip.style.boxShadow = '1px 0px 12px 8px red';
               Timer_zip.style.animation = 'blink 1s infinite';
-            } else {
+              if (sec == 0) {
+                console.log("여기 들어옴");
+                clearInterval(PlAYTIME);
+              }
+            }
+            else {
               // 원하는 CSS 초기 상태를 설정합니다.
-              Timer_zip.style.boxShadow = '1px 0px 12px 8px white'; 
+              Timer_zip.style.boxShadow = '1px 0px 12px 8px white';
               Timer_zip.style.animation = 'none';
             }
           }
-            
-          
         }
         if (sec === 0) {
           // 0에서 -1을 하면 -59가 출력된다.
@@ -664,11 +668,10 @@
           sec = 60;
           Timer.value = Math.floor(min) + ':' + '00'
         }
-
       }, 1000); //1초마다 
     }
 
-    startButton.addEventListener('click', function(){
+    startButton.addEventListener('click', function () {
       startButton.style.display = 'none'
       TIMER()
       question_div.style.display = 'block'
@@ -676,9 +679,6 @@
 
     });
 
-    setTimeout(function () {
-      clearInterval(PlAYTIME);
-    }, 600000);
   </script>
 
 
