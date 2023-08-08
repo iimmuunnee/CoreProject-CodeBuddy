@@ -300,7 +300,7 @@ body{
 }
 
 .cm-s-darcula{
-    height:38dvh;
+    height:42dvh;
 }
 
 /* 참가자 현상황 */
@@ -435,9 +435,3 @@ body{
     align-items: center;
     align-content: center;
 }
-
-.cm-s-darcula{
-    height:42dvh;
-    /* height:616px; */
-    
-  }
