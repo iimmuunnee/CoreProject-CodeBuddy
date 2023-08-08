@@ -188,12 +188,12 @@ ChatNamespace.on("connection", (socket) => {
   });
 
   socket.on("disconnecting", () => {
-    console.log("서버 disconnecting 이벤트 활성화");
+    console.log("Chat서버 disconnecting 이벤트 활성화");
     console.log("disconnecting 이후 ", socket.rooms);
   });
 
   socket.on("disconnect", () => {
-    console.log("서버 disconnect 이벤트 활성화");
+    console.log("Chat서버 disconnect 이벤트 활성화");
     console.log("disconnect 이후 ", socket.rooms);
   });
 });
@@ -256,7 +256,7 @@ const countRoomUsers = (room_name) => {
       dev_lang: dev_lang,
       createdBy: socket.nickname,
       createdDate: new Date().toISOString().slice(0, 10),
-      userCount : 1,
+      userCount : countRoomUsers(room_name) + 1,
     };
     console.log(roomInfo);
     rooms.set(room_name, roomInfo);
@@ -320,6 +320,7 @@ const countRoomUsers = (room_name) => {
       socket.room_name = null; // 방 이름 정보 초기화
     }
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
+      console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_name));
     })
   
   socket.on("disconnecting", () => {
