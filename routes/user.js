@@ -111,9 +111,6 @@ router.post('/login',(req,res)=>{
                     let seLevel = req.session.userlevel = userLevel
                     let seLogin = req.session.login = true
                     res.render('main',{login : seLogin, name : seName, level : seLevel})
-
-                    
-
                 }
                 else{
                     console.log('로그인이 실패하였습니다.')
@@ -124,10 +121,9 @@ router.post('/login',(req,res)=>{
 })
 
 
-router.get('/se',(req,res)=>{
-    console.log(req.session.userName)
+router.get('/ifyouLogin',(req,res)=>{
+    res.send(JSON.stringify(req.session.login))
 })
-
 
 
 
