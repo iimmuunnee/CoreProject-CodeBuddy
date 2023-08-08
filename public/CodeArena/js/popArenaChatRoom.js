@@ -1,17 +1,7 @@
 const gameSocket = io("/game"); // io 함수는 알아서 socket.io를 실행하고 서버를 찾습니다.
 
-const $chat_leave = document.getElementById("chat_leave");
-const $chat_leave_btn = $chat_leave.querySelector(".chat_leave_btn"); // 나가기 버튼
-const $chat = document.getElementById("chat"); // 전체 div 채팅창 선택
-const $chat_1 = $chat.querySelector(".chat_1"); // 접근 1
-const $chat_main = $chat_1.querySelector(".chat_main"); // 접근 2
-const $c_roomname = $chat_main.querySelector(".c_roomname"); // 방 이름으로 접근
-const $c_roomname_1 = $c_roomname.querySelector(".c_roomname_1"); // 방 이름을 접근 2
-const $c_content_name = $c_roomname_1.querySelector(".c_content_name");
-const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
 
 const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
-
 const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
 const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
 const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
@@ -194,4 +184,3 @@ gameSocket.on("bye", ({ nickname, newCount }) => {
 });
 
 $c_chatting_form.addEventListener("submit", handleMessageSubmit);
-$chat_leave_btn.addEventListener("click", handleLeaveRoom);

@@ -1,5 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
+=======
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodeChat</title>
+    <link rel="stylesheet" href="/CodeChat/css/chatlist.css" />
+    <link rel="stylesheet" href="/CodeChat/css/pop_chat.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/3c792eb2a9.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      type="text/javascript"
+      src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"
+    ></script>
+  </head>
+
+>>>>>>> 13da3eeb13912d767c9966d47ca021998b419ca3
 
 <head>
   <meta charset="UTF-8" />
@@ -23,12 +53,11 @@
 
   <header>
     <div class="m_header">
-      <p class="m_logo">CodeBuddy</p>
-      <button class="m_btn_c">Code Chat</button>
-      <button class="m_btn_a">Code Arena</button>
-      <button class="m_btn" id="login_btn">
-        Login
-      </button>
+      <p class="m_logo" id="m_btn">CodeBuddy</p>
+      <button class="m_btn_c" id="chat_btn">Code Chat</button>
+      <button class="m_btn_a" id="arena_btn">Code Arena</button>
+      <button class="m_btn" id="login_btn">Login</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
     </div>
   </header>
 
@@ -331,12 +360,17 @@
               <div class="c_chatting_1">
                 <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
               </div>
+
               <div class="c_chatting_2">
                 <div class="c_chatting_22">
                   <button onclick="send()" class="c_chatting_2_btn">
                     <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
                   </button>
                 </div>
+
+              <div class="chat_mini_1_21">
+                <p id="mini_room_users"></p>
+
               </div>
             </form>
           </div>
@@ -360,12 +394,16 @@
           </button>
         </div>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 13da3eeb13912d767c9966d47ca021998b419ca3
       </div>
     </div>
   </section>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/CodeChat/js/codeChatList.js"></script>
   <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+<<<<<<< HEAD
 </body>
 
 </html>
@@ -467,3 +505,27 @@
   </body>
 </html>
 >>>>>>> ae897bbfaf6bc40036558140704be3ab75564d55
+=======
+  <!-- 세션 로그인 스크립트 -지훈- -->
+  <script>
+        // 로그인 했을 시 사용자 이름 표시
+        let login = '{{login}}'
+        let logout = '{{logout}}'
+    
+        if(login) {
+          document.querySelector('#login_btn').style.display = 'none'
+          document.querySelector('#userInfo_btn').style.display = 'inline'
+          console.log('로그인',login)
+        }    
+        if(logout){
+          document.querySelector('#login_btn').style.display = 'inline'
+          document.querySelector('#userInfo_btn').style.display = 'none'
+          console.log('로그아웃',logout)
+        }    
+  </script>
+
+ 
+</body>
+
+</html>
+>>>>>>> 13da3eeb13912d767c9966d47ca021998b419ca3

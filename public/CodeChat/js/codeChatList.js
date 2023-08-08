@@ -64,7 +64,10 @@ const handleRoomSubmit = (event) => {
     $mini_room_users.textContent = `${user_count}/4`;
   });
 
+  closeModal() // 모달 닫고
+
   chatSocket.emit("welcome", { room_name: room_name, nickname: nickname });
+  $room_name.value = "" // 방 입력칸 초기화
 };
 
 // 방 만들기 버튼  함수 끝
@@ -101,8 +104,6 @@ const addRoomToTable = (updateRooms) => {
   const $tbody = $board_table.querySelector("tbody");
   $tbody.prepend(newRow);
 };
-
-chatSocket.emit("get_room_list");
 
 chatSocket.on("disconnect", () => console.log("disconnect to server"));
 
@@ -353,3 +354,32 @@ $(document).ready(function () {
 });
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
+<<<<<<< HEAD
+=======
+
+
+// 지훈 javaScript 추가
+
+// 배너 클릭 시, 메인으로
+$('#m_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page`
+  
+})
+
+// Code Chat 클릭시 메인 -> Code Chat 이동
+$('#chat_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/mainMove/`
+  
+})
+
+// Code Arena 클릭시 메인 -> Code Arena 이동
+$('#arena_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/mainArena`
+  
+})
+
+// login 클릭시 login 창 이동
+$('#login_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/join`
+})
+>>>>>>> 13da3eeb13912d767c9966d47ca021998b419ca3
