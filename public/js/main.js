@@ -20,12 +20,36 @@ function scrollToCodeArena() {
 // codeChatButton.addEventListener("click", scrollToCodeChat);
 // codeArenaButton.addEventListener("click", scrollToCodeArena);
 
+
+
+// Code Chat 클릭 시 로그인 유무에 따라 페이지 이동 or 로그인 요청
 $codeChat_btn.addEventListener("click", () => {
-  window.location.href = `${window.location.origin}/page/CodeChat`;
+	axios.get('/user/ifyouLogin')
+		.then(res=>{
+			console.log(res.data)
+			if(res.data){
+				window.location.href = `${window.location.origin}/page/CodeChat`;
+			}
+			else{
+				alert('로그인하셈')
+			}
+		})
+  
 });
 
+// Code Arena 클릭 시 로그인 유무에 따라 페이지 이동 or 로그인 요청
 $codeArena_btn.addEventListener("click", () => {
-  window.location.href = `${window.location.origin}/page/CodeArena`;
+	axios.get('/user/ifyouLogin')
+		.then(res=>{
+			console.log(res.data)
+			if(res.data){
+				window.location.href = `${window.location.origin}/page/CodeArena`;
+			}
+			else{
+				alert('로그인하셈')
+			}
+		})
+  
 });
 
 $login_btn.addEventListener("click", () => {
