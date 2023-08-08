@@ -11,13 +11,6 @@ const handleLeaveRoom = () => {
   window.location.href = newUrl; // 나갈 때 방 입장 전 페이지로 이동
 };
 
-// 단순히 채팅을 띄워주는 역할
-const addMessage = (nickname, message) => {
-  const $div = document.createElement("div");
-  $div.textContent = `${nickname} : ${message}`;
-  $c_main_content.appendChild($div);
-};
-
 // 공지
 const addNotice = (message) => {
   console.log("addNotice 함수 실행");
@@ -31,17 +24,16 @@ const handleMessageSubmit = (event) => {
   event.preventDefault();
   const message = $form_input.value; // 메시지 입력값 가져오기
   console.log("메세지 핸들러, 메세지 : ", message);
-  console.log("메세지 버튼 클릭시 roomName 확인 : ", roomName);
 
-  // 메시지 전송
-  // console.log(typeof(arenaSocket)) // object
-  arenaSocket.emit(
+    console.log("userInfo : ", nickname);
+
+    arenaSocket.emit(
     "new_message",
-    { message: message, roomName, nickname },
+    {nickname, message: message,},
     () => {
-      addMessage(nickname, message);
+      Chat.sendMessage(nickname, message);
     }
-  );
+  )
 
   $form_input.value = ""; // 입력 창 초기화
 };
@@ -53,7 +45,7 @@ arenaSocket.on("connect", () => {
 
 arenaSocket.on("new_message", ({ nickname, message }) => {
   console.log("new_message이벤트 프론트에서 받음");
-  addMessage(nickname, message);
+  Chat.sendMessage(nickname, message);
 });
 
 // 프론트로 온 이벤트 감지
@@ -61,24 +53,22 @@ arenaSocket.onAny((event) => {
   console.log(`arenaSocket Event: ${event}`);
 });
 
-arenaSocket.on("welcome", ({ nickname, newCount }) => {
+arenaSocket.on("welcome", ({nickname}) => {
   console.log("프론트 welcome 옴");
   // $user_count.textContent = `${user_count}명`;
-  addNotice(`${nickname}(이)가 방에 입장했습니다. ${newCount}`);
+  addNotice(`${nickname}(이)가 방에 입장했습니다.`);
   // setUserCount(user_count);
 });
 
-arenaSocket.on("user_count", ({ room_name, user_count }) => {
+arenaSocket.on("user_count", ({ user_count }) => {
   console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
   $c_content_num.textContent = `${user_count}`;
 });
 
-arenaSocket.on("bye", ({ nickname, newCount }) => {
+arenaSocket.on("bye", ({nickname}) => {
   console.log("프론트 bye이벤트 옴");
   console.log(`${nickname}은 방을 나갔습니다. `);
-  addNotice(`${nickname}(이)가 방에서 나갔습니다. ${newCount}`);
-  // window.location.href를 사용하여 다른 페이지로 리디렉션할 수 있습니다.
-  // 예: window.location.href = "/room_input_page";
+  addNotice(`${nickname}(이)가 방에서 나갔습니다.`);
 });
 
 $c_chatting_form.addEventListener("submit", handleMessageSubmit);
@@ -94,7 +84,7 @@ $(document).on("ready", () => {
 // 전송 버튼 ENTER 키 기능
 function susubmit(f) {
   if (f.keyCode == 13) {
-    c_chatting_form.submit();
+    $c_chatting_form.submit();
   }
 }
 // textarea -> 줄바꿈_Shift+Enter 버튼 실행
@@ -110,7 +100,7 @@ $(function () {
 
 // 채팅 내용 왔다리 갔다리
 const Chat = (function () {
-  const myName = "blue";
+  let myName = "blue"; // 사용자 이름
 
   // init 함수
   function init() {
@@ -152,10 +142,10 @@ const Chat = (function () {
   }
 
   // 메세지 전송
-  function sendMessage(message) {
+  function sendMessage(nickname, message) {
     // 서버에 전송하는 코드로 후에 대체
     const data = {
-      senderName: "blue",
+      senderName: nickname,
       message: message,
     };
 
