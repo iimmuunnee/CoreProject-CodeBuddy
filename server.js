@@ -176,7 +176,7 @@ ChatNamespace.on("connection", (socket) => {
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       // console.log("adapter.rooms : ",io.of("/Chat").adapter.rooms)
-      console.log(countRoomUsers(room_name));
+      console.log("user_count : ", countRoomUsers(room_name));
 
       io.of("/CodeChat")
         .to(room_name)
@@ -292,7 +292,7 @@ const countRoomUsers = (room_name) => {
         rooms.set(room_name, roomInfo);
       }
 
-      io.of("/ArenaChat")
+      ArenaNamespace
         .to(room_name)
         .emit("welcome", {
           nickname: socket.nickname,
@@ -302,7 +302,7 @@ const countRoomUsers = (room_name) => {
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       console.log("countRoomUsers(room_name) : ", countRoomUsers(room_name));
 
-      io.of("/ArenaChat")
+      ArenaNamespace
         .to(room_name)
         .emit("user_count", { user_count: countRoomUsers(room_name)});
     }
