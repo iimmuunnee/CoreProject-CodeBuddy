@@ -31,5 +31,3 @@ $codeArena_btn.addEventListener("click", () => {
 $login_btn.addEventListener("click", () => {
   window.location.href = `${window.location.origin}/page/join`;
 });
-
-

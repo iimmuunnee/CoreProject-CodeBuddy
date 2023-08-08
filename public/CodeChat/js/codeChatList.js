@@ -354,3 +354,27 @@ $(document).ready(function () {
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
+
+// 지훈 javaScript 추가
+
+// 배너 클릭 시, 메인으로
+$('#m_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page`
+  
+})
+
+// Code Chat 클릭시 메인 -> Code Chat 이동
+$('#chat_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/mainMove/`
+  
+})
+
+// Code Arena 클릭시 메인 -> Code Arena 이동
+$('#arena_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/mainArena`
+  
+})
+
+$('#login_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/`
+})

@@ -16,10 +16,10 @@
   <header>
     <div class="m_header">
       <p class="m_logo">CodeBuddy</p>
-      <button class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
-      <button class="m_btn_a" onclick="scrollToCodeArena()">CodeArena</button>
+      <button id="main_c" class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
+      <button id="main_a" class="m_btn_a" onclick="scrollToCodeArena()">CodeArena</button>
       <button class="m_btn" id="login_btn">Login</button>
-      <button id="userInfo_btn" class="m_btn" style="display : none">{{user}}님</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
     </div>
   </header>
 
@@ -60,11 +60,19 @@
     </div>
   </div>
   <script src="/js/main.js"></script>
+    <!-- 세션 로그인 스크립트 -지훈- -->
+    <script src="/js/sessionlogin.js"></script>
   <script>
-    let login = '{{login}}'
-    if (login) {
-      $login_btn.style.display = 'none'
-      $userInfo_btn.style.display = 'inline'
+  
+    // 메인 이외의 다른 페이지에서 Code Chat 클릭시 메인이동 후 Code Chat 클릭
+    let moveCode = '{{code}}'
+    if(moveCode){
+      document.getElementById('main_c').click()
+    }
+
+    let moveArena = '{{arena}}'
+    if(moveArena){
+      document.getElementById('main_a').click()
     }
 
   </script>

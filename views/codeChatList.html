@@ -50,12 +50,11 @@
 
   <header>
     <div class="m_header">
-      <p class="m_logo">CodeBuddy</p>
-      <button class="m_btn_c">Code Chat</button>
-      <button class="m_btn_a">Code Arena</button>
-      <button class="m_btn" id="login_btn">
-        Login
-      </button>
+      <p class="m_logo" id="m_btn">CodeBuddy</p>
+      <button class="m_btn_c" id="chat_btn">Code Chat</button>
+      <button class="m_btn_a" id="arena_btn">Code Arena</button>
+      <button class="m_btn" id="login_btn">Login</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
     </div>
   </header>
 
@@ -397,6 +396,8 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/CodeChat/js/codeChatList.js"></script>
   <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+  <!-- 세션 로그인 스크립트 -지훈- -->
+  <script src="/js/sessionlogin.js"></script>
 </body>
 
 </html>
