@@ -10,10 +10,10 @@
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
-    
+
     <!-- CodeMirror API 및 CSS -->
-    <script src="/js/codemirror.js"></script>
-    <link rel="stylesheet" href="/css/codemirror.css">
+    <script src="public/js/codemirror.js"></script>
+    <link rel="stylesheet" href="public/css/codemirror.css">
     <!-- CodeMirror Mode JavaScript -->
     <script src="/js/javascript.js"></script>
     <!-- CodeMirror Mode python -->
@@ -72,9 +72,10 @@
                 <div class="c_a_right">
                     <form class="c_a_right_form" action="http://localhost:3000/" id="inputForm">
                         <div class="c_a_right_1">
-                            <div class="c_a_right_1_1" style="display: none;" >
+                            <div class="c_a_right_1_1">
                                 <div class="c_a_r_Codelang1">
-                                    <div class="c_a_r_Codelang_n1"><i class="fa-brands fa-js" style="color: #eac406;"></i>&emsp;JavaScript</div>
+                                    <div class="c_a_r_Codelang_n1"><i class="fa-brands fa-js"
+                                            style="color: #eac406;"></i>&emsp;JavaScript</div>
                                 </div>
                                 <div class="c_a_r_Codewrite1">
                                     <div class="c_a_r_Codewrite1_ed1">
@@ -82,9 +83,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="c_a_right_1_2">
+                            <div class="c_a_right_1_2" style="display: none;">
                                 <div class="c_a_r_Codelang2">
-                                    <div class="c_a_r_Codelang_n2"><i class="fa-brands fa-python" style="color: #ffffff;"></i>&emsp;Python</div>
+                                    <div class="c_a_r_Codelang_n2"><i class="fa-brands fa-python"
+                                            style="color: #ffffff;"></i>&emsp;Python</div>
                                 </div>
                                 <div class="c_a_r_Codewrite2">
                                     <div class="c_a_r_Codewrite2_edi2">
@@ -100,71 +102,74 @@
                             <div class="output_txt">
                                 <div class="txt_main">실행결과</div>
                                 <div class="text-center sendBtn">
-                                    <button id="submit" class="btn btn-dark"><i class="fa-solid fa-code fa-2x" style="color: #ffffff;"></i></button>
+                                    <button id="submit" class="btn btn-dark"><i class="fa-solid fa-code fa-2x"
+                                            style="color: #ffffff;"></i></button>
                                 </div>
                             </div>
-                            <div class="outputDiv"> 
+                            <div class="outputDiv">
                                 <!-- Output -->
                                 <iframe id="live"></iframe>
                             </div>
-                            
+
                         </div>
-                    </div>
+                </div>
                 </form>
             </div>
 
             <!-- 참가자 현상황 -->
             <div class="c_a_under">
-                <div class="c_a_time">
-                    <div class="c_a_above1">
-                        <div></div>
-                    </div>
-                </div>
-                <div class="c_a_p_user">
-                    <div class="c_a_p_u1">
-                        <div class="u_info">
-                            <div class="u_i_img">1등</div>
-                            <div class="u_i_nick">vudghk675</div>
+                
+                    <div class="c_a_time">
+                        <div class="c_a_above1">
+                            <div></div>
                         </div>
-                        <div class="u_remain">
-                            <div class="u_r_ques">
-                                <div class="u_r_circle">ok</div>
+                    </div>
+                    <div class="c_a_p_user">
+                        <div class="c_a_p_u1">
+                            <div class="u_info">
+                                <div class="u_i_img">1등</div>
+                                <div class="u_i_nick">vudghk675</div>
+                            </div>
+                            <div class="u_remain">
+                                <div class="u_r_ques">
+                                    <div class="u_r_circle">ok</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="c_a_p_u2">
-                        <div class="u_info">
-                            <div class="u_i_img">1등</div>
-                            <div class="u_i_nick">vudghk675</div>
-                        </div>
-                        <div class="u_remain">
-                            <div class="u_r_ques">
-                                <div class="u_r_circle">ok</div>
+                        <div class="c_a_p_u2">
+                            <div class="u_info">
+                                <div class="u_i_img">1등</div>
+                                <div class="u_i_nick">vudghk675</div>
+                            </div>
+                            <div class="u_remain">
+                                <div class="u_r_ques">
+                                    <div class="u_r_circle">ok</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="c_a_p_u3">
-                        <div class="u_info">
-                            <div class="u_i_img">1등</div>
-                            <div class="u_i_nick">vudghk675</div>
-                        </div>
-                        <div class="u_remain">
-                            <div class="u_r_ques">
-                                <div class="u_r_circle">ok</div>
+                        <div class="c_a_p_u3">
+                            <div class="u_info">
+                                <div class="u_i_img">1등</div>
+                                <div class="u_i_nick">vudghk675</div>
+                            </div>
+                            <div class="u_remain">
+                                <div class="u_r_ques">
+                                    <div class="u_r_circle">ok</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="c_a_p_u4">
-                        <div class="u_info">
-                            <div class="u_i_img">1등</div>
-                            <div class="u_i_nick">vudghk675</div>
-                        </div>
-                        <div class="u_remain">
-                            <div class="u_r_ques">
-                                <div class="u_r_circle">ok</div>
+                        <div class="c_a_p_u4">
+                            <div class="u_info">
+                                <div class="u_i_img">1등</div>
+                                <div class="u_i_nick">vudghk675</div>
+                            </div>
+                            <div class="u_remain">
+                                <div class="u_r_ques">
+                                    <div class="u_r_circle">ok</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                
                 </div>
             </div>
         </div>
@@ -172,7 +177,7 @@
     <!-- code arena 부분 끝 -->
 
     <script src="/CodeArena/js/popArenaChatRoom.js"></script>
-    
+
     <!-- js 파일 경로 -->
     <script src="/socket.io/socket.io.js"></script>
     <script>
@@ -189,9 +194,11 @@
         })
 
         let python = CodeMirror.fromTextArea(textpy, {
-            mode: {name: "python",
-                   version: 3,
-                   singleLineStringErrors: false},
+            mode: {
+                name: "python",
+                version: 3,
+                singleLineStringErrors: false
+            },
             lineNumbers: true,
             theme: "darcula",
             indentUnit: 4,
