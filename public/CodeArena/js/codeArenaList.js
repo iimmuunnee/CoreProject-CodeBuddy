@@ -136,6 +136,17 @@ const enterRoom = (roomName) => {
   arenaSocket.emit("enter_room", {
     room_name: roomName,
   });
+  
+  $c_c_name.textContent = room_name // 채팅방 펼쳤을 때 방제
+  $mini_room_name.textContent = room_name // 채팅방 접었을 때 방제
+
+  arenaSocket.on("user_count", ({user_count}) => {
+    console.log("user_count 이벤트 도착");
+    console.log(user_count);
+    $c_content_num.textContent = `${user_count}/4`
+    $mini_room_users.textContent = `${user_count}/4`
+  })
+
   $c_c_name.textContent = roomName
   openarena() // 방 입장
 }

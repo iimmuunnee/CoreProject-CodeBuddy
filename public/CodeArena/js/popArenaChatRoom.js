@@ -1,6 +1,4 @@
-// const arenaSocket = io("/game"); // 이미 codeArenaList에서 선언
-
-
+// const arenaSocket = io("/CodeArena"); // 이미 codeArenaList에서 선언
 const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
 const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
 const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
