@@ -15,6 +15,12 @@ router.get('/code',(req,res)=>{
     res.render('codeEditor')
 })
 
+
+router.get('/code2',(req,res)=>{
+    res.render('codeEditor_Jo')
+})
+
+
 // 회원가입 및 로그인 http://localhost:3000/page/join
 router.get('/join',(req,res)=>{
     let seName = req.session.userName
