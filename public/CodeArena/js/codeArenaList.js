@@ -1,5 +1,5 @@
 // socket.io 사용
-const chatSocket = io("/CodeArena");
+const ArenaSocket = io("/CodeArena");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
 const $make_room_form = document.getElementById("make_room_form"); // 방 정보 입력 폼
@@ -36,28 +36,28 @@ const handleRoomSubmit = (event) => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "block";
 
-  chatSocket.emit("create_room", {
+  ArenaSocket.emit("create_room", {
     room_name: room_name,
     chatRoomMethod: chatRoomMethod,
     dev_lang: dev_lang,
   });
 
   console.log("방 핸들 활성화");
-  chatSocket.emit("enter_room", {
+  ArenaSocket.emit("enter_room", {
     room_name: room_name,
     nickname: nickname,
     chatRoomMethod: chatRoomMethod,
     dev_lang: dev_lang,
   });
 
-  chatSocket.on("user_count", ({user_count}) => {
+  ArenaSocket.on("user_count", ({user_count}) => {
     console.log("user_count 이벤트 도착");
     console.log(user_count);
     $c_content_num.textContent = `${user_count}/4`
     $mini_room_users.textContent = `${user_count}/4`
   })
 
-  chatSocket.emit("welcome", { room_name: room_name, nickname: nickname });
+  ArenaSocket.emit("welcome", { room_name: room_name, nickname: nickname });
 
 
 };
@@ -90,7 +90,7 @@ const addRoomToTable = (room) => {
   $tbody.prepend(newRow);
 };
 
-chatSocket.on("update_room_list", (rooms) => {
+ArenaSocket.on("update_room_list", (rooms) => {
   console.log(rooms);
   console.log("update_room_list 이벤트 프론트로 도착");
   for (const room of rooms) {
