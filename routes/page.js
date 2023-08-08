@@ -17,7 +17,15 @@ router.get('/code',(req,res)=>{
 
 // 회원가입 및 로그인 http://localhost:3000/page/join
 router.get('/join',(req,res)=>{
-    res.render('join')
+    let seName = req.session.userName
+    let seLevel = req.session.userlevel
+    let seLogin = req.session.login
+    if(seLogin){
+        res.render('main',{login : seLogin, name : seName, level : seLevel})
+    }
+    else{
+        res.render('join')
+    }
 })
 
 //Code Chat 채팅방 리스트 http://localhost:3000/page/CodeChat
@@ -35,14 +43,24 @@ router.get('/CodeArena',(req,res)=>{
 
 //main 이외의 페이지에서 code Chat 클릭시
 router.get('/mainMove',(req,res)=>{
-    res.render('main', {code : true})
+    let seName = req.session.userName
+    let seLevel = req.session.userlevel
+    let seLogin = req.session.login
+    res.render('main',{login : seLogin, name : seName, level : seLevel, code:true})
 })
 
 //main 이외의 페이지에서 code Arena 클릭 시
 router.get('/mainArena',(req,res)=>{
-    res.render('main', {arena:true})
+    let seName = req.session.userName
+    let seLevel = req.session.userlevel
+    let seLogin = req.session.login
+    res.render('main',{login : seLogin, name : seName, level : seLevel, arena:true})
 })
 
+router.get('/logout',(req,res)=>{
+    req.session.destroy()
+    res.render('main', {logout : true})
+})
 
 
 module.exports = router

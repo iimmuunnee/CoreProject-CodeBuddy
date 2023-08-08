@@ -376,6 +376,7 @@ $('#arena_btn').on('click',()=>{
   
 })
 
+// login 클릭시 login 창 이동
 $('#login_btn').on('click',()=>{
-  window.location.href = `${window.location.origin}/page/`
+  window.location.href = `${window.location.origin}/page/join`
 })
