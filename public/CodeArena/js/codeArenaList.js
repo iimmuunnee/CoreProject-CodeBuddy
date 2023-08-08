@@ -1,11 +1,23 @@
 // socket.io 사용
-const chatSocket = io("/CodeArena");
+const arenaSocket = io("/CodeArena");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
 const $make_room_form = document.getElementById("make_room_form"); // 방 정보 입력 폼
 const $room_name = document.getElementById("room_name"); // 방 이름 입력 input
 const $chatRoomMethod = document.getElementById("chatRoomMethod"); // 방의 채팅 방식 select
 const $dev_lang = document.getElementById("dev_lang"); // 방의 언어 방식 select
+
+const $chat = document.getElementById("chat"); // 전체 div 채팅창 선택
+const $chat_1 = $chat.querySelector(".chat_1"); // 접근 1
+const $chat_main = $chat_1.querySelector(".chat_main"); // 접근 2
+const $c_roomname = $chat_main.querySelector(".c_roomname"); // 방 이름으로 접근
+const $c_roomname_1 = $c_roomname.querySelector(".c_roomname_1"); // 방 이름을 접근 2
+const $c_content_name = $c_roomname_1.querySelector(".c_content_name"); // 방 이름을 접근 3
+const $c_c_name = $c_content_name.querySelector(".c_c_name") // 방 이름을 적는 곳
+const $mini_room_name = document.getElementById("mini_room_name") // 미니 방 이름 적는 곳
+const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
+const $mini_room_users = document.getElementById("$mini_room_users") // 미니 방 인원수 적는 곳
+
 
 
 const openarena = () => {
@@ -19,84 +31,148 @@ const openarena = () => {
   chat.style.display = "block";
 }
 
-// 방 입장 함수
+// 방 목록을 갱신하는 함수
+const updateRoomList = (roomInfo) => {
+    const existingRoomRow = document.getElementById(`room_${roomInfo.room_number}`);
+  
+  if (existingRoomRow) {
+    // 기존에 있는 방이라면 인원수만 업데이트
+    updateRoomUsers(roomInfo.room_number, roomInfo.user_count);
+  } else {
+    // 새로운 방이라면 리스트에 추가
+    addRoomToTable(roomInfo);
+  }
+};
+
+// 방 생성 함수
 const handleRoomSubmit = (event) => {
   event.preventDefault();
   const room_name = $room_name.value;
   const chatRoomMethod = $chatRoomMethod.value;
   const dev_lang = $dev_lang.value;
-  const nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
+  let nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
+   // 지훈 코드 삽입
+   axios.get('http://localhost:3000/page/createRoom',{room:'hi'})
+       .then(res=>{
+        arenaSocket.emit("create_room", {
+          room_name: room_name,
+          chatRoomMethod: chatRoomMethod,
+          dev_lang: dev_lang,
+          nickname : res.data // 사용자 이름
+        });
+
+        console.log("방 핸들 활성화");
+        arenaSocket.emit("enter_room", {
+          room_name: room_name,
+          nickname: res.data, // 사용자 이름
+        });
+
+       })
+
+  $c_c_name.textContent = room_name // 채팅방 펼쳤을 때 방제
+  $mini_room_name.textContent = room_name // 채팅방 접었을 때 방제
+
+  arenaSocket.on("user_count", ({user_count}) => {
+    console.log("user_count 이벤트 도착");
+    console.log(user_count);
+    $c_content_num.textContent = `${user_count}/4`
+    $mini_room_users.textContent = `${user_count}/4`
+  })
+  closeModal() // 모달 닫고
+  openarena() // 방 입장
+  arenaSocket.emit("welcome", { room_name: room_name, nickname: nickname });
+  $room_name.value = "" // 방 입력칸 초기화
+};
+
+$make_room_form.addEventListener("submit", handleRoomSubmit);
+
+arenaSocket.on("update_room_list", (roomInfo) => {
+  console.log("roomInfo : ", roomInfo);
+  updateRoomList(roomInfo);
+});
+
+// 방 목록에 새로운 방 추가하는 함수
+const addRoomToTable = (updateRooms) => {
+  const $board_list = document.getElementById("board-list");
+  const $board_table = $board_list.querySelector(".board-table");
+  const $tbody = $board_table.querySelector("tbody");
+
+  console.log("addRoomToTable 함수 작동", updateRooms);
+  updateRooms.forEach((roomInfo) => {
+    const newRow = document.createElement("tr");
+    newRow.id = "room_" + roomInfo.room_number;
   
-  let page = document.getElementById("code_arena_zip");
-  page.style.display = "block";
+    // 방 정보를 td에 추가
+    newRow.innerHTML = `
+        <td>${roomInfo.room_number}</td>
+        <td>${roomInfo.chatRoomMethod}</td>
+        <td>${roomInfo.dev_lang}</td>
+        <th>
+          <a href="#" class="room-link" data-roomname="${roomInfo.room_name}">${roomInfo.room_name}</a>
+          <p>테스트</p>
+         </th>
+        <td>${roomInfo.createdBy}</td>
+        <td>${roomInfo.createdDate}</td>
+  `;
+    // 새로운 행을 테이블의 맨 위에 추가
+    $tbody.prepend(newRow);
 
-  let page2 = document.getElementById("notice");
-  page2.style.display = "none";
-
-  let chat = document.getElementById("chat_open");
-  chat.style.display = "block";
-
-  chatSocket.emit("create_room", {
-    room_name: room_name,
-    chatRoomMethod: chatRoomMethod,
-    dev_lang: dev_lang,
+  // 클릭 이벤트 핸들러 추가
+    const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
+    console.log("roomLinks : ", roomLinks);
+    roomLinks.forEach((roomLink) => {
+      console.log(roomLink);
+      roomLink.addEventListener("click", (event) => {
+        event.preventDefault(); // 링크 기본 동작 방지
+        const roomName = roomLink.dataset.roomname; // 방 제목 가져오기
+        console.log("roomName : ", roomName);
+        enterRoom(roomName); // 해당 방으로 입장하는 함수 호출
+    });
+  });  
+  })
+};
+const enterRoom = (roomName) => {
+  console.log("enterRoom 함수 실행");
+  arenaSocket.emit("enter_room", {
+    room_name: roomName,
   });
+  
+  $c_c_name.textContent = room_name // 채팅방 펼쳤을 때 방제
+  $mini_room_name.textContent = room_name // 채팅방 접었을 때 방제
 
-  console.log("방 핸들 활성화");
-  chatSocket.emit("enter_room", {
-    room_name: room_name,
-    nickname: nickname,
-    chatRoomMethod: chatRoomMethod,
-    dev_lang: dev_lang,
-  });
-
-  chatSocket.on("user_count", ({user_count}) => {
+  arenaSocket.on("user_count", ({user_count}) => {
     console.log("user_count 이벤트 도착");
     console.log(user_count);
     $c_content_num.textContent = `${user_count}/4`
     $mini_room_users.textContent = `${user_count}/4`
   })
 
-  chatSocket.emit("welcome", { room_name: room_name, nickname: nickname });
+  $c_c_name.textContent = roomName
+  openarena() // 방 입장
+}
 
 
-};
+const $leave_room = document.getElementById("leave_room")
 
-$make_room_form.addEventListener("submit", handleRoomSubmit);
+const leaveRoomBtn = () => {
+  console.log("leaveRoomBtn 함수 활성화");
+  let page = document.getElementById("code_arena_zip");
+  page.style.display = "none";
 
-// 방 목록에 새로운 방 추가하는 함수
-const addRoomToTable = (room) => {
-  console.log("addRoomToTable 함수 작동");
-  const newRow = document.createElement("tr");
-  newRow.id = "room_" + room.room_number;
+  let page2 = document.getElementById("notice");
+  page2.style.display = "block";
 
-  // 방 정보를 td에 추가
-  newRow.innerHTML = `
-    <td>${room.room_number}</td>
-    <td>${room.chatRoomMethod}</td>
-    <td>${room.dev_lang}</td>
-    <th>
-      <a href="#">${room.room_name}</a>
-      <p>테스트</p>
-     </th>
-    <td>${room.createdBy}</td>
-    <td>${room.createdDate}</td>
-`;
+  let chat = document.getElementById("chat_open");
+  chat.style.display = "none";
 
-  // 새로운 행을 테이블의 맨 위에 추가
-  const $board_list = document.getElementById("board-list");
-  const $board_table = $board_list.querySelector(".board-table");
-  const $tbody = $board_table.querySelector("tbody");
-  $tbody.prepend(newRow);
-};
+  arenaSocket.emit("leave_room")
+} 
 
-chatSocket.on("update_room_list", (rooms) => {
-  console.log(rooms);
-  console.log("update_room_list 이벤트 프론트로 도착");
-  for (const room of rooms) {
-    addRoomToTable(room);
-  }
-});
+$leave_room.addEventListener("click", leaveRoomBtn)
+
+arenaSocket.on("disconnect", () => {
+  console.log("disconnect to server");
+})
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 

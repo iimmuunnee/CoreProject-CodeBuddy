@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,349 +27,394 @@
     ></script>
   </head>
 
-  <body>
-    <section id="codeChatList" class="notice">
-      <div class="page-title">
-        <div class="container">
-          <h3>CodeChat 채팅방 목록</h3>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="/CodeChat/css/chatlist.css" />
+  <link rel="stylesheet" href="/CodeChat/css/pop_chat.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
+    rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/3c792eb2a9.js" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+</head>
+
+<body>
+
+  <header>
+    <div class="m_header">
+      <p class="m_logo" id="m_btn">CodeBuddy</p>
+      <button class="m_btn_c" id="chat_btn">Code Chat</button>
+      <button class="m_btn_a" id="arena_btn">Code Arena</button>
+      <button class="m_btn" id="login_btn">Login</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
+    </div>
+  </header>
+
+
+  <section id="codeChatList" class="notice">
+    <div class="page-title">
+      <div class="container">
+        <h3>CodeChat 채팅방 목록</h3>
+      </div>
+    </div>
+
+    <!-- board seach area -->
+    <div id="board-search">
+      <div class="container">
+        <div class="search-window">
+          <form action="">
+            <div class="search-wrap">
+              <span>
+                채팅방식 :
+                <select name="chat_method" id="chat_method">
+                  <option value="all">전체보기</option>
+                  <option value="one">1:1채팅</option>
+                  <option value="many">오픈채팅</option>
+                </select>
+                개발 언어 :
+                <input type="checkbox" value="HTML/CSS" class="l_check" />HTML/CSS
+                <input type="checkbox" value="JavaScript" class="l_check" />JavaScript
+                <input type="checkbox" value="Python" class="l_check" />Python
+                <button class="select">조회</button>
+              </span>
+            </div>
+          </form>
         </div>
       </div>
+    </div>
 
-      <!-- board seach area -->
-      <div id="board-search">
-        <div class="container">
-          <div class="search-window">
-            <form action="">
-              <div class="search-wrap">
-                <span>
-                  채팅방식 :
-                  <select name="chat_method" id="chat_method">
-                    <option value="all">전체보기</option>
-                    <option value="one">1:1채팅</option>
-                    <option value="many">오픈채팅</option>
-                  </select>
-                  개발 언어 :
-                  <input type="checkbox" value="HTML" class="l_check" />HTML/CSS
-                  <input
-                    type="checkbox"
-                    value="JavaScript"
-                    class="l_check"
-                  />JavaScript
-                  <input type="checkbox" value="Python" class="l_check" />Python
-                  <button class="select">조회</button>
-                </span>
+    <!-- board list area -->
+    <div id="board-list">
+      <div class="container">
+        <table class="board-table">
+          <thead>
+            <tr>
+              <th scope="col" class="th-num">번호</th>
+              <th scope="col" class="th-c_method">채팅방식</th>
+              <th scope="col" class="th-lang">개발언어</th>
+              <th scope="col" class="th-title">제목</th>
+              <th scope="col" class="th-user">작성자</th>
+              <th scope="col" class="th-date">등록일</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>11</td>
+              <td>1:1채팅</td>
+              <td>JavaScript</td>
+              <th>
+                <a href="#">JavaScript에 대해 배우실분 들어오세요</a>
+                <p>테스트</p>
+              </th>
+              <td>어 금지(멘토)</td>
+              <td>2017.07.13</td>
+            </tr>
+
+            <tr>
+              <td>10</td>
+              <td>오픈채팅</td>
+              <td>JavaScript</td>
+              <th>
+                <a href="#">JavaScript 문제가 너무 어려워요 ㅠㅠ</a>
+                <p>테스트</p>
+              </th>
+              <td>legend A(멘티)</td>
+              <td>2017.07.02</td>
+            </tr>
+
+            <tr>
+              <td>9</td>
+              <td>1:1채팅</td>
+              <td>HTML/CSS</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>8</td>
+              <td>오픈채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>7</td>
+              <td>오픈채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>6</td>
+              <td>1:1채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>5</td>
+              <td>오픈채팅</td>
+              <td>HTML/CSS</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>4</td>
+              <td>오픈채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>3</td>
+              <td>오픈채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>오픈채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.01</td>
+            </tr>
+
+            <tr>
+              <td>1</td>
+              <td>오픈채팅</td>
+              <td>Python</td>
+              <th>
+                <a href="#">Python 고수 분 모십니다</a>
+                <p>테스트</p>
+              </th>
+              <td>어렵다어려워(멘티)</td>
+              <td>2017.07.21</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="pagination">
+          <span class="pagination__number-indicator"></span>
+          <button class="pagination__arrow">
+            <span class="pagination__arrow-half"></span>
+            <span class="pagination__arrow-half"></span>
+          </button>
+          <button class="pagination__number pagination__number--active">
+            1
+          </button>
+          <button class="pagination__number">2</button>
+          <button class="pagination__number">3</button>
+          <button class="pagination__number">4</button>
+          <button class="pagination__number">5</button>
+          <button class="pagination__number">6</button>
+          <button class="pagination__number">7</button>
+          <button class="pagination__arrow pagination__arrow--right">
+            <span class="pagination__arrow-half"></span>
+            <span class="pagination__arrow-half"></span>
+          </button>
+          <button class="write" onclick="openModal()">방생성</button>
+        </div>
+      </div>
+    </div>
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2 class="make-h2">방 생성</h2>
+        <form id="make_room_form">
+          <div class="m_div">
+            <label for="room-name">방 이름:</label>
+            <input type="text" id="room_name" name="room_name" required />
+          </div>
+          <div class="m_div">
+            <label for="chat-method">채팅방식</label>
+            <select name="chatRoomMethod" id="chatRoomMethod">
+              <option value="one_to_one">1:1채팅</option>
+              <option value="one_to_many">오픈채팅</option>
+            </select>
+          </div>
+          <div class="m_div">
+            <label for="dev-lang">개발언어</label>
+            <select name="dev_lang" id="dev_lang">
+              <option value="html/css">HTML/CSS</option>
+              <option value="javascript">JavaScript</option>
+              <option value="python">Python</option>
+            </select>
+          </div>
+          <button type="submit" class="make-btn">만들기</button>
+        </form>
+      </div>
+    </div>
+  </section>
+  <!-- --------------------------------------------------------------------------- -->
+  <section id="popCodeChat">
+    <!-- 임시) 나가기 버튼 -->
+    <div class="chat_leave" id="chat_leave">
+      <button id="chat_leave_btn">나가기</button>
+    </div>
+
+    <!-- chat 버튼 -->
+    <div class="chat_open">
+      <button class="chat_open_btn">
+        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
+      </button>
+    </div>
+
+    <!-- chat 메인 -->
+    <div id="chat" class="chat">
+      <div class="chat_1">
+        <div class="chat_main">
+          <!-- 채팅방 이름 -->
+          <div class="c_roomname">
+            <div class="c_roomname_1">
+              <div class="c_content_name">
+                <div class="c_c_name"></div>
+                <div class="c_content_num"></div>
+              </div>
+              <div id="c_content_mini" class="c_content_mini">
+                <button class="c_content_mini_btn">
+                  <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
+                </button>
+              </div>
+              <div class="c_content_close">
+                <button class="c_content_close_btn">
+                  <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 채팅내용 -->
+          <div class="c_main_content">
+            <div class="chat1">
+              <ul>
+                <!-- 동적 생성 -->
+              </ul>
+            </div>
+          </div>
+
+          <div class="chat1 format">
+            <ul>
+              <li>
+                <div class="sender">
+                  <span></span>
+                </div>
+                <div class="message">
+                  <span></span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 채팅작성 및 전송 -->
+          <div class="c_chatting">
+            <form name="c_chatting_form" class="c_chatting_form" action="">
+              <div class="c_chatting_1">
+                <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
+              </div>
+
+              <div class="c_chatting_2">
+                <div class="c_chatting_22">
+                  <button onclick="send()" class="c_chatting_2_btn">
+                    <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
+                  </button>
+                </div>
+
+              <div class="chat_mini_1_21">
+                <p id="mini_room_users"></p>
+
               </div>
             </form>
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- board list area -->
-      <div id="board-list">
-        <div class="container">
-          <table class="board-table">
-            <thead>
-              <tr>
-                <th scope="col" class="th-num">번호</th>
-                <th scope="col" class="th-c_method">채팅방식</th>
-                <th scope="col" class="th-lang">개발언어</th>
-                <th scope="col" class="th-title">제목</th>
-                <th scope="col" class="th-user">작성자</th>
-                <th scope="col" class="th-date">등록일</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>11</td>
-                <td>1:1채팅</td>
-                <td>JavaScript</td>
-                <th>
-                  <a href="#">JavaScript에 대해 배우실분 들어오세요</a>
-                  <p>테스트</p>
-                </th>
-                <td>어 금지(멘토)</td>
-                <td>2017.07.13</td>
-              </tr>
-
-              <tr>
-                <td>10</td>
-                <td>오픈채팅</td>
-                <td>JavaScript</td>
-                <th>
-                  <a href="#">JavaScript 문제가 너무 어려워요 ㅠㅠ</a>
-                  <p>테스트</p>
-                </th>
-                <td>legend A(멘티)</td>
-                <td>2017.07.02</td>
-              </tr>
-
-              <tr>
-                <td>9</td>
-                <td>1:1채팅</td>
-                <td>HTML/CSS</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>8</td>
-                <td>오픈채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>7</td>
-                <td>오픈채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>6</td>
-                <td>1:1채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>5</td>
-                <td>오픈채팅</td>
-                <td>HTML/CSS</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>4</td>
-                <td>오픈채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>3</td>
-                <td>오픈채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>2</td>
-                <td>오픈채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.01</td>
-              </tr>
-
-              <tr>
-                <td>1</td>
-                <td>오픈채팅</td>
-                <td>Python</td>
-                <th>
-                  <a href="#">Python 고수 분 모십니다</a>
-                  <p>테스트</p>
-                </th>
-                <td>어렵다어려워(멘티)</td>
-                <td>2017.07.21</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="pagination">
-            <span class="pagination__number-indicator"></span>
-            <button class="pagination__arrow">
-              <span class="pagination__arrow-half"></span>
-              <span class="pagination__arrow-half"></span>
-            </button>
-            <button class="pagination__number pagination__number--active">
-              1
-            </button>
-            <button class="pagination__number">2</button>
-            <button class="pagination__number">3</button>
-            <button class="pagination__number">4</button>
-            <button class="pagination__number">5</button>
-            <button class="pagination__number">6</button>
-            <button class="pagination__number">7</button>
-            <button class="pagination__arrow pagination__arrow--right">
-              <span class="pagination__arrow-half"></span>
-              <span class="pagination__arrow-half"></span>
-            </button>
-            <button class="write" onclick="openModal()">방생성</button>
+    <div class="chat_mini" id="chat_mini">
+      <div class="chat_mini_1">
+        <div class="chat_mini_1_1">
+          <div class="chat_mini_1_11">
+            <p id="mini_room_name"></p>
+          </div>
+          <div class="chat_mini_1_21">
+            <p id="mini_room_users">4/6</p>
           </div>
         </div>
-      </div>
-      <div id="modal" class="modal">
-        <div class="modal-content">
-          <span class="close" onclick="closeModal()">&times;</span>
-          <h2 class="make-h2">방 생성</h2>
-          <form id="make_room_form">
-            <div class="m_div">
-              <label for="room-name">방 이름:</label>
-              <input type="text" id="room_name" name="room_name" required />
-            </div>
-            <div class="m_div">
-              <label for="chat-method">채팅방식</label>
-              <select name="chatRoomMethod" id="chatRoomMethod">
-                <option value="one_to_one">1:1채팅</option>
-                <option value="one_to_many">오픈채팅</option>
-              </select>
-            </div>
-            <div class="m_div">
-              <label for="dev-lang">개발언어</label>
-              <select name="dev_lang" id="dev_lang">
-                <option value="html/css">HTML/CSS</option>
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-              </select>
-            </div>
-            <button type="submit" class="make-btn">만들기</button>
-          </form>
-        </div>
-      </div>
-    </section>
-    <!-- --------------------------------------------------------------------------- -->
-    <section id="popCodeChat">
-        <!-- 임시) 나가기 버튼 -->
-        <div class="chat_leave" id="chat_leave">
-          <button id="chat_leave_btn">나가기</button>
-        </div>
-    
-        <!-- chat 버튼 -->
-        <div class="chat_open">
-          <button class="chat_open_btn">
-            <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
+        <div class="chat_mini_1_2">
+          <button class="chat_mini_1_2btn">
+            <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
           </button>
         </div>
+      </div>
+    </div>
+  </section>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/CodeChat/js/codeChatList.js"></script>
+  <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+  <!-- 세션 로그인 스크립트 -지훈- -->
+  <script>
+        // 로그인 했을 시 사용자 이름 표시
+        let login = '{{login}}'
+        let logout = '{{logout}}'
     
-        <!-- chat 메인 -->
-        <div id="chat" class="chat">
-          <div class="chat_1">
-            <div class="chat_main">
-              <!-- 채팅방 이름 -->
-              <div class="c_roomname">
-                <div class="c_roomname_1">
-                  <div class="c_content_name">
-                    <div class="c_c_name"></div>
-                    <div class="c_content_num"></div>
-                  </div>
-                  <div id="c_content_mini" class="c_content_mini">
-                    <button class="c_content_mini_btn">
-                      <i
-                        class="fa-solid fa-caret-down fa-lg"
-                        style="color: #ffffff"
-                      ></i>
-                    </button>
-                  </div>
-                  <div class="c_content_close">
-                    <button class="c_content_close_btn">
-                      <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-    
-              <!-- 채팅내용 -->
-              <div class="c_main_content">
-                <div class="chat1">
-                  <ul>
-                    <!-- 동적 생성 -->
-                  </ul>
-                </div>
-              </div>
-    
-              <div class="chat1 format">
-                <ul>
-                  <li>
-                    <div class="sender">
-                      <span></span>
-                    </div>
-                    <div class="message">
-                      <span></span>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-    
-              <!-- 채팅작성 및 전송 -->
-              <div class="c_chatting">
-                <form name="c_chatting_form" class="c_chatting_form" action="">
-                  <div class="c_chatting_1">
-                    <textarea
-                      id="form_input"
-                      class="form_input"
-                      placeholder="댓글을 입력하세요"
-                    ></textarea>
-                  </div>
-                  <div class="c_chatting_2">
-                    <div class="c_chatting_22">
-                      <button onclick="send()" class="c_chatting_2_btn">
-                        <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-    
-        <div class="chat_mini" id="chat_mini">
-          <div class="chat_mini_1">
-            <div class="chat_mini_1_1">
-              <div class="chat_mini_1_11">
-                <p id="mini_room_name"></p>
-              </div>
-              <div class="chat_mini_1_21">
-                <p id="mini_room_users"></p>
-              </div>
-            </div>
-            <div class="chat_mini_1_2">
-              <button class="chat_mini_1_2btn">
-                <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/CodeChat/js/codeChatList.js"></script>
-    <script src="/CodeChat/js/popCodeChatRoom.js"></script>
-  </body>
+        if(login) {
+          document.querySelector('#login_btn').style.display = 'none'
+          document.querySelector('#userInfo_btn').style.display = 'inline'
+          console.log('로그인',login)
+        }    
+        if(logout){
+          document.querySelector('#login_btn').style.display = 'inline'
+          document.querySelector('#userInfo_btn').style.display = 'none'
+          console.log('로그아웃',logout)
+        }    
+  </script>
+
+ 
+</body>
+
 </html>

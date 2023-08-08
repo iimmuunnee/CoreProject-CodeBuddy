@@ -29,7 +29,22 @@ router.post('/join',(req,res)=>{
             console.log('이미 존재하는 ID 입니다.')
         }
         else{
-            console.log('회원가입완료')            
+            console.log('회원가입완료')
+            if(langJs == 'javaScript'){
+                conn.query(insertLang,[id,langJs],(err,result)=>{
+                    if(err){
+                        console.log('TB_LANG 쿼리문 오류')
+                    } 
+                })
+            }
+            if(langPy == 'python'){
+                conn.query(insertLang,[id,langPy],(err,result)=>{
+                    if(err){
+                        console.log('TB_LANG 쿼리문 오류')
+                    }
+                })
+            }
+            
         }
         
     })
@@ -92,11 +107,10 @@ router.post('/login',(req,res)=>{
                     // 접속자 세션생성
                     let userName = result[0].USER_NAME
                     let userLevel = result[0].USER_LEVEL
-                    req.session.userName = userName
-                    req.session.userlevel = userLevel
-                    req.session.login = true
-                    req.session.name = '135'
-                    res.render('main',{login : req.session.login, user : req.session.userName})
+                    let seName = req.session.userName = userName
+                    let seLevel = req.session.userlevel = userLevel
+                    let seLogin = req.session.login = true
+                    res.render('main',{login : seLogin, name : seName, level : seLevel})
 
                     
 
