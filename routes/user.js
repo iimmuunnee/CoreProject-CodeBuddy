@@ -29,7 +29,22 @@ router.post('/join',(req,res)=>{
             console.log('이미 존재하는 ID 입니다.')
         }
         else{
-            console.log('회원가입완료')            
+            console.log('회원가입완료')
+            if(langJs == 'javaScript'){
+                conn.query(insertLang,[id,langJs],(err,result)=>{
+                    if(err){
+                        console.log('TB_LANG 쿼리문 오류')
+                    } 
+                })
+            }
+            if(langPy == 'python'){
+                conn.query(insertLang,[id,langPy],(err,result)=>{
+                    if(err){
+                        console.log('TB_LANG 쿼리문 오류')
+                    }
+                })
+            }
+            
         }
         
     })
