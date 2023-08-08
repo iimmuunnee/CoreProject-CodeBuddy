@@ -16,6 +16,8 @@ const $c_content_name = $c_roomname_1.querySelector(".c_content_name"); // 방 �
 const $c_c_name = $c_content_name.querySelector(".c_c_name") // 방 이름을 적는 곳
 const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
 
+
+
 const openarena = () => {
   let page = document.getElementById("code_arena_zip");
   page.style.display = "block";
@@ -46,21 +48,30 @@ const handleRoomSubmit = (event) => {
   const room_name = $room_name.value;
   const chatRoomMethod = $chatRoomMethod.value;
   const dev_lang = $dev_lang.value;
-  const nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
+  let nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
+   // 지훈 코드 삽입
+   axios.get('http://localhost:3000/page/createRoom',{room:'hi'})
+       .then(res=>{
+        arenaSocket.emit("create_room", {
+          room_name: room_name,
+          chatRoomMethod: chatRoomMethod,
+          dev_lang: dev_lang,
+          nickname : res.data // 사용자 이름
+        });
+
+        console.log("방 핸들 활성화");
+        arenaSocket.emit("enter_room", {
+          room_name: room_name,
+          nickname: res.data, // 사용자 이름
+        });
+
+       })
 
   $c_c_name.textContent = room_name
 
-  arenaSocket.emit("create_room", {
-    room_name: room_name,
-    chatRoomMethod: chatRoomMethod,
-    dev_lang: dev_lang,
-  });
+  
 
-  console.log("방 핸들 활성화");
-  arenaSocket.emit("enter_room", {
-    room_name: room_name,
-    nickname: nickname,
-  });
+ 
 
   arenaSocket.on("user_count", ({user_count}) => {
     console.log("user_count 이벤트 도착");

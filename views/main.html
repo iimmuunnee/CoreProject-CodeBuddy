@@ -10,16 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
     rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 </head>
 
 <body>
   <header>
     <div class="m_header">
       <p class="m_logo">CodeBuddy</p>
-      <button class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
-      <button class="m_btn_a" onclick="scrollToCodeArena()">CodeArena</button>
+      <button id="main_c" class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
+      <button id="main_a" class="m_btn_a" onclick="scrollToCodeArena()">CodeArena</button>
       <button class="m_btn" id="login_btn">Login</button>
-      <button id="userInfo_btn" class="m_btn" style="display : none">{{user}}님</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
     </div>
   </header>
 
@@ -60,11 +61,34 @@
     </div>
   </div>
   <script src="/js/main.js"></script>
+
+
+    <!-- 세션 로그인 스크립트 -지훈- --> 
   <script>
+        // 로그인 했을 시 사용자 이름 표시
     let login = '{{login}}'
-    if (login) {
-      $login_btn.style.display = 'none'
-      $userInfo_btn.style.display = 'inline'
+    let logout = '{{logout}}'
+
+    if(login) {
+      document.querySelector('#login_btn').style.display = 'none'
+      document.querySelector('#userInfo_btn').style.display = 'inline'
+      console.log('로그인',login)
+    }    
+    if(logout){
+      document.querySelector('#login_btn').style.display = 'inline'
+      document.querySelector('#userInfo_btn').style.display = 'none'
+      console.log('로그아웃',logout)
+    }
+
+    // 메인 이외의 다른 페이지에서 Code Chat 클릭시 메인이동 후 Code Chat 클릭
+    let moveCode = '{{code}}'
+    if(moveCode){
+      document.getElementById('main_c').click()
+    }
+
+    let moveArena = '{{arena}}'
+    if(moveArena){
+      document.getElementById('main_a').click()
     }
 
   </script>

@@ -8,7 +8,6 @@ const session = require("express-session");
 const dotenv = require("dotenv");
 const axios = require("axios");
 const qs = require("qs");
-console.log("DSfsfds");
 // routes 폴더 내 파일 사용
 const page = require("./routes/page");
 const user = require("./routes/user");
@@ -50,6 +49,8 @@ app.use(
     },
   })
 );
+
+
 
 // --------------------------------- 휘훈 -------------------------------------
 
@@ -121,15 +122,16 @@ ChatNamespace.on("connection", (socket) => {
 
 
 
-  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang }) => {
+  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
-
+    console.log('닉네임확인',nickname)
     if (chatRoomMethod === "one_to_one") {
       chatRoomMethod = "1:1채팅";
     } else {
       chatRoomMethod = "오픈채팅";
     }
     console.log(chatRoomMethod);
+    
 
     const roomInfo = {
       room_number: generateRoomNumber(),
@@ -235,9 +237,10 @@ const countRoomUsers = (room_name) => {
     io.to(socket.id).emit("nickname", { nickname });
   });
 
-  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang }) => {
+  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     console.log("rooms : ", rooms);
+    console.log('닉넴',nickname)
     if (rooms.has(room_name)) {
 
     }
@@ -249,12 +252,15 @@ const countRoomUsers = (room_name) => {
     }
     console.log(chatRoomMethod);
 
+    // 지훈 코드 삽입
+
+
     const roomInfo = {
       room_number: generateRoomNumber(),
       room_name: room_name,
       chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
-      createdBy: socket.nickname,
+      createdBy: nickname ,
       createdDate: new Date().toISOString().slice(0, 10),
       userCount : countRoomUsers(room_name) + 1,
     };
