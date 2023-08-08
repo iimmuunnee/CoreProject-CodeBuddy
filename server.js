@@ -11,6 +11,7 @@ const qs = require("qs");
 // routes 폴더 내 파일 사용
 const page = require("./routes/page");
 const user = require("./routes/user");
+const room = require("./routes/room")
 const kakao = require("./routes/kakaoLogin");
 
 // 네임스페이스로 io 서버 분리 /CodeChat, /CodeArena
@@ -79,6 +80,7 @@ app.use(
 app.use("/page", page);
 app.use("/user", user);
 app.use(kakao);
+app.use("/room",room)
 
 // "Chat" namespace에 접속한 클라이언트 처리
 ChatNamespace.on("connection", (socket) => {
@@ -157,7 +159,7 @@ ChatNamespace.on("connection", (socket) => {
     "enter_room",
     ({
       room_name,
-      nickname: nickname,
+      nickname,
     }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
@@ -171,7 +173,6 @@ ChatNamespace.on("connection", (socket) => {
         .to(room_name)
         .emit("welcome", {
           nickname: socket.nickname,
-          user_count: countRoomUsers(room_name),
         });
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
@@ -296,7 +297,6 @@ const countRoomUsers = (room_name) => {
         .to(room_name)
         .emit("welcome", {
           nickname: socket.nickname,
-          user_count: countRoomUsers(room_name),
         });
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);

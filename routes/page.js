@@ -15,6 +15,12 @@ router.get('/code',(req,res)=>{
     res.render('codeEditor')
 })
 
+
+router.get('/code2',(req,res)=>{
+    res.render('codeEditor_Jo')
+})
+
+
 // 회원가입 및 로그인 http://localhost:3000/page/join
 router.get('/join',(req,res)=>{
     let seName = req.session.userName
@@ -57,14 +63,12 @@ router.get('/mainArena',(req,res)=>{
     res.render('main',{login : seLogin, name : seName, level : seLevel, arena:true})
 })
 
+// 로그아웃 시 세션 삭제
 router.get('/logout',(req,res)=>{
     req.session.destroy()
     res.render('main', {logout : true})
 })
 
-router.get('/createRoom',(req,res)=>{
-    let checkEnd = req.session.userName
-    res.send(JSON.stringify(checkEnd))
-})
+
 
 module.exports = router

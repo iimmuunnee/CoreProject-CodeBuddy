@@ -51,7 +51,7 @@ const handleRoomSubmit = (event) => {
   const chatRoomMethod = $chatRoomMethod.value;
   const dev_lang = $dev_lang.value;
   let nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
-   // 지훈 코드 삽입
+   // 지훈 코드 삽입 (방생성)
    axios.get('http://localhost:3000/page/createRoom',{room:'hi'})
        .then(res=>{
         arenaSocket.emit("create_room", {
@@ -67,21 +67,22 @@ const handleRoomSubmit = (event) => {
           nickname: res.data, // 사용자 이름
         });
 
+        arenaSocket.on("user_count", ({user_count}) => {
+          console.log("user_count 이벤트 도착");
+          console.log(user_count);
+          $c_content_num.textContent = `${user_count}/4`
+          $mini_room_users.textContent = `${user_count}/4`
+        })
+        closeModal() // 모달 닫고
+        openarena() // 방 입장
+        arenaSocket.emit("welcome", {nickname: res.data});
+        $room_name.value = "" // 방 입력칸 초기화
        })
 
   $c_c_name.textContent = room_name // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = room_name // 채팅방 접었을 때 방제
 
-  arenaSocket.on("user_count", ({user_count}) => {
-    console.log("user_count 이벤트 도착");
-    console.log(user_count);
-    $c_content_num.textContent = `${user_count}/4`
-    $mini_room_users.textContent = `${user_count}/4`
-  })
-  closeModal() // 모달 닫고
-  openarena() // 방 입장
-  arenaSocket.emit("welcome", {nickname: nickname });
-  $room_name.value = "" // 방 입력칸 초기화
+  
 };
 
 $make_room_form.addEventListener("submit", handleRoomSubmit);

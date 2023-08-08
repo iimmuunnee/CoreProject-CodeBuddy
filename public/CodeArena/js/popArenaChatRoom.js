@@ -61,24 +61,22 @@ arenaSocket.onAny((event) => {
   console.log(`arenaSocket Event: ${event}`);
 });
 
-arenaSocket.on("welcome", ({ nickname, newCount }) => {
+arenaSocket.on("welcome", ({nickname}) => {
   console.log("프론트 welcome 옴");
   // $user_count.textContent = `${user_count}명`;
-  addNotice(`${nickname}(이)가 방에 입장했습니다. ${newCount}`);
+  addNotice(`${nickname}(이)가 방에 입장했습니다.`);
   // setUserCount(user_count);
 });
 
-arenaSocket.on("user_count", ({ room_name, user_count }) => {
+arenaSocket.on("user_count", ({ user_count }) => {
   console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
   $c_content_num.textContent = `${user_count}`;
 });
 
-arenaSocket.on("bye", ({ nickname, newCount }) => {
+arenaSocket.on("bye", ({nickname}) => {
   console.log("프론트 bye이벤트 옴");
   console.log(`${nickname}은 방을 나갔습니다. `);
-  addNotice(`${nickname}(이)가 방에서 나갔습니다. ${newCount}`);
-  // window.location.href를 사용하여 다른 페이지로 리디렉션할 수 있습니다.
-  // 예: window.location.href = "/room_input_page";
+  addNotice(`${nickname}(이)가 방에서 나갔습니다.`);
 });
 
 $c_chatting_form.addEventListener("submit", handleMessageSubmit);

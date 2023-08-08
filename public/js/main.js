@@ -20,6 +20,11 @@ function scrollToCodeArena() {
 // codeChatButton.addEventListener("click", scrollToCodeChat);
 // codeArenaButton.addEventListener("click", scrollToCodeArena);
 
+axios.get('/ifyouLogin')
+	.then(res=>{
+		
+	})
+
 $codeChat_btn.addEventListener("click", () => {
   window.location.href = `${window.location.origin}/page/CodeChat`;
 });
