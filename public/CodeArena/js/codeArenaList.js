@@ -97,6 +97,8 @@ const addRoomToTable = (updateRooms) => {
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
+  const $tr = $tbody.querySelector("tr")
+  $tr.remove()
 
   console.log("addRoomToTable 함수 작동", updateRooms);
   updateRooms.forEach((roomInfo) => {
@@ -117,6 +119,8 @@ const addRoomToTable = (updateRooms) => {
   `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
+    
+    
 
   // 클릭 이벤트 핸들러 추가
     const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
