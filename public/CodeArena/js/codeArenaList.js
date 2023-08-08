@@ -50,7 +50,6 @@ const handleRoomSubmit = (event) => {
   const room_name = $room_name.value;
   const chatRoomMethod = $chatRoomMethod.value;
   const dev_lang = $dev_lang.value;
-  let nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
    // 지훈 코드 삽입 (방생성)
    axios.get('http://localhost:3000/room/createRoom',{room:'hi'})
        .then(res=>{
