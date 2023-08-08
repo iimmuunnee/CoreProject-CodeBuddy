@@ -17,7 +17,7 @@
     position: absolute;
     background: #FFF;
     box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
-    border-top: 5px solid #7ac142;
+    border-top: 5px solid #24283B;
     float: left;
     transition: all 0.2s ease-out;
     transition-delay: 0.2s;
@@ -38,7 +38,7 @@
   }
   .login-page .login-content h2 {
     text-align: left;
-    color: #7ac142;
+    color: #24283B;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin: 0;
@@ -78,8 +78,8 @@
   .login-page .login-content form.wrapper-box button {
     display: inline-block;
     margin-top: 50px;
-    border: 2px solid #7ac142;
-    background: #7ac142;
+    border: 2px solid #24283B;
+    background: #24283B;
     border-radius: 25px;
     padding: 3px 12px 5px 12px;
     color: #fff;
@@ -162,7 +162,7 @@
     transition: all 0.1s ease-out;
   }
   .login-page .login-switcher > div button:hover {
-    border: 2px solid #7ac142 !important;
+    border: 2px solid #24283B !important;
     color: rgba(0, 0, 0, 0.8);
   }
   .login-page .login-switcher .login-switcher-signin,
