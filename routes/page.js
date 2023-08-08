@@ -39,12 +39,29 @@ router.get('/CodeChat',(req,res)=>{
     let seName = req.session.userName
     let seLevel = req.session.userlevel
     let seLogin = req.session.login
-    res.render('codeChatList',{login : seLogin, name : seName, level : seLevel})
+    // 비 로그인 상태에서 접속 요청시, 로그인 페이지로 이동
+    // 로그인시 정상적으로 이동
+    if(seLogin){
+        res.render('codeChatList',{login : seLogin, name : seName, level : seLevel})
+    }
+    else{
+        res.render('join')
+    }
 })
 
 //Code Arena 채팅방 리스트 http://localhost:3000/page/CodeArena
 router.get('/CodeArena',(req,res)=>{
-    res.render('codeArenaList')
+    let seName = req.session.userName
+    let seLevel = req.session.userlevel
+    let seLogin = req.session.login
+        // 비 로그인 상태에서 접속 요청시, 로그인 페이지로 이동
+    // 로그인시 정상적으로 이동
+    if(seLogin){
+        res.render('codeArenaList',{login : seLogin, name : seName, level : seLevel})
+    }
+    else{
+        res.render('join')
+    }
 })
 
 //main 이외의 페이지에서 code Chat 클릭시
