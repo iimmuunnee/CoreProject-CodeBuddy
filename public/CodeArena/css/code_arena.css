@@ -78,10 +78,31 @@ body{
     box-shadow: 2px 7px 15px 8px rgba(0,0,0,0.3);
 
 }
+.c_a_center_button{
+    width: 30%;
+    height: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.c_a_center_button2{
+    height: 44%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #24283b;
+    border-radius: 4rem;
+    font-size: 2.5vw;
+    color: white;
+    backdrop-filter: blur(10px);
+    box-shadow: 2px 3px 15px 8px white;
+
+}
 /* 문제 제시 */
 .c_a_left{
     width: 45%;
-    height: 98%;
+    height: 92%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -101,7 +122,7 @@ body{
 }
 .c_a_l_que{
     width: 95%;
-    height: 60%;
+    height: 67%;
     display: flex;
     color: white;
     font-size: 1vw;
@@ -298,15 +319,24 @@ body{
     justify-content: space-between;
     align-items: center;
 }
+.c_a_u_r_name{
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2vw;
+}
 .c_a_time{
     width: 100%;
-    height: 20%;
+    height: 17%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .c_a_above1{
-    width: 80%;
+    width: 84.5%;
     height: 84%;
     display: flex;
     -webkit-box-pack: justify;
@@ -331,7 +361,7 @@ body{
 
 .c_a_p_user{
     width: 88%;
-    height: 70%;
+    height: 62%;
     display: flex;
     flex-direction: column;
     align-items: center;
