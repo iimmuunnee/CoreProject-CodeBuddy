@@ -494,7 +494,7 @@
             </div>
             <div class="c_chatting_2">
               <div class="c_chatting_22">
-                <button onclick="send()" class="c_chatting_2_btn">
+                <button class="c_chatting_2_btn">
                   <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
                 </button>
               </div>
@@ -509,10 +509,10 @@
     <div class="chat_mini_1">
       <div class="chat_mini_1_1">
         <div class="chat_mini_1_11">
-          <p></p>
+          <p id="mini_room_name"></p>
         </div>
         <div class="chat_mini_1_21">
-          <p>4/6</p>
+          <p id="$mini_room_users">4/6</p>
         </div>
       </div>
       <div class="chat_mini_1_2">
@@ -678,7 +678,8 @@
 
     setTimeout(function () {
       clearInterval(PlAYTIME);
-    }, 120000);
+    }, 600000); //600000
+
   </script>
 
 
