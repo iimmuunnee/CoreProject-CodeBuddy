@@ -1,5 +1,6 @@
 // socket.io 사용
 const arenaSocket = io("/CodeArena");
+// sfsdfsdfsdfsdfds
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
 const $make_room_form = document.getElementById("make_room_form"); // 방 정보 입력 폼
