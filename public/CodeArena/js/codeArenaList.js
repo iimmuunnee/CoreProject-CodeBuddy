@@ -1,5 +1,5 @@
 // socket.io 사용
-const ArenaSocket = io("/CodeArena");
+const arenaSocket = io("/CodeArena");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
 const $make_room_form = document.getElementById("make_room_form"); // 방 정보 입력 폼
@@ -19,6 +19,19 @@ const openarena = () => {
   chat.style.display = "block";
 }
 
+// 방 목록을 갱신하는 함수
+const updateRoomList = (roomInfo) => {
+    const existingRoomRow = document.getElementById(`room_${roomInfo.room_number}`);
+  
+  if (existingRoomRow) {
+    // 기존에 있는 방이라면 인원수만 업데이트
+    updateRoomUsers(roomInfo.room_number, roomInfo.user_count);
+  } else {
+    // 새로운 방이라면 리스트에 추가
+    addRoomToTable(roomInfo);
+  }
+};
+
 // 방 입장 함수
 const handleRoomSubmit = (event) => {
   event.preventDefault();
@@ -26,77 +39,90 @@ const handleRoomSubmit = (event) => {
   const chatRoomMethod = $chatRoomMethod.value;
   const dev_lang = $dev_lang.value;
   const nickname = "랭킹 1위"; // 닉네임 DB 연결 대기중
-  
-  let page = document.getElementById("code_arena_zip");
-  page.style.display = "block";
 
-  let page2 = document.getElementById("notice");
-  page2.style.display = "none";
-
-  let chat = document.getElementById("chat_open");
-  chat.style.display = "block";
-
-  ArenaSocket.emit("create_room", {
+  arenaSocket.emit("create_room", {
     room_name: room_name,
     chatRoomMethod: chatRoomMethod,
     dev_lang: dev_lang,
   });
 
   console.log("방 핸들 활성화");
-  ArenaSocket.emit("enter_room", {
+  arenaSocket.emit("enter_room", {
     room_name: room_name,
     nickname: nickname,
     chatRoomMethod: chatRoomMethod,
     dev_lang: dev_lang,
   });
 
-  ArenaSocket.on("user_count", ({user_count}) => {
+  arenaSocket.on("user_count", ({user_count}) => {
     console.log("user_count 이벤트 도착");
     console.log(user_count);
     $c_content_num.textContent = `${user_count}/4`
     $mini_room_users.textContent = `${user_count}/4`
   })
-
-  ArenaSocket.emit("welcome", { room_name: room_name, nickname: nickname });
-
-
+  closeModal() // 모달 닫고
+  openarena() // 방 입장
+  arenaSocket.emit("welcome", { room_name: room_name, nickname: nickname });
+  $room_name.value = "" // 방 입력칸 초기화
 };
 
 $make_room_form.addEventListener("submit", handleRoomSubmit);
 
+arenaSocket.on("update_room_list", (roomInfo) => {
+  console.log("roomInfo : ", roomInfo);
+  updateRoomList(roomInfo);
+});
+
 // 방 목록에 새로운 방 추가하는 함수
-const addRoomToTable = (room) => {
-  console.log("addRoomToTable 함수 작동");
-  const newRow = document.createElement("tr");
-  newRow.id = "room_" + room.room_number;
-
-  // 방 정보를 td에 추가
-  newRow.innerHTML = `
-    <td>${room.room_number}</td>
-    <td>${room.chatRoomMethod}</td>
-    <td>${room.dev_lang}</td>
-    <th>
-      <a href="#">${room.room_name}</a>
-      <p>테스트</p>
-     </th>
-    <td>${room.createdBy}</td>
-    <td>${room.createdDate}</td>
-`;
-
-  // 새로운 행을 테이블의 맨 위에 추가
+const addRoomToTable = (updateRooms) => {
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
-  $tbody.prepend(newRow);
+
+  console.log("addRoomToTable 함수 작동", updateRooms);
+  updateRooms.forEach((roomInfo) => {
+    const newRow = document.createElement("tr");
+    newRow.id = "room_" + roomInfo.room_number;
+  
+    // 방 정보를 td에 추가
+    newRow.innerHTML = `
+      <td>${roomInfo.room_number}</td>
+      <td>${roomInfo.chatRoomMethod}</td>
+      <td>${roomInfo.dev_lang}</td>
+      <th>
+        <a href="#">${roomInfo.room_name}</a>
+        <p>테스트</p>
+       </th>
+      <td>${roomInfo.createdBy}</td>
+      <td>${roomInfo.createdDate}</td>
+  `;
+  
+    // 새로운 행을 테이블의 맨 위에 추가
+    $tbody.prepend(newRow);
+  })
 };
 
-ArenaSocket.on("update_room_list", (rooms) => {
-  console.log(rooms);
-  console.log("update_room_list 이벤트 프론트로 도착");
-  for (const room of rooms) {
-    addRoomToTable(room);
-  }
-});
+const $leave_room = document.getElementById("leave_room")
+
+const leaveRoomBtn = () => {
+  console.log("leaveRoomBtn 함수 활성화");
+  let page = document.getElementById("code_arena_zip");
+  page.style.display = "none";
+
+  let page2 = document.getElementById("notice");
+  page2.style.display = "block";
+
+  let chat = document.getElementById("chat_open");
+  chat.style.display = "none";
+
+  arenaSocket.emit("leave_room")
+} 
+
+$leave_room.addEventListener("click", leaveRoomBtn)
+
+arenaSocket.on("disconnect", () => {
+  console.log("disconnect to server");
+})
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------
 
