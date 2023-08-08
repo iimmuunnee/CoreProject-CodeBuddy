@@ -1,0 +1,399 @@
+body {
+    width: 100vw;
+    height: 97vh;
+    font-family: 'Pretendard-Regular';
+    
+}
+
+#container{
+    width:100%;
+    height: 100vh;
+    padding: 0px;
+    display: flex;
+    background-color: #20222d;
+    
+}
+.left, .right{
+    flex-basis: 50%;
+    padding:0px 2px 0px 20px;
+    
+}
+
+
+#html{
+    width:50%;    
+}
+
+#live {
+    margin-top: 1dvb;
+    width:100%;
+    height:100%;
+    /* border:0; */
+    outline:0;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px 3px gray;
+    background-color: #fff;
+}
+
+#live2, #live3, #live4, #live5, #live6 {
+margin-top: 1dvb;
+background-color: #fff;
+}
+
+
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.container {
+    position: relative;
+    top:-2%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px ;
+
+    
+}
+.tab-container {
+    display: flex;
+    margin: 0;
+    
+}
+.tab-container__item {
+    cursor: pointer;
+}
+.tab-container__item:hover {
+    background-color: #292e42;
+    transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item:hover .tab-container__item--title {
+    color: #fff;
+    transition: color 0.4s ease-in-out;
+}
+.tab-container__item.active {
+    border-bottom: 4px solid #aa9f00;
+
+    /* 흰배경일때 쓸색상 */
+    background-color: #292e42;
+    color: #fff;
+}
+.tab-container__item.active .tab-container__item--title {
+    /* color: #292e42; */
+    color: #fff;
+}
+.tab-container__item.active:hover {
+    background-color: #292e42;
+    transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item.active:hover .tab-container__item--title {
+    color: #fff;
+    transition: color 0.4s ease-in-out;
+}
+.tab-container__item--title {
+    display: inline-block;
+    color: #999;
+    font-weight: 700;
+    text-decoration: none;
+    margin: 15px;
+}
+.content-container {
+    /* padding: 10px; */
+}
+.content-container__content {
+    display: none;
+}
+.content-container__content.target {
+    display: block;
+}
+
+
+
+
+/* 우측 css  */
+.live {
+    width:100%;
+    height:100%;
+    /* border:0; */
+    outline:0;
+    border: 1px solid black;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px 3px gray;
+}
+
+
+.tab-container__item2 {
+    cursor: pointer;
+}
+.tab-container__item2:hover {
+    background-color: #292e42;
+    transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item2:hover .tab-container__item2--title {
+    color: #fff;
+    transition: color 0.4s ease-in-out;
+}
+.tab-container__item2.active {
+    border-bottom: 4px solid #aa9f00;
+
+    /* 흰배경일때 쓸색상 */
+    background-color: #363947;
+    color: #fff;
+}
+.tab-container__item2.active .tab-container__item2--title {
+    /* color: #292e42; */
+    color: #fff;
+}
+.tab-container__item2.active:hover {
+    background-color: #292e42;
+    transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item2.active:hover .tab-container__item2--title {
+    color: #fff;
+    transition: color 0.4s ease-in-out;
+}
+.tab-container__item2--title {
+    display: inline-block;
+    color: #999;
+    font-weight: 700;
+    text-decoration: none;
+    margin: 15px;
+}
+.content-container {
+    /* padding: 10px; */
+}
+.content-container__content2 {
+    display: none;
+}
+.content-container__content2.target {
+    display: block;
+}
+
+
+
+/* 접속자 2 */
+.tab-container__item3 {
+cursor: pointer;
+}
+.tab-container__item3:hover {
+background-color: #292e42;
+transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item3:hover .tab-container__item3--title {
+color: #fff;
+transition: color 0.4s ease-in-out;
+}
+.tab-container__item3.active {
+border-bottom: 4px solid #aa9f00;
+
+/* 흰배경일때 쓸색상 */
+background-color: #363947;
+color: #fff;
+}
+.tab-container__item3.active .tab-container__item3--title {
+/* color: #292e42; */
+color: #fff;
+}
+.tab-container__item3.active:hover {
+background-color: #292e42;
+transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item3.active:hover .tab-container__item3--title {
+color: #fff;
+transition: color 0.4s ease-in-out;
+}
+.tab-container__item3--title {
+display: inline-block;
+color: #999;
+font-weight: 700;
+text-decoration: none;
+margin: 15px;
+}
+.content-container {
+/* padding: 10px; */
+}
+.content-container__content3 {
+display: none;
+}
+.content-container__content3.target {
+display: block;
+}
+
+
+/* 접속자 3*/
+.tab-container__item4 {
+cursor: pointer;
+}
+.tab-container__item4:hover {
+background-color: #292e42;
+transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item4:hover .tab-container__item4--title {
+color: #fff;
+transition: color 0.4s ease-in-out;
+}
+.tab-container__item4.active {
+border-bottom: 4px solid #aa9f00;
+
+/* 흰배경일때 쓸색상 */
+background-color: #363947;
+color: #fff;
+}
+.tab-container__item4.active .tab-container__item4--title {
+/* color: #292e42; */
+color: #fff;
+}
+.tab-container__item4.active:hover {
+background-color: #292e42;
+transition: background-color 0.4s ease-in-out;
+}
+.tab-container__item4.active:hover .tab-container__item4--title {
+color: #fff;
+transition: color 0.4s ease-in-out;
+}
+.tab-container__item4--title {
+display: inline-block;
+color: #999;
+font-weight: 700;
+text-decoration: none;
+margin: 15px;
+}
+.content-container {
+    
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    
+}
+.content-container__content4 {
+display: none;
+}
+.content-container__content4.target {
+display: block;
+}
+
+
+
+/* 전송버튼  */
+.sendBtn{
+margin-top: 4dvb;
+
+} 
+
+
+.outputDiv{
+height: 30dvb;
+}
+
+
+.bottom{
+margin-top: 1dvb;
+}
+
+
+/* 코드에디터 테마 */
+.cm-s-darcula{
+height:38dvh;
+/* height:616px; */
+}
+
+/* 메뉴바 */
+.menuBar{
+height: 10%;
+}
+
+/* 접속자 */
+.buddy {
+/* display: flex; */
+height: 10%;
+padding :1dvb;
+}
+
+/* 접속자 전송 체크박스 */
+.checkbox_style{
+margin: 2dvb 15dvb 2dvb 15dvb;
+display: flex;
+justify-content: center;
+border-color: white;
+}
+.checkbox_style .btn-outline-secondary{
+color : white;
+}
+
+
+
+
+
+
+/* 접속자 탭 메뉴  */
+.warpper {
+display: flex;
+flex-direction: column;
+
+}
+
+.tab {
+cursor: pointer;
+padding: 10px 20px;
+margin: 0px 2px;
+background: #0a0b13;
+display: inline-block;
+color: #fff;
+border-radius: 3px 3px 0px 0px;
+box-shadow: 0 0.5rem 0.8rem #00000080;
+}
+
+.panels {
+background: rgba(57, 55, 82, 0.5);
+box-shadow: 0 2rem 2rem #00000080;
+min-height: 91dvb;
+
+width: 98dvb;
+
+border-radius: 3px;
+overflow: hidden;
+padding: 20px;
+}
+
+.panel {
+display: none;
+animation: fadein 0.8s;
+}
+
+@keyframes fadein {
+from {
+    opacity: 0;
+}
+to {
+    opacity: 1;
+}
+}
+.panel-title {
+font-size: 1.5em;
+font-weight: bold;
+}
+
+.radio {
+display: none;
+}
+
+#one:checked ~ .panels #one-panel,
+#two:checked ~ .panels #two-panel,
+#three:checked ~ .panels #three-panel,
+#four:checked ~ .panels #four-panel {
+display: block;
+}
+
+#one:checked ~ .tabs #one-tab,
+#two:checked ~ .tabs #two-tab,
+#three:checked ~ .tabs #three-tab,
+#four:checked ~ .tabs #four-tab {
+background: #2d2d3f;
+color: #fff;
+font-weight: bold;
+border-top: 3px solid rgb(221, 218, 15);
+/* border-top: 3px solid rgb(215, 32, 0); */
+}

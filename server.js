@@ -178,7 +178,7 @@ ChatNamespace.on("connection", (socket) => {
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       // console.log("adapter.rooms : ",io.of("/Chat").adapter.rooms)
-      console.log(countRoomUsers(room_name));
+      console.log("user_count : ", countRoomUsers(room_name));
 
       io.of("/CodeChat")
         .to(room_name)
@@ -192,12 +192,12 @@ ChatNamespace.on("connection", (socket) => {
   });
 
   socket.on("disconnecting", () => {
-    console.log("서버 disconnecting 이벤트 활성화");
+    console.log("Chat서버 disconnecting 이벤트 활성화");
     console.log("disconnecting 이후 ", socket.rooms);
   });
 
   socket.on("disconnect", () => {
-    console.log("서버 disconnect 이벤트 활성화");
+    console.log("Chat서버 disconnect 이벤트 활성화");
     console.log("disconnect 이후 ", socket.rooms);
   });
 });
@@ -264,7 +264,7 @@ const countRoomUsers = (room_name) => {
       dev_lang: dev_lang,
       createdBy: nickname ,
       createdDate: new Date().toISOString().slice(0, 10),
-      userCount : 1,
+      userCount : countRoomUsers(room_name) + 1,
     };
     console.log(roomInfo);
     rooms.set(room_name, roomInfo);
@@ -294,7 +294,7 @@ const countRoomUsers = (room_name) => {
         rooms.set(room_name, roomInfo);
       }
 
-      io.of("/ArenaChat")
+      ArenaNamespace
         .to(room_name)
         .emit("welcome", {
           nickname: socket.nickname,
@@ -304,7 +304,7 @@ const countRoomUsers = (room_name) => {
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       console.log("countRoomUsers(room_name) : ", countRoomUsers(room_name));
 
-      io.of("/ArenaChat")
+      ArenaNamespace
         .to(room_name)
         .emit("user_count", { user_count: countRoomUsers(room_name)});
     }
@@ -328,6 +328,7 @@ const countRoomUsers = (room_name) => {
       socket.room_name = null; // 방 이름 정보 초기화
     }
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
+      console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_name));
     })
   
   socket.on("disconnecting", () => {

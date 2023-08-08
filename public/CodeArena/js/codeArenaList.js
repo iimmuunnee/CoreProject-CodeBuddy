@@ -14,7 +14,9 @@ const $c_roomname = $chat_main.querySelector(".c_roomname"); // 방 이름으로
 const $c_roomname_1 = $c_roomname.querySelector(".c_roomname_1"); // 방 이름을 접근 2
 const $c_content_name = $c_roomname_1.querySelector(".c_content_name"); // 방 이름을 접근 3
 const $c_c_name = $c_content_name.querySelector(".c_c_name") // 방 이름을 적는 곳
+const $mini_room_name = document.getElementById("mini_room_name") // 미니 방 이름 적는 곳
 const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
+const $mini_room_users = document.getElementById("$mini_room_users") // 미니 방 인원수 적는 곳
 
 
 
@@ -77,11 +79,8 @@ const handleRoomSubmit = (event) => {
         $room_name.value = "" // 방 입력칸 초기화
        })
 
-  $c_c_name.textContent = room_name
-
-  
-
- 
+  $c_c_name.textContent = room_name // 채팅방 펼쳤을 때 방제
+  $mini_room_name.textContent = room_name // 채팅방 접었을 때 방제
 
   
 };
@@ -138,6 +137,17 @@ const enterRoom = (roomName) => {
   arenaSocket.emit("enter_room", {
     room_name: roomName,
   });
+  
+  $c_c_name.textContent = room_name // 채팅방 펼쳤을 때 방제
+  $mini_room_name.textContent = room_name // 채팅방 접었을 때 방제
+
+  arenaSocket.on("user_count", ({user_count}) => {
+    console.log("user_count 이벤트 도착");
+    console.log(user_count);
+    $c_content_num.textContent = `${user_count}/4`
+    $mini_room_users.textContent = `${user_count}/4`
+  })
+
   $c_c_name.textContent = roomName
   openarena() // 방 입장
 }
