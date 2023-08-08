@@ -227,12 +227,7 @@ const countRoomUsers = (room_name) => {
 
   // 함수 정의 끝
   // 닉네임 설정 받고 다시 보내기
-  socket.on("nickname", (nickname) => {
-    console.log("서버 nickname 이벤트 활성화");
-    console.log("사용자의 닉네임 : ", nickname);
-    socket["nickname"] = nickname; // 소켓 객체에 "nickname"이라는 속성 추가
-    io.to(socket.id).emit("nickname", { nickname });
-  });
+
 
   socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
@@ -281,6 +276,7 @@ const countRoomUsers = (room_name) => {
       console.log("enter_room의 nickname", nickname);
       
       socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
+      console.log(room_name);
 
       socket.join(room_name); // 방에 입장하기
       const roomInfo = rooms.get(room_name)
@@ -289,11 +285,7 @@ const countRoomUsers = (room_name) => {
         rooms.set(room_name, roomInfo);
       }
 
-      ArenaNamespace
-        .to(room_name)
-        .emit("welcome", {
-          nickname: socket.nickname,
-        });
+      ArenaNamespace.to(room_name).emit("welcome", {nickname});
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       console.log("countRoomUsers(room_name) : ", countRoomUsers(room_name));

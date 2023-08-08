@@ -25,13 +25,13 @@ const handleMessageSubmit = (event) => {
   const message = $form_input.value; // 메시지 입력값 가져오기
   console.log("메세지 핸들러, 메세지 : ", message);
 
-    console.log("userInfo : ", nickname);
+    console.log("userInfo : ", currentNickname);
 
     arenaSocket.emit(
     "new_message",
-    {nickname, message: message,},
+    {currentNickname, message: message,},
     () => {
-      Chat.sendMessage(nickname, message);
+      Chat.sendMessage(currentNickname, message);
     }
   )
 
@@ -43,9 +43,9 @@ arenaSocket.on("connect", () => {
   // console.log("프론트와 서버와의 연결 성공");
 });
 
-arenaSocket.on("new_message", ({ nickname, message }) => {
+arenaSocket.on("new_message", ({ currentNickname, message }) => {
   console.log("new_message이벤트 프론트에서 받음");
-  Chat.sendMessage(nickname, message);
+  Chat.sendMessage(currentNickname, message);
 });
 
 // 프론트로 온 이벤트 감지
@@ -55,6 +55,7 @@ arenaSocket.onAny((event) => {
 
 arenaSocket.on("welcome", ({nickname}) => {
   console.log("프론트 welcome 옴");
+  console.log("nickname : ",nickname);
   // $user_count.textContent = `${user_count}명`;
   addNotice(`${nickname}(이)가 방에 입장했습니다.`);
   // setUserCount(user_count);
@@ -65,10 +66,10 @@ arenaSocket.on("user_count", ({ user_count }) => {
   $c_content_num.textContent = `${user_count}`;
 });
 
-arenaSocket.on("bye", ({nickname}) => {
+arenaSocket.on("bye", ({currentNickname}) => {
   console.log("프론트 bye이벤트 옴");
-  console.log(`${nickname}은 방을 나갔습니다. `);
-  addNotice(`${nickname}(이)가 방에서 나갔습니다.`);
+  console.log(`${currentNickname}은 방을 나갔습니다. `);
+  addNotice(`${currentNickname}(이)가 방에서 나갔습니다.`);
 });
 
 $c_chatting_form.addEventListener("submit", handleMessageSubmit);
