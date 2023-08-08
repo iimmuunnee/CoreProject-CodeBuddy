@@ -64,7 +64,10 @@ const handleRoomSubmit = (event) => {
     $mini_room_users.textContent = `${user_count}/4`;
   });
 
+  closeModal() // 모달 닫고
+
   chatSocket.emit("welcome", { room_name: room_name, nickname: nickname });
+  $room_name.value = "" // 방 입력칸 초기화
 };
 
 // 방 만들기 버튼  함수 끝
@@ -101,8 +104,6 @@ const addRoomToTable = (updateRooms) => {
   const $tbody = $board_table.querySelector("tbody");
   $tbody.prepend(newRow);
 };
-
-chatSocket.emit("get_room_list");
 
 chatSocket.on("disconnect", () => console.log("disconnect to server"));
 
