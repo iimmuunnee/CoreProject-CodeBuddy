@@ -313,3 +313,44 @@ function closeModal() {
   var modal = document.getElementById("modal");
   modal.style.display = "none";
 }
+
+// 필터링
+$(document).ready(function () {
+  $(".select").on("click", function (e) {
+    e.preventDefault();
+
+    let chatMethod = $("#chat_method").val();
+    let selectedLanguages = [];
+
+    $(".l_check:checked").each(function () {
+      selectedLanguages.push($(this).val());
+    });
+
+    $("#board-list .board-table tbody tr").each(function () {
+      let rowChatMethod = $(this).find("td:nth-child(2)").text().trim();
+      let rowLanguage = $(this).find("td:nth-child(3)").text().trim();
+
+      // 언어 필터링을 위한 변수 생성
+      let languageFilter = selectedLanguages.length === 0;
+
+      if (selectedLanguages.includes("HTML")) {
+        // HTML/CSS 언어를 선택한 경우, rowLanguage가 "HTML" 또는 "CSS"를 포함해야 함.
+        languageFilter = languageFilter || rowLanguage.includes("HTML") || rowLanguage.includes("CSS");
+      } else {
+        languageFilter = languageFilter || selectedLanguages.includes(rowLanguage);
+      }
+
+      if (
+        (chatMethod === "all" || chatMethod === (rowChatMethod.indexOf("1:") > -1 ? "one" : "many")) &&
+        languageFilter
+      ) {
+        $(this).show();
+      } else {
+        $(this).hide();
+      }
+    });
+  });
+});
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------
+
