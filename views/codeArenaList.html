@@ -11,10 +11,13 @@
   <link rel="stylesheet" href="/CodeArena/css/code_arena.css">
 
   <!-- jquery -->
+  <script src="http://code.jquery.com/jquery-latest.js"></script> 
+
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
 
   <!-- 폰트어썸 및 폰트 -->
   <script src="https://kit.fontawesome.com/3c792eb2a9.js" crossorigin="anonymous"></script>
@@ -411,7 +414,7 @@
   <!-- chat 버튼 -->
   <div id="chat_open" class="chat_open">
     <button class="chat_open_btn">
-      <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
+      <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
     </button>
   </div>
 
@@ -500,9 +503,12 @@
 
 
   <!-- js 파일 경로 -->
-
+  
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/coreproject-master/public/app.js"></script>
+  <script src="/CodeChat/js/codeEditor.js"></script>
+  <script src="/CodeArena/js/codeArenaList.js"></script>
+  
+ 
   <script>
     const textjs = document.querySelector('#js')
     const textpy = document.querySelector('#python')
@@ -547,10 +553,35 @@
 
 
   </script>
+  <script src="/CodeArena/js/popArenaChatRoom.js"></script>
 
-  <script src="/CodeArena/js/codeArenaList.js"></script>
-  <script src="/CodeArena/js/popCodeChatRoom.js"></script>
-  
+  <script>
+    // 1. 팝업창 열기
+$(document).on("click", ".chat_open", (e) => {
+  console.log("팝업창 열기");
+  $("#chat").css("display", "block");
+});
+
+// 1. 팝업창 닫기
+$(document).on("click", ".c_content_close button", (e) => {
+  console.log("팝업창 닫기");
+  $("#chat").css("display", "none");
+});
+
+// 2. chat 축소판 다시 열기
+$(document).on("click", ".c_content_mini_btn", (e) => {
+  console.log("팝업창 키우기");
+  $("#chat_mini").css("display", "flex");
+  $("#chat").css("display", "none");
+});
+
+// 2. chat 축소판 닫기
+$(document).on("click", ".chat_mini_1_2btn", (e) => {
+  console.log("팝업창 줄이기");
+  $("#chat_mini").css("display", "none");
+  $("#chat").css("display", "block");
+});
+  </script>
 
 </body>
 
