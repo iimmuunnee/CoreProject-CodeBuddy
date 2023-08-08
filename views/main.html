@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
     rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
 </head>
 
 <body>
@@ -60,10 +61,25 @@
     </div>
   </div>
   <script src="/js/main.js"></script>
-    <!-- 세션 로그인 스크립트 -지훈- -->
-    <script src="/js/sessionlogin.js"></script>
+
+
+    <!-- 세션 로그인 스크립트 -지훈- --> 
   <script>
-  
+        // 로그인 했을 시 사용자 이름 표시
+    let login = '{{login}}'
+    let logout = '{{logout}}'
+
+    if(login) {
+      document.querySelector('#login_btn').style.display = 'none'
+      document.querySelector('#userInfo_btn').style.display = 'inline'
+      console.log('로그인',login)
+    }    
+    if(logout){
+      document.querySelector('#login_btn').style.display = 'inline'
+      document.querySelector('#userInfo_btn').style.display = 'none'
+      console.log('로그아웃',logout)
+    }
+
     // 메인 이외의 다른 페이지에서 Code Chat 클릭시 메인이동 후 Code Chat 클릭
     let moveCode = '{{code}}'
     if(moveCode){
