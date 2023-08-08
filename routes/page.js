@@ -57,14 +57,12 @@ router.get('/mainArena',(req,res)=>{
     res.render('main',{login : seLogin, name : seName, level : seLevel, arena:true})
 })
 
+// 로그아웃 시 세션 삭제
 router.get('/logout',(req,res)=>{
     req.session.destroy()
     res.render('main', {logout : true})
 })
 
-router.get('/createRoom',(req,res)=>{
-    let checkEnd = req.session.userName
-    res.send(JSON.stringify(checkEnd))
-})
+
 
 module.exports = router

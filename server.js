@@ -11,6 +11,7 @@ const qs = require("qs");
 // routes 폴더 내 파일 사용
 const page = require("./routes/page");
 const user = require("./routes/user");
+const room = require("./routes/room")
 const kakao = require("./routes/kakaoLogin");
 
 // 네임스페이스로 io 서버 분리 /CodeChat, /CodeArena
@@ -79,6 +80,7 @@ app.use(
 app.use("/page", page);
 app.use("/user", user);
 app.use(kakao);
+app.use("/room",room)
 
 // "Chat" namespace에 접속한 클라이언트 처리
 ChatNamespace.on("connection", (socket) => {
