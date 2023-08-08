@@ -62,5 +62,10 @@ router.get('/logout',(req,res)=>{
     res.render('main', {logout : true})
 })
 
+router.get('/createRoom',(req,res)=>{
+    let checkEnd = req.session.userName
+    console.log('이름나오나?', checkEnd)
+    res.send(JSON.stringify(checkEnd))
+})
 
 module.exports = router

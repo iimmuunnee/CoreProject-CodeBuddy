@@ -1,7 +1,7 @@
 const gameSocket = io("/game"); // io 함수는 알아서 socket.io를 실행하고 서버를 찾습니다.
 
-const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
 
+const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
 const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
 const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
 const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
