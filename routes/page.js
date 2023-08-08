@@ -64,7 +64,6 @@ router.get('/logout',(req,res)=>{
 
 router.get('/createRoom',(req,res)=>{
     let checkEnd = req.session.userName
-    console.log('이름나오나?', checkEnd)
     res.send(JSON.stringify(checkEnd))
 })
 

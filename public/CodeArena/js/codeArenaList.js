@@ -52,25 +52,26 @@ const handleRoomSubmit = (event) => {
    // 지훈 코드 삽입
    axios.get('http://localhost:3000/page/createRoom',{room:'hi'})
        .then(res=>{
-        console.log('살려주숑',res.data)
-
         arenaSocket.emit("create_room", {
           room_name: room_name,
           chatRoomMethod: chatRoomMethod,
           dev_lang: dev_lang,
-          nickname : res.data
+          nickname : res.data // 사용자 이름
         });
+
+        console.log("방 핸들 활성화");
+        arenaSocket.emit("enter_room", {
+          room_name: room_name,
+          nickname: res.data, // 사용자 이름
+        });
+
        })
 
   $c_c_name.textContent = room_name
 
   
 
-  console.log("방 핸들 활성화");
-  arenaSocket.emit("enter_room", {
-    room_name: room_name,
-    nickname: nickname,
-  });
+ 
 
   arenaSocket.on("user_count", ({user_count}) => {
     console.log("user_count 이벤트 도착");
