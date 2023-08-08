@@ -156,14 +156,10 @@ ChatNamespace.on("connection", (socket) => {
     ({
       room_name,
       nickname: nickname,
-      chatRoomMethod: chatRoomMethod,
-      dev_lang: dev_lang,
     }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
-      console.log("enter_room의 chatRoomMethod", chatRoomMethod);
-      console.log("enter_room의 dev_lang", dev_lang);
 
       socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
 
@@ -223,7 +219,6 @@ ArenaNamespace.on("connection", (socket) => {
     return room_number;
   };
 
-  // 방의 인원수를 세는 함수
 // 방의 인원수를 세는 함수
 const countRoomUsers = (room_name) => {
   const room = ArenaNamespace.adapter.rooms.get(room_name);
@@ -261,7 +256,7 @@ const countRoomUsers = (room_name) => {
       dev_lang: dev_lang,
       createdBy: socket.nickname,
       createdDate: new Date().toISOString().slice(0, 10),
-      userCount : 0,
+      userCount : 1,
     };
     console.log(roomInfo);
     rooms.set(room_name, roomInfo);
@@ -277,14 +272,10 @@ const countRoomUsers = (room_name) => {
     ({
       room_name,
       nickname: nickname,
-      chatRoomMethod: chatRoomMethod,
-      dev_lang: dev_lang,
     }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
-      console.log("enter_room의 chatRoomMethod", chatRoomMethod);
-      console.log("enter_room의 dev_lang", dev_lang);
       
       socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
 
