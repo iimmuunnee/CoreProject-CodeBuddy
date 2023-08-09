@@ -29,6 +29,7 @@ const $c_c_name = $c_content_name.querySelector(".c_c_name"); // 방 이름을 �
 const $mini_room_name = document.getElementById("mini_room_name"); // 미니 방 이름 적는 곳
 const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
+const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2")
 
 const openarena = () => {
   let page = document.getElementById("code_arena_zip");
@@ -99,6 +100,35 @@ const handleRoomSubmit = (event) => {
   $c_a_u_r_name2.textContent = room_name // Arena 제한 시간 위 방제
 };
 
+// 방목록 최신화 -지훈
+arenaSocket.on('updateRoomList', (roomList)=>{
+  console.log('가져와졌나?', roomList)
+  const $board_list = document.getElementById("board-list");
+  const $board_table = $board_list.querySelector(".board-table");
+  const $tbody = $board_table.querySelector("tbody");
+  const $tr = $tbody.querySelector("tr");
+  // $tr.remove();
+  roomList.forEach((roomInfo) => {
+    const newRow = document.createElement("tr");
+    newRow.id = "room_" + roomInfo.ROOM_NUMBER;
+
+    // 방 정보를 td에 추가
+    newRow.innerHTML = `
+            <td>${roomInfo.ROOM_NUMBER}</td>
+            <td>${roomInfo.chatRoomMethod}</td>
+            <td>${roomInfo.ROOM_LANG}</td>
+            <th>
+              <a href="#" class="room-link" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <p>테스트</p>
+             </th>
+            <td>${roomInfo.HOST}</td>
+            <td></td>
+      `;
+    // 새로운 행을 테이블의 맨 위에 추가
+    $tbody.prepend(newRow);
+  })
+})
+
 $make_room_form.addEventListener("submit", handleRoomSubmit);
 
 arenaSocket.on("update_room_list", (roomInfo) => {
@@ -121,7 +151,7 @@ const addRoomToTable = (updateRooms) => {
 
        //tr 태그 생성 및 고유 방번호로 id값 부여 (삭제시 사용)
         const newRow = document.createElement("tr");
-        newRow.id = "room_" + roomInfo.room_number;
+        newRow.id = "room_" + roomInfo.ROOM_NUMBER;
     
         // 방 정보를 td에 추가
         newRow.innerHTML = `
@@ -138,29 +168,6 @@ const addRoomToTable = (updateRooms) => {
         // 새로운 행을 테이블의 맨 위에 추가
         $tbody.prepend(newRow);
     
-
-
-  // updateRooms.forEach((roomInfo) => {
-  //   const newRow = document.createElement("tr");
-  //   newRow.id = "room_" + roomInfo.room_number;
-
-  //   // 방 정보를 td에 추가
-  //   newRow.innerHTML = `
-  //       <td>${roomInfo.room_number}</td>
-  //       <td>${roomInfo.chatRoomMethod}</td>
-  //       <td>${roomInfo.dev_lang}</td>
-  //       <th>
-  //         <a href="#" class="room-link" data-roomname="${roomInfo.room_name}">${roomInfo.room_name}</a>
-  //         <p>테스트</p>
-  //        </th>
-  //       <td>${roomInfo.createdBy}</td>
-  //       <td>${roomInfo.createdDate}</td>
-  // `;
-  //   // 새로운 행을 테이블의 맨 위에 추가
-  //   $tbody.prepend(newRow);
-
-
-
     // 클릭 이벤트 핸들러 추가
     const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
     roomLinks.forEach((roomLink) => {
@@ -178,8 +185,9 @@ const addRoomToTable = (updateRooms) => {
     });
   });
 };
+
 const enterRoom = (currentNickname, roomName) => {
-  console.log("enterRoom 함수 실행");
+  console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.get("http://localhost:3000/room/createRoom")
   .then(res => {
@@ -210,7 +218,7 @@ const $leave_room = document.getElementById("leave_room");
 const leaveRoomBtn = () => {
   console.log("leaveRoomBtn 함수 활성화");
   let page = document.getElementById("code_arena_zip");
-  page.style.display = "none";
+  page.style.display = "none";                                                                                                                                                                                                                                                                                                                              
 
   let page2 = document.getElementById("notice");
   page2.style.display = "block";
