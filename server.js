@@ -146,7 +146,7 @@ ChatNamespace.on("connection", (socket) => {
 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log("update : ", updatedRoomList);
+    console.log("방목록 보여줘 : ", updatedRoomList);
     ChatNamespace.emit("update_room_list", updatedRoomList);
   });
 
@@ -228,6 +228,15 @@ const countRoomUsers = (room_name) => {
   // 함수 정의 끝
   // 닉네임 설정 받고 다시 보내기
 
+// 지훈 코드 삽입
+  axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
+  .then(res=>{
+    // ArenaNAMEspase.emit("updateRoom",)
+    let roomList = JSON.parse(res.data)
+    // console.log('방목록',roomList)
+    // 방목록 arena로 전달
+    socket.emit('updateRoomList', roomList)
+  })
 
   socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
@@ -244,8 +253,7 @@ const countRoomUsers = (room_name) => {
     }
     // console.log(chatRoomMethod);
 
-    // 지훈 코드 삽입
-
+    
 
     const roomInfo = {
       room_number: generateRoomNumber(),
@@ -260,9 +268,17 @@ const countRoomUsers = (room_name) => {
     rooms.set(room_name, roomInfo);
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    // console.log("update : ", updatedRoomList);
-    ArenaNamespace.emit("update_room_list", updatedRoomList);
+    console.log("방리스트알려줘", updatedRoomList);
+    socket.emit("update_room_list", updatedRoomList);
   });
+
+  socket.on('newlist',()=>{
+    axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
+      .then(res=>{
+        let roomList = JSON.parse(res.data)
+        ArenaNamespace.emit('updateRoomList2', roomList)
+      })
+  })
 
   // 방 입장 enter_room 감지하기
   socket.on(
@@ -309,13 +325,14 @@ const countRoomUsers = (room_name) => {
         }
         // 방 정보 갱신하여 방 리스트 업데이트
         const updatedRoomList = Array.from(rooms.values());
-        ChatNamespace.emit("update_room_list", updatedRoomList);
+        // ArenaNamespace.emit("update_room_list", updatedRoomList);
       }
       socket.room_name = null; // 방 이름 정보 초기화
     }
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_name));
     })
+  
   
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");
