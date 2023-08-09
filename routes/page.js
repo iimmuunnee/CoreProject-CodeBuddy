@@ -55,13 +55,13 @@ router.get('/CodeArena',(req,res)=>{
     let seLevel = req.session.userlevel
     let seLogin = req.session.login
         // 비 로그인 상태에서 접속 요청시, 로그인 페이지로 이동
-    // 로그인시 정상적으로 이동
-    if(seLogin){
+        // 로그인시 정상적으로 이동
         res.render('codeArenaList',{login : seLogin, name : seName, level : seLevel})
-    }
-    else{
-        res.render('join')
-    }
+    // if(seLogin){
+    // }
+    // else{
+    //     res.render('join')
+    // }
 })
 
 //main 이외의 페이지에서 code Chat 클릭시

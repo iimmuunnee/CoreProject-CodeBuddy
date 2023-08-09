@@ -101,25 +101,52 @@ const addRoomToTable = (updateRooms) => {
   const $tr = $tbody.querySelector("tr");
   $tr.remove();
 
-  console.log("addRoomToTable 함수 작동", updateRooms);
-  updateRooms.forEach((roomInfo) => {
-    const newRow = document.createElement("tr");
-    newRow.id = "room_" + roomInfo.room_number;
+  axios.post('/room/updateroom', {updateRooms})
+    .then(res=>{
+      console.log('방정보',res.data)
+      let roomInfo = JSON.parse(res.data)
 
-    // 방 정보를 td에 추가
-    newRow.innerHTML = `
-        <td>${roomInfo.room_number}</td>
-        <td>${roomInfo.chatRoomMethod}</td>
-        <td>${roomInfo.dev_lang}</td>
-        <th>
-          <a href="#" class="room-link" data-roomname="${roomInfo.room_name}">${roomInfo.room_name}</a>
-          <p>테스트</p>
-         </th>
-        <td>${roomInfo.createdBy}</td>
-        <td>${roomInfo.createdDate}</td>
-  `;
-    // 새로운 행을 테이블의 맨 위에 추가
-    $tbody.prepend(newRow);
+       //tr 태그 생성 및 고유 방번호로 id값 부여 (삭제시 사용)
+        const newRow = document.createElement("tr");
+        newRow.id = "room_" + roomInfo.room_number;
+    
+        // 방 정보를 td에 추가
+        newRow.innerHTML = `
+            <td>${roomInfo.ROOM_NUMBER}</td>
+            <td>${roomInfo.chatRoomMethod}</td>
+            <td>${roomInfo.ROOM_LANG}</td>
+            <th>
+              <a href="#" class="room-link" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <p>테스트</p>
+             </th>
+            <td>${roomInfo.HOST}</td>
+            <td></td>
+      `;
+        // 새로운 행을 테이블의 맨 위에 추가
+        $tbody.prepend(newRow);
+    
+
+
+  // updateRooms.forEach((roomInfo) => {
+  //   const newRow = document.createElement("tr");
+  //   newRow.id = "room_" + roomInfo.room_number;
+
+  //   // 방 정보를 td에 추가
+  //   newRow.innerHTML = `
+  //       <td>${roomInfo.room_number}</td>
+  //       <td>${roomInfo.chatRoomMethod}</td>
+  //       <td>${roomInfo.dev_lang}</td>
+  //       <th>
+  //         <a href="#" class="room-link" data-roomname="${roomInfo.room_name}">${roomInfo.room_name}</a>
+  //         <p>테스트</p>
+  //        </th>
+  //       <td>${roomInfo.createdBy}</td>
+  //       <td>${roomInfo.createdDate}</td>
+  // `;
+  //   // 새로운 행을 테이블의 맨 위에 추가
+  //   $tbody.prepend(newRow);
+
+
 
     // 클릭 이벤트 핸들러 추가
     const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
