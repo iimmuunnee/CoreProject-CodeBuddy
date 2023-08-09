@@ -10,9 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
     rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <!-- 비동기 통신 axios -->
-    <script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>    
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <!-- 비동기 통신 axios -->
+  <script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:400,700'>
+  <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Montserrat:300,400,600'>
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
+    rel="stylesheet" />
 </head>
 
 <body>
@@ -22,74 +30,137 @@
       <button id="main_c" class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
       <button id="main_a" class="m_btn_a" onclick="scrollToCodeArena()">CodeArena</button>
       <button class="m_btn" id="login_btn">Login</button>
-      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
+
     </div>
   </header>
-
+<!-- 
   <div class="m_content">
     <div class="m_c_img">
-      <img src="/img/new.jpg" alt="" />
-      <p class="m_c_p">Coding with Buddy</p>
-      <p class="m_c_p1">Boosts Development</p>
-    </div>
+        <img src="/img/legend.jpg" alt="">
+        <p class="m_c_p">Coding with Buddy</p>
+        <p class="m_c_p1">Boosts Development</p>
 
-    <div class="m_sodyd" id="m_sodyd_chat">
-      <div class="m_s_img">
-        <img src="/img/too.jpg" alt="" />
-      </div>
-      <div class="m_s_p">
-        <p class="m_s_p1">
-          서로의 코드를 공유하고 <br>코딩 스킬을 향상시킬 수 있는 Code Chat! <br> 멘토
-          멘티 기능도 제공합니다.
-        </p>
-        <p class="m_s_p2">함께 코딩해보세요!</p>
-        <button id="codeChat_btn" class="custom-btn btn-1">
-          Code Chat 시작하기
-        </button>
-      </div>
-    </div>
+    </div> -->
 
-    <div class="m_sodyd_a" id="m_sodyd_arena">
-      <div class="m_s_p">
-        <p class="m_s_p1">
-          코딩 문제풀이, 랭킹 경쟁 <br />그리고 상품 증정까지
-        </p>
-        <p class="m_s_p2">Code Arena에서 코딩 역량을 뽐내보세요!</p>
-        <button id="codeArena_btn" class="custom-btn btn-1">Code Arena 시작하기</button>
+    <main role="main">
+
+      <!-- Slider -->
+      <section class="velo-slides" data-velo-slider="on" data-velo-theme="light">
+        
+        <section class="velo-slide">
+      
+      <span class="velo-slider__hint"><span><span>Legend A v2</span></span></span> 
+      
+      <div class="velo-slide__bg">
+       
+        <figure class="velo-slide__figure" style="background-image: url('/img/buddy1.jpg')"></figure>
+        <div class="velo-slide__vid-wrap">
+          <!-- <video autoplay="" class="velo-slide__vid" loop="" poster="">
+            <source src="http://uiclients.com/assets/videos/ui-chaun.mp4" type="video/mp4"> Wait, are you still using IE? Bruv. Go get Chrome, or kick rocks.</video> -->
+        </div>
       </div>
-      <div class="m_s_img">
-        <img src="/img/arena.jpg" alt="" />
-      </div>
-    </div>
+      
+      <header class="velo-slide__header">
+         <h3 class="velo-slide__title"><span class="oh"><span style="position: absolute; left: 39%; top: 42%;">Code Buddy</span></span><span class="oh"></span></h3>
+        <p class="velo-slide__text"><span class="oh"><span style="position: absolute; top: 52%; left: 42%;">Coding with Buddy Boosts Development</span></span></p> 
+        
+        <!-- <span class="velo-slide__btn"><a class="btn-draw btn--white" href="http://urbaninfluence.com"><span class="btn-draw__text"><span>View Project</span></span></a></span> -->
+      </header>
+    </section>
+        <!-- Slide -->
+        <section class="velo-slide">
+
+          <!-- Pretitle Hint -->
+
+          <!-- Slide BG -->
+          <div class="velo-slide__bg">
+            <!-- Img -->
+            <figure class="velo-slide__figure" style="background-image: url('/img/buddy3.jpg')" ;></figure>
+          </div>
+
+          <!-- Header -->
+          <header class="velo-slide__header">
+            <h3 class="velo-slide__title"><span class="oh"><span>Code Chat</span></span><span class="oh"><span>Share
+                  Your Opinion</span></span></h3>
+            <p class="velo-slide__text"><span class="oh"><span>코드 에디터와 실시간 채팅이 통합된 서비스로 <br>입문 개발자들은 다양한 사람들과 함께 코드를
+                  공유하고 리뷰하며 <br> 멘토·멘티 관계를 형성하여 성장할 수 있습니다</span></span></p>
+            <span class="velo-slide__btn"><a class="btn-draw btn--white" href="#"><span
+                  class="btn-draw__text"><span>Let's go</span></span></a></span>
+          </header>
+        </section>
+
+        <!-- Slide -->
+        <section class="velo-slide">
+          <!-- Slide BG -->
+          <div class="velo-slide__bg">
+            <!-- Img -->
+            <figure class="velo-slide__figure" style="background-image: url('/img/vic.jpg')" ;></figure>
+          </div>
+
+          <!-- Header -->
+          <header class="velo-slide__header">
+            <h3 class="velo-slide__title"><span class="oh"><span>Code Arena</span></span><span class="oh"><span>Develop
+                  Your Skills</span></span></h3>
+            <p class="velo-slide__text"><span class="oh"><span>혼자 공부하는 지루함을 이겨내고 <br> 빠르게 문제를 풀며 경쟁할 수 있는 서비스로 여러분을
+                  초대합니다! <br> </span></span></p>
+            <span class="velo-slide__btn"><a class="btn-draw btn--white" href="#/"><span
+                  class="btn-draw__text"><span>Let's go</span></span></a></span>
+          </header>
+        </section>
+
+        <!-- Slide - with Video -->
+
+        <!-- Slides Nav -->
+        <nav class="velo-slides-nav">
+          <ul class="velo-slides-nav__list">
+            <li>
+              <a class="js-velo-slides-prev velo-slides-nav__prev inactive" href="#0"><i class="icon-up-arrow"></i></a>
+            </li>
+            <li>
+              <a class="js-velo-slides-next velo-slides-nav__next" href="#"><i class="icon-down-arrow"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </section>
+    </main>
   </div>
+
+  
+  
+  <!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/velocity/1.3.0/velocity.js'></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/velocity/1.3.0/velocity.ui.js'></script>
+
   <script src="/js/main.js"></script>
+  <script src="/js/script.js"></script>
 
 
-    <!-- 세션 로그인 스크립트 -지훈- --> 
+  <!-- 세션 로그인 스크립트 -지훈- -->
   <script>
-        // 로그인 했을 시 사용자 이름 표시
+    // 로그인 했을 시 사용자 이름 표시
     let login = '{{login}}'
     let logout = '{{logout}}'
 
-    if(login) {
+    if (login) {
       document.querySelector('#login_btn').style.display = 'none'
       document.querySelector('#userInfo_btn').style.display = 'inline'
-      console.log('로그인',login)
-    }    
-    if(logout){
+      console.log('로그인', login)
+    }
+    if (logout) {
       document.querySelector('#login_btn').style.display = 'inline'
       document.querySelector('#userInfo_btn').style.display = 'none'
-      console.log('로그아웃',logout)
+      console.log('로그아웃', logout)
     }
 
     // 메인 이외의 다른 페이지에서 Code Chat 클릭시 메인이동 후 Code Chat 클릭
     let moveCode = '{{code}}'
-    if(moveCode){
+    if (moveCode) {
       document.getElementById('main_c').click()
     }
 
     let moveArena = '{{arena}}'
-    if(moveArena){
+    if (moveArena) {
       document.getElementById('main_a').click()
     }
 

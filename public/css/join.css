@@ -89,9 +89,9 @@
     transition: all 0.1s ease-out;
   }
   .login-page .login-content form.wrapper-box button:hover {
-    color: #7ac142;
+    color: #24283B;
     background: #fff;
-    border: 2px solid #7ac142;
+    border: 2px solid #24283B;
   }
   .login-page .login-content form.wrapper-box button:active {
     box-shadow: none;
