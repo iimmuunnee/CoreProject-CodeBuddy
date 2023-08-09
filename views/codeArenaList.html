@@ -252,30 +252,29 @@
     </div>
     <div id="modal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 class="make-h2">방 생성</h2>
-        <form id="make_room_form">
-          <div class="m_div">
-            <label for="room-name">방 이름:</label>
-            <input type="text" id="room_name" name="room_name" required />
-          </div>
-          <div class="m_div">
-            <label for="chat-method">채팅방식</label>
-            <select name="chatRoomMethod" id="chatRoomMethod">
-              <option value="one_to_one">1:1채팅</option>
-              <option value="one_to_many">오픈채팅</option>
-            </select>
-          </div>
-          <div class="m_div">
-            <label for="dev-lang">개발언어</label>
-            <select name="dev_lang" id="dev_lang">
-              <option value="html/css">HTML/CSS</option>
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-            </select>
-          </div>
-          <button type="submit" class="make-btn">만들기</button>
-        </form>
+        <div class="modal-content1">
+          <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-content2">
+          <h2 class="make-h2">방 생성</h2>
+        </div>
+        <div class="modal-content3">
+          <form id="make_room_form" class="make_room_form">
+            <div class="m_div1">
+              <label for="room-name">방 이름</label>
+              <input type="text" id="room_name" name="room_name" required />
+            </div>
+            <div class="m_div2">
+              <label for="dev-lang">개발언어</label>
+              <select name="dev_lang" id="dev_lang">
+                <option value="html/css">HTML/CSS</option>
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+              </select>
+            </div>
+            <button type="submit" class="make-btn">만들기</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
