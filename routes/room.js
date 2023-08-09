@@ -12,6 +12,33 @@ router.get('/createRoom',(req,res)=>{
 })
 
 
+router.post('/enterRoom',(req,res)=>{
+    let checkEnd = req.session.userName
+    console.log(checkEnd)
+    let roomNum = req.body.roomNum
+    let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT+1 WHERE ROOM_NUMBER=?;'
+    let conutSql = 'SELECT * FROM TB_ARENAROOM;'
+    conn.connect()
+    conn.query(sql,[roomNum],(err,result)=>{
+        if(err){
+            console.log('유저수 카운트 추가 쿼리문 에러')
+        }
+        else{
+            conn.query(conutSql,(err,result)=>{
+                if(err){
+                    console.log('실패')
+                }
+                else{
+                    res.json(JSON.stringify({result:result, name:checkEnd}))
+                }
+            })
+        }
+    })
+
+    // res.send(JSON.stringify(checkEnd))
+})
+
+
 // 방 생성시 방 정보 database에 저장
 router.post('/updateroom',(req,res)=>{
     console.log('방정보',req.body.updateRooms[0])
