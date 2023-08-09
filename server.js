@@ -74,17 +74,19 @@ app.use(
       res.setHeader("Content-Type", mimeType);
     },
   })
-);
-
-app.use("/page", page);
-app.use("/user", user);
-app.use(kakao);
-app.use("/room",room)
-
-// "Chat" namespace에 접속한 클라이언트 처리
-ChatNamespace.on("connection", (socket) => {
-  const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
-  const rooms = new Map();
+  );
+  
+  app.use("/page", page);
+  app.use("/user", user);
+  app.use(kakao);
+  app.use("/room",room)
+  
+  // "Chat" namespace에 접속한 클라이언트 처리
+  ChatNamespace.on("connection", (socket) => {
+    const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
+    const rooms = new Map();
+    console.log("Chat 네임스페이스에 클라이언트가 연결되었습니다.");
+    // console.log("입장하기 전 소켓이 들어간 방", socket.rooms);
   // 함수 정의
   // 방의 인원수를 세는 함수
   // const countRoomUsers = (room_name) => {
@@ -107,18 +109,8 @@ ChatNamespace.on("connection", (socket) => {
   };
 
   // 함수 정의 끝
-  console.log("Chat 네임스페이스에 클라이언트가 연결되었습니다.");
-  console.log("입장하기 전 소켓이 들어간 방", socket.rooms);
   socket.onAny((event) => {
     console.log(`backSocket Event: ${event}`);
-  });
-
-  // 닉네임 설정 받고 다시 보내기
-  socket.on("nickname", (nickname) => {
-    console.log("서버 nickname 이벤트 활성화");
-    console.log("사용자의 닉네임 : ", nickname);
-    socket["nickname"] = nickname; // 소켓 객체에 "nickname"이라는 속성 추가
-    io.of("/CodeChat").to(socket.id).emit("nickname", { nickname });
   });
 
   socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
@@ -220,6 +212,7 @@ ArenaNamespace.on("connection", (socket) => {
 
 // 방의 인원수를 세는 함수
 const countRoomUsers = (room_name) => {
+  console.log();
   const room = ArenaNamespace.adapter.rooms.get(room_name);
   return room ? room.size : 0;
 };
@@ -233,9 +226,6 @@ const countRoomUsers = (room_name) => {
     console.log("create_room 이벤트 서버로 도착");
     // console.log("rooms : ", rooms);
     // console.log('닉넴',nickname)
-    if (rooms.has(room_name)) {
-
-    }
 
     if (chatRoomMethod === "one_to_one") {
       chatRoomMethod = "1:1채팅";
@@ -245,7 +235,6 @@ const countRoomUsers = (room_name) => {
     // console.log(chatRoomMethod);
 
     // 지훈 코드 삽입
-
 
     const roomInfo = {
       room_number: generateRoomNumber(),
@@ -296,7 +285,12 @@ const countRoomUsers = (room_name) => {
     }
   );
 
-    socket.on("leave_room", () => {
+  socket.on("new_message", ({currentNickname, message: message,}) => {
+    ArenaNamespace.emit("new_message", {currentNickname, message: message,})
+    // 방 이름 정보를 가져와서 해결해야함
+  })
+
+  socket.on("leave_room", () => {
     const room_name = socket.room_name;
     if (room_name) {
       socket.leave(room_name); // 방에서 퇴장
@@ -309,13 +303,13 @@ const countRoomUsers = (room_name) => {
         }
         // 방 정보 갱신하여 방 리스트 업데이트
         const updatedRoomList = Array.from(rooms.values());
-        ChatNamespace.emit("update_room_list", updatedRoomList);
+        ArenaNamespace.emit("update_room_list", updatedRoomList);
       }
       socket.room_name = null; // 방 이름 정보 초기화
     }
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_name));
-    })
+  })
   
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");

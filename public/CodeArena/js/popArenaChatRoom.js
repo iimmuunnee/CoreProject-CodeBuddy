@@ -3,6 +3,7 @@ const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 �
 const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
 const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
 const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
+const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2")
 
 // 방 떠나기 함수
 const handleLeaveRoom = () => {
@@ -24,15 +25,11 @@ const handleMessageSubmit = (event) => {
   event.preventDefault();
   const message = $form_input.value; // 메시지 입력값 가져오기
   console.log("메세지 핸들러, 메세지 : ", message);
+  console.log("userInfo : ", currentNickname);
 
-    console.log("userInfo : ", currentNickname);
-
-    arenaSocket.emit(
+  arenaSocket.emit(
     "new_message",
-    {currentNickname, message: message,},
-    () => {
-      Chat.sendMessage(currentNickname, message);
-    }
+    {currentNickname, message: message}
   )
 
   $form_input.value = ""; // 입력 창 초기화
@@ -45,7 +42,11 @@ arenaSocket.on("connect", () => {
 
 arenaSocket.on("new_message", ({ currentNickname, message }) => {
   console.log("new_message이벤트 프론트에서 받음");
-  Chat.sendMessage(currentNickname, message);
+  const $div = document.createElement("div");
+  $div.textContent = `${currentNickname} : ${message}`
+  $c_main_content.appendChild($div);
+
+  // Chat.sendMessage(currentNickname, message);
 });
 
 // 프론트로 온 이벤트 감지
@@ -144,6 +145,7 @@ const Chat = (function () {
 
   // 메세지 전송
   function sendMessage(nickname, message) {
+    console.log("sendMessage 함수 활성화");
     // 서버에 전송하는 코드로 후에 대체
     const data = {
       senderName: nickname,

@@ -1,5 +1,6 @@
-// socket.io 사용
 const arenaSocket = io("/CodeArena");
+
+// socket.io 사용
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
 const $make_room_form = document.getElementById("make_room_form"); // 방 정보 입력 폼
@@ -84,6 +85,7 @@ const handleRoomSubmit = (event) => {
 
   $c_c_name.textContent = room_name; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
+  $c_a_u_r_name2.textContent = room_name // Arena 제한 시간 위 방제
 };
 
 $make_room_form.addEventListener("submit", handleRoomSubmit);
@@ -125,9 +127,14 @@ const addRoomToTable = (updateRooms) => {
     const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
     roomLinks.forEach((roomLink) => {
       roomLink.addEventListener("click", (event) => {
+        axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+        .then((res) => {
+          currentNickname = res.data
+        })
         event.preventDefault(); // 링크 기본 동작 방지
         const roomName = roomLink.dataset.roomname; // 방 제목 가져오기
         console.log("roomName : ", roomName);
+        console.log("방 제목으로 입장하는 닉네임 : ", currentNickname);
         enterRoom(currentNickname, roomName); // 해당 방으로 입장하는 함수 호출
       });
     });
@@ -138,6 +145,7 @@ const enterRoom = (currentNickname, roomName) => {
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.get("http://localhost:3000/room/createRoom")
   .then(res => {
+    currentNickname = res.data;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
       nickname: res.data,
@@ -146,6 +154,7 @@ const enterRoom = (currentNickname, roomName) => {
 
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
+  $c_a_u_r_name2.textContent = roomName // Arena 제한 시간 위 방제
 
   arenaSocket.on("user_count", ({ user_count }) => {
     console.log("user_count 이벤트 도착");
