@@ -138,7 +138,7 @@ app.use(
 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log("update : ", updatedRoomList);
+    console.log("방목록 보여줘 : ", updatedRoomList);
     ChatNamespace.emit("update_room_list", updatedRoomList);
   });
 
