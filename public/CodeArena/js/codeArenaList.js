@@ -2,9 +2,8 @@
 const arenaSocket = io("/CodeArena");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
-const $make_room_form = document.getElementById("make_room_form"); // 방 정보 입력 폼
+const $make_room_form = document.querySelector("#make_room_form"); // 방 정보 입력 폼
 const $room_name = document.getElementById("room_name"); // 방 이름 입력 input
-const $chatRoomMethod = document.getElementById("chatRoomMethod"); // 방의 채팅 방식 select
 const $dev_lang = document.getElementById("dev_lang"); // 방의 언어 방식 select
 
 const $chat = document.getElementById("chat"); // 전체 div 채팅창 선택
@@ -49,7 +48,6 @@ let currentNickname = "";
 const handleRoomSubmit = (event) => {
   event.preventDefault();
   const room_name = $room_name.value;
-  const chatRoomMethod = $chatRoomMethod.value;
   const dev_lang = $dev_lang.value;
   // 지훈 코드 삽입 (방생성)
   axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
@@ -57,7 +55,6 @@ const handleRoomSubmit = (event) => {
       currentNickname = res.data;
       arenaSocket.emit("create_room", {
         room_name: room_name,
-        chatRoomMethod: chatRoomMethod,
         dev_lang: dev_lang,
         nickname: res.data, // 사용자 이름
       });
@@ -84,7 +81,7 @@ const handleRoomSubmit = (event) => {
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
 };
 
-// 방목록 최신화 -지훈
+// 방목록 최신화 ------------------지훈---------------------
 
 //최신화 함수
 const updateArenaRoom = (roomList)=>{  
@@ -106,18 +103,20 @@ const updateArenaRoom = (roomList)=>{
               <p>테스트</p>
              </th>
             <td>${roomInfo.HOST}</td>
-            <td></td>
+            <td>${roomInfo.USER_COUNT}/4</td>
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
   })
 }
 
+// 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on('updateRoomList', (roomList)=>{
   console.log('가져와졌나?', roomList)
   updateArenaRoom(roomList)
 })
 
+// 방 생성시 채팅방 리스트 최신화(기존의 테이블 tr 모두 삭제 후 최신화)
 arenaSocket.on('updateRoomList2', (roomList)=>{
   console.log('업데이트2',roomList)
   const $board_list = document.getElementById("board-list");
@@ -130,6 +129,10 @@ arenaSocket.on('updateRoomList2', (roomList)=>{
   updateArenaRoom(roomList)
 })
 
+
+// --------------------지훈 끝--------------------------------
+
+//
 $make_room_form.addEventListener("submit", handleRoomSubmit);
 
 arenaSocket.on("update_room_list", (roomInfo) => {
