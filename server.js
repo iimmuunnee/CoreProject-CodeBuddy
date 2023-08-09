@@ -265,6 +265,11 @@ const countRoomUsers = (room_name) => {
         ArenaNamespace.emit('updateRoomList2', roomList)
       })
   })
+  
+  socket.on('userCount',(data)=>{
+    ArenaNamespace.emit('countUpdate',(data))
+  })
+
 
   // 방 입장 enter_room 감지하기
   socket.on(

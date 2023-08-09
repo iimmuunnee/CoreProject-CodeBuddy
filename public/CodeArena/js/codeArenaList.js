@@ -160,6 +160,18 @@ arenaSocket.on('updateRoomList2', (roomList)=>{
   updateArenaRoom(roomList)
 })
 
+arenaSocket.on('countUpdate',(data)=>{
+  console.log('머냐',data.data)
+  const $board_list = document.getElementById("board-list");
+  const $board_table = $board_list.querySelector(".board-table");
+  const $tbody = $board_table.querySelector("tbody");
+  const $trs = $tbody.querySelectorAll("tr");
+  $trs.forEach($tr => {
+    $tr.remove();
+  });
+  updateArenaRoom(data.data)
+})
+
 
 // --------------------지훈 끝--------------------------------
 
@@ -187,13 +199,17 @@ const addRoomToTable = (updateRooms) => {
 const enterRoom = (currentNickname, roomName) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
-  axios.get("http://localhost:3000/room/createRoom")
+  axios.post("http://localhost:3000/room/enterRoom", {roomName})
   .then(res => {
-    currentNickname = res.data;
+    let data = JSON.parse(res.data)
+    console.log('가져오자',data)
+    currentNickname = data.name;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
-      nickname: res.data,
+      nickname: data.name,
     });
+
+    arenaSocket.emit('userCount',{data:data.result})
   })
 
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
