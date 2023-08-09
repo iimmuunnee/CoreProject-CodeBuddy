@@ -21,7 +21,7 @@
     "passport": "^0.6.0",
     "passport-kakao": "^1.0.1",
     "qs": "^6.11.2",
-    "socket.io": "^4.7.1",
+    "socket.io": "^4.7.2",
     "@socket.io/admin-ui": "^0.5.1",
     "mime": "^3.0.0",
     "socket.io-client": "^4.7.2"

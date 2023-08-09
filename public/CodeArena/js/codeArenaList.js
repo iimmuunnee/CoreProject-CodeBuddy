@@ -1,5 +1,17 @@
+const getCurrentURL = () => {
+  return window.location.href;
+}
+const getNamespaceFromURL = (url) => {
+  if (url.includes("CodeArena")){
+    return "/CodeArena"
+  }
+}
+
+const currentURL = getCurrentURL();
+const namespace = getNamespaceFromURL(currentURL)
+const arenaSocket = io(namespace);
+
 // socket.io 사용
-const arenaSocket = io("/CodeArena");
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
 
 const $make_room_form = document.querySelector("#make_room_form"); // 방 정보 입력 폼
@@ -16,6 +28,7 @@ const $c_c_name = $c_content_name.querySelector(".c_c_name"); // 방 이름을 �
 const $mini_room_name = document.getElementById("mini_room_name"); // 미니 방 이름 적는 곳
 const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
+const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2")
 
 const openarena = () => {
   let page = document.getElementById("code_arena_zip");
@@ -79,6 +92,7 @@ const handleRoomSubmit = (event) => {
 
   $c_c_name.textContent = room_name; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
+  $c_a_u_r_name2.textContent = room_name // Arena 제한 시간 위 방제
 };
 
 // 방목록 최신화 ------------------지훈---------------------
@@ -107,6 +121,23 @@ const updateArenaRoom = (roomList)=>{
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
+    
+        // 클릭 이벤트 핸들러 추가
+        const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
+        console.log("roomLinks : ", roomLinks);
+        roomLinks.forEach((roomLink) => {
+          roomLink.addEventListener("click", (event) => {
+            axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+            .then((res) => {
+              currentNickname = res.data
+            })
+            event.preventDefault(); // 링크 기본 동작 방지
+            const roomName = roomLink.dataset.roomname; // 방 제목 가져오기
+            console.log("roomName : ", roomName);
+            console.log("방 제목으로 입장하는 닉네임 : ", currentNickname);
+            enterRoom(currentNickname, roomName); // 해당 방으로 입장하는 함수 호출
+          });
+        });
   })
 }
 
@@ -150,50 +181,15 @@ const addRoomToTable = (updateRooms) => {
       console.log('방정보',res.data)
       let roomInfo = JSON.parse(res.data)
       arenaSocket.emit('newlist')
-
-
-      //  //tr 태그 생성 및 고유 방번호로 id값 부여 (삭제시 사용)
-      //   const newRow = document.createElement("tr");
-      //   newRow.id = "room_" + roomInfo.ROOM_NUMBER;
-    
-      //   // 방 정보를 td에 추가
-      //   newRow.innerHTML = `
-      //       <td>${roomInfo.ROOM_NUMBER}</td>
-      //       <td>${roomInfo.chatRoomMethod}</td>
-      //       <td>${roomInfo.ROOM_LANG}</td>
-      //       <th>
-      //         <a href="#" class="room-link" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
-      //         <p>테스트</p>
-      //        </th>
-      //       <td>${roomInfo.HOST}</td>
-      //       <td></td>
-      // `;
-      //   // 새로운 행을 테이블의 맨 위에 추가
-      //   $tbody.prepend(newRow);
-    
-
-
-  
-
-
-
-    // 클릭 이벤트 핸들러 추가
-    const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
-    roomLinks.forEach((roomLink) => {
-      roomLink.addEventListener("click", (event) => {
-        event.preventDefault(); // 링크 기본 동작 방지
-        const roomName = roomLink.dataset.roomname; // 방 제목 가져오기
-        console.log("roomName : ", roomName);
-        enterRoom(currentNickname, roomName); // 해당 방으로 입장하는 함수 호출
-      });
-    });
   });
 };
+
 const enterRoom = (currentNickname, roomName) => {
-  console.log("enterRoom 함수 실행");
+  console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.get("http://localhost:3000/room/createRoom")
   .then(res => {
+    currentNickname = res.data;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
       nickname: res.data,
@@ -202,6 +198,7 @@ const enterRoom = (currentNickname, roomName) => {
 
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
+  $c_a_u_r_name2.textContent = roomName // Arena 제한 시간 위 방제
 
   arenaSocket.on("user_count", ({ user_count }) => {
     console.log("user_count 이벤트 도착");
@@ -220,7 +217,7 @@ const leaveRoomBtn = () => {
   
   console.log("leaveRoomBtn 함수 활성화");
   let page = document.getElementById("code_arena_zip");
-  page.style.display = "none";
+  page.style.display = "none";                                                                                                                                                                                                                                                                                                                              
 
   let page2 = document.getElementById("notice");
   page2.style.display = "block";
