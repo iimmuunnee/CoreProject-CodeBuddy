@@ -148,17 +148,18 @@ app.use(
     ({
       room_name,
       nickname,
+      roomNum,
     }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
 
-      socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
+      socket["room_name"] = roomNum; // 소캣 객체에 "room_name"이라는 속성 추가
 
-      socket.join(room_name); // 방에 입장하기
+      socket.join(roomNum); // 방에 입장하기
 
       io.of("/CodeChat")
-        .to(room_name)
+        .to(roomNum)
         .emit("welcome", {
           nickname,
         });

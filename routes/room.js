@@ -15,12 +15,11 @@ router.get('/createRoom',(req,res)=>{
 router.post('/enterRoom',(req,res)=>{
     let checkEnd = req.session.userName
     console.log(checkEnd)
-    let roomname = req.body.roomName
-    console.log('뭐냐',req.body.roomName)
-    let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT+1 WHERE ROOM_NAME=?;'
+    let roomNum = req.body.roomNum
+    let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT+1 WHERE ROOM_NUMBER=?;'
     let conutSql = 'SELECT * FROM TB_ARENAROOM;'
     conn.connect()
-    conn.query(sql,[roomname],(err,result)=>{
+    conn.query(sql,[roomNum],(err,result)=>{
         if(err){
             console.log('유저수 카운트 추가 쿼리문 에러')
         }
