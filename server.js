@@ -228,6 +228,15 @@ const countRoomUsers = (room_name) => {
   // 함수 정의 끝
   // 닉네임 설정 받고 다시 보내기
 
+// 지훈 코드 삽입
+  axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
+  .then(res=>{
+    // ArenaNAMEspase.emit("updateRoom",)
+    let roomList = JSON.parse(res.data)
+    // console.log('방목록',roomList)
+    // 방목록 arena로 전달
+    ArenaNamespace.emit('updateRoomList', roomList)
+  })
 
   socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
@@ -244,8 +253,7 @@ const countRoomUsers = (room_name) => {
     }
     // console.log(chatRoomMethod);
 
-    // 지훈 코드 삽입
-
+    
 
     const roomInfo = {
       room_number: generateRoomNumber(),
@@ -260,7 +268,7 @@ const countRoomUsers = (room_name) => {
     rooms.set(room_name, roomInfo);
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    // console.log("update : ", updatedRoomList);
+    console.log("방리스트알려줘", updatedRoomList);
     ArenaNamespace.emit("update_room_list", updatedRoomList);
   });
 

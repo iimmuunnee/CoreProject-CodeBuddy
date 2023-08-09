@@ -40,5 +40,16 @@ router.post('/updateroom',(req,res)=>{
     })
 })
 
+// arena chat namespace 입장시 요청
+router.get('/arenaList',(req,res)=>{
+    let sql = 'SELECT * FROM TB_ARENAROOM;'
+
+    conn.connect()
+    conn.query(sql,(err,result)=>{
+        // console.log('이거도보자',result)
+        res.json(JSON.stringify(result))
+    })
+})
+
 
 module.exports = router

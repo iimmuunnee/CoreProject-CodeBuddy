@@ -86,6 +86,35 @@ const handleRoomSubmit = (event) => {
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
 };
 
+// 방목록 최신화 -지훈
+arenaSocket.on('updateRoomList', (roomList)=>{
+  console.log('가져와졌나?', roomList)
+  const $board_list = document.getElementById("board-list");
+  const $board_table = $board_list.querySelector(".board-table");
+  const $tbody = $board_table.querySelector("tbody");
+  const $tr = $tbody.querySelector("tr");
+  // $tr.remove();
+  roomList.forEach((roomInfo) => {
+    const newRow = document.createElement("tr");
+    newRow.id = "room_" + roomInfo.ROOM_NUMBER;
+
+    // 방 정보를 td에 추가
+    newRow.innerHTML = `
+            <td>${roomInfo.ROOM_NUMBER}</td>
+            <td>${roomInfo.chatRoomMethod}</td>
+            <td>${roomInfo.ROOM_LANG}</td>
+            <th>
+              <a href="#" class="room-link" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <p>테스트</p>
+             </th>
+            <td>${roomInfo.HOST}</td>
+            <td></td>
+      `;
+    // 새로운 행을 테이블의 맨 위에 추가
+    $tbody.prepend(newRow);
+  })
+})
+
 $make_room_form.addEventListener("submit", handleRoomSubmit);
 
 arenaSocket.on("update_room_list", (roomInfo) => {
@@ -108,7 +137,7 @@ const addRoomToTable = (updateRooms) => {
 
        //tr 태그 생성 및 고유 방번호로 id값 부여 (삭제시 사용)
         const newRow = document.createElement("tr");
-        newRow.id = "room_" + roomInfo.room_number;
+        newRow.id = "room_" + roomInfo.ROOM_NUMBER;
     
         // 방 정보를 td에 추가
         newRow.innerHTML = `
@@ -127,24 +156,7 @@ const addRoomToTable = (updateRooms) => {
     
 
 
-  // updateRooms.forEach((roomInfo) => {
-  //   const newRow = document.createElement("tr");
-  //   newRow.id = "room_" + roomInfo.room_number;
-
-  //   // 방 정보를 td에 추가
-  //   newRow.innerHTML = `
-  //       <td>${roomInfo.room_number}</td>
-  //       <td>${roomInfo.chatRoomMethod}</td>
-  //       <td>${roomInfo.dev_lang}</td>
-  //       <th>
-  //         <a href="#" class="room-link" data-roomname="${roomInfo.room_name}">${roomInfo.room_name}</a>
-  //         <p>테스트</p>
-  //        </th>
-  //       <td>${roomInfo.createdBy}</td>
-  //       <td>${roomInfo.createdDate}</td>
-  // `;
-  //   // 새로운 행을 테이블의 맨 위에 추가
-  //   $tbody.prepend(newRow);
+  
 
 
 
