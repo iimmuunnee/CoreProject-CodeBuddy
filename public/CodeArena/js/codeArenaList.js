@@ -124,7 +124,7 @@ const updateArenaRoom = (roomList)=>{
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
-    
+
         // 클릭 이벤트 핸들러 추가
         const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
         console.log("roomLinks : ", roomLinks);
@@ -180,7 +180,7 @@ const addRoomToTable = (updateRooms) => {
       arenaSocket.emit('newlist')
   });
 };
-
+ 
 const enterRoom = (currentNickname, roomName) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
