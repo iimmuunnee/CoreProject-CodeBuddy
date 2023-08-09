@@ -228,7 +228,7 @@ const countRoomUsers = (room_name) => {
     let roomList = JSON.parse(res.data)
     // console.log('방목록',roomList)
     // 방목록 arena로 전달
-    ArenaNamespace.emit('updateRoomList', roomList)
+    socket.emit('updateRoomList', roomList)
   })
 
   socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
@@ -241,9 +241,6 @@ const countRoomUsers = (room_name) => {
     } else {
       chatRoomMethod = "오픈채팅";
     }
-    // console.log(chatRoomMethod);
-
-    
 
     const roomInfo = {
       room_number: generateRoomNumber(),
@@ -251,7 +248,6 @@ const countRoomUsers = (room_name) => {
       chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
       createdBy: nickname ,
-      createdDate: new Date().toISOString().slice(0, 10),
       userCount : countRoomUsers(room_name) + 1,
     };
     // console.log(roomInfo);
@@ -259,8 +255,16 @@ const countRoomUsers = (room_name) => {
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
     console.log("방리스트알려줘", updatedRoomList);
-    ArenaNamespace.emit("update_room_list", updatedRoomList);
+    socket.emit("update_room_list", updatedRoomList);
   });
+
+  socket.on('newlist',()=>{
+    axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
+      .then(res=>{
+        let roomList = JSON.parse(res.data)
+        ArenaNamespace.emit('updateRoomList2', roomList)
+      })
+  })
 
   // 방 입장 enter_room 감지하기
   socket.on(
@@ -312,13 +316,14 @@ const countRoomUsers = (room_name) => {
         }
         // 방 정보 갱신하여 방 리스트 업데이트
         const updatedRoomList = Array.from(rooms.values());
-        ArenaNamespace.emit("update_room_list", updatedRoomList);
+        // ArenaNamespace.emit("update_room_list", updatedRoomList);
       }
       socket.room_name = null; // 방 이름 정보 초기화
     }
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_name));
   })
+  
   
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");
