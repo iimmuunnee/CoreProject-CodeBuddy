@@ -187,9 +187,15 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
+<<<<<<< HEAD
 // arenaSocket.on("enter_room", ({room_name, nickname, roomNum,}) => {
 //   enterRoom(nickname, room_name, roomNum)
 // })
+=======
+arenaSocket.on("enter_room", ({room_name, nickname, roomNum,}) => {
+  enterRoom(nickname, room_name, roomNum)
+})
+>>>>>>> c950183d1c5289a53655c5c45ba2bfa345d39170
 
 const enterRoom = (currentNickname, roomName ,roomNum) => {
   console.log("enterRoom   실행");
