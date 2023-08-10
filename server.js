@@ -204,15 +204,8 @@ const countRoomUsers = (room_name) => {
   // 닉네임 설정 받고 다시 보내기
 
 // 지훈 코드 삽입
-  axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
-  .then(res=>{
-    // ArenaNAMEspase.emit("updateRoom",)
-    let roomList = JSON.parse(res.data)
-    // console.log('현재 생성되어있는',roomList)
-    // 방목록 arena로 전달
-    socket.emit('updateRoomList', roomList)
-  })
-
+// 방목록 arena로 전달
+socket.emit('updateRoomList')
   socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     // console.log("rooms : ", rooms);
@@ -234,11 +227,7 @@ const countRoomUsers = (room_name) => {
   });
 
   socket.on('newlist',()=>{
-    axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
-      .then(res=>{
-        let roomList = JSON.parse(res.data)
-        ArenaNamespace.emit('updateRoomList2', roomList)
-      })
+      ArenaNamespace.emit('updateRoomList2')
   })
   
   socket.on('userCount',(data)=>{
@@ -288,7 +277,7 @@ const countRoomUsers = (room_name) => {
     // 방 이름 정보를 가져와서 해결해야함
   })
 
-  socket.on("leave_room", () => {
+  socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
     socket.emit('leaveuser', room_number)
     if (room_number) {
@@ -307,6 +296,8 @@ const countRoomUsers = (room_name) => {
       }
       socket.room_number = null; // 방 이름 정보 초기화
     }
+
+    ArenaNamespace.to(room_number).emit("bye", {currentNickname})
     
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
@@ -322,6 +313,8 @@ const countRoomUsers = (room_name) => {
   });
 });
 
-http.listen(3000, function () {
+const host = '0.0.0.0'
+
+http.listen(3000,function () {
   console.log("Code Buddy server listening on port http://localhost:3000/page");
 });

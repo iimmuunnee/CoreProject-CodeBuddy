@@ -51,7 +51,7 @@ const handleRoomSubmit = (event) => {
   const room_name = $room_name.value;
   const dev_lang = $dev_lang.value;
   // 지훈 코드 삽입 (방생성)
-  axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+  axios.get("/room/createRoom", { room: "hi" })
   .then((res) => {
     currentNickname = res.data;
     arenaSocket.emit("create_room", {
@@ -80,13 +80,8 @@ arenaSocket.on("user_count", ({ user_count }) => {
 
 // 방목록 최신화 ------------------지훈---------------------
 
-const clickEvent = ()=>{
-  
-}
-
-
 let currentNickname = "";
-let roomName
+let roomName = ""
 let roomNum
 let roomLinks
 let clickEventHandler = null;
@@ -116,6 +111,7 @@ const updateArenaRoom = (roomList)=>{
   roomList.forEach((roomInfo) => {
     const newRow = document.createElement("tr");
     newRow.id = "room_" + roomInfo.ROOM_NUMBER;
+    // console.log(roomInfo);
     // 방 정보를 td에 추가
     newRow.innerHTML = `
             <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
@@ -128,8 +124,7 @@ const updateArenaRoom = (roomList)=>{
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
-    roomName = roomInfo.ROOM_NAME // 방 제목 가져오기
-    roomNum = roomInfo.ROOM_NUMBER // 방 번호 가져오기
+    
     axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
     .then((res) => {
       currentNickname = res.data 
@@ -153,21 +148,29 @@ const updateArenaRoom = (roomList)=>{
 // });
 
 // 사용자 접속시 채팅방 리스트 최신화
-arenaSocket.on('updateRoomList', (roomList)=>{
-  
-  updateArenaRoom(roomList)
+arenaSocket.on('updateRoomList', ()=>{
+  axios.get('/room/arenaList', {re:'hi'})
+  .then(res=>{
+    let roomList = JSON.parse(res.data)
+    updateArenaRoom(roomList)
+  })
+
 })
 
 // 방 생성시 채팅방 리스트 최신화(기존의 테이블 tr 모두 삭제 후 최신화)
-arenaSocket.on('updateRoomList2', (roomList)=>{
+arenaSocket.on('updateRoomList2', ()=>{
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
   const $trs = $tbody.querySelectorAll("tr");
-  $trs.forEach($tr => {
-    $tr.remove();
-  });
-  updateArenaRoom(roomList)
+  axios.get('/room/arenaList', {re:'hi'})
+      .then(res=>{
+        let roomList = JSON.parse(res.data)
+        $trs.forEach($tr => {
+          $tr.remove();
+        });
+        updateArenaRoom(roomList)
+      })
 })
 
 
@@ -203,14 +206,12 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
-
 const enterRoom = (currentNickname, roomName, roomNum) => {
   console.log("enterRoom 실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
-  axios.post("http://localhost:3000/room/enterRoom", {roomNum})
+  axios.post("/room/enterRoom", {roomNum})
   .then(res => {
     let data = JSON.parse(res.data)
-    currentNickname = data.name;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
       nickname: data.name,
@@ -218,11 +219,10 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
     });
     arenaSocket.emit('userCount',{data:data.result})
   })
-
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = roomName // Arena 제한 시간 위 방제
-
+  
   arenaSocket.on("user_count", ({ user_count }) => {
     console.log("user_count 이벤트 도착");
     console.log(user_count);
@@ -237,7 +237,7 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
 const $leave_room = document.getElementById("leave_room");
 
 const leaveRoomBtn = () => {
-  
+  let currentNickname
   console.log("leaveRoomBtn 함수 활성화");
   let page = document.getElementById("code_arena_zip");
   page.style.display = "none";                                                                                                                                                                                                                                                                                                                              
@@ -248,11 +248,18 @@ const leaveRoomBtn = () => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
   
- 
-  arenaSocket.emit("leave_room");
-  location.reload();
-};
+  arenaSocket.emit("leave_room", {currentNickname});
 
+};
+arenaSocket.on('leaveuser',(data)=>{
+  axios.post('/room/leave', {data})
+    .then(res=>{
+      let data = JSON.parse(res.data)
+      console.log('떳나',data.result)
+      arenaSocket.emit('userCount',{data:data.result})
+      location.reload();
+    })
+})
 $leave_room.addEventListener("click", leaveRoomBtn);
 
 arenaSocket.on("disconnect", () => {

@@ -10,19 +10,19 @@
     transition: top .01s linear;
     text-shadow: 0 1px 0 rgba(0,0,0,0.15);
   }
-  .btn-3d.red:hover    {background-color: #e74c3c;}
+  /* .btn-3d.red:hover    {background-color: #e74c3c;} */
   /* .btn-3d.blue:hover   {background-color: #699DD1;} */
-  .btn-3d.green:hover  {background-color: #80C49D;}
+  /* .btn-3d.green:hover  {background-color: #80C49D;}
   .btn-3d.purple:hover {background-color: #D19ECB;}
-  .btn-3d.yellow:hover {background-color: #F0D264;}
-  .btn-3d.cyan:hover   {background-color: #82D1E3;}
+  .btn-3d.yellow:hover {background-color: #F0D264;} */
+  /* .btn-3d.cyan:hover   {background-color: #82D1E3;} */
   
-  .btn-3d:active {
+  /* .btn-3d:active {
     top: 9px;
-  }
+  } */
   
   /* 3D button colors */
-  .btn-3d.red {
+  /* .btn-3d.red {
     background-color: #e74c3c;
     box-shadow: 0 0 0 1px #c63702 inset,
           0 0 0 2px rgba(255,255,255,0.15) inset,
@@ -35,7 +35,7 @@
           0 0 0 2px rgba(255,255,255,0.15) inset,
           0 0 0 1px rgba(0,0,0,0.4);
   }
-  
+   */
   .btn-3d.blue {
     background-color: #24283b;
     /* box-shadow: 0 0 0 1px #6698cb inset,
@@ -48,13 +48,13 @@
     align-items: center;
     font-size: 0.9vw;
   }
-  .btn-3d.blue:active {
+  /* .btn-3d.blue:active {
     box-shadow: 0 0 0 1px #6191C2 inset,
           0 0 0 2px rgba(255,255,255,0.15) inset,
           0 0 0 1px rgba(0,0,0,0.4);
-  }
+  } */
   
-  .btn-3d.green {
+  /* .btn-3d.green {
     background-color: #82c8a0;
     box-shadow: 0 0 0 1px #82c8a0 inset,
           0 0 0 2px rgba(255,255,255,0.15) inset,
@@ -108,7 +108,7 @@
     box-shadow: 0 0 0 1px #F0D264 inset,
           0 0 0 2px rgba(255,255,255,0.15) inset,
           0 0 0 1px rgba(0,0,0,0.4);
-  }
+  } */
 
 /* 가져오기 버튼 css */
 .chatedi_btn1, .chatedi_btn2, .chatedi_btn3{
@@ -131,5 +131,5 @@
   border: 0;
   background-color: transparent;
   position: absolute;
-  top: 3%;
+  top: 2.5%;
 }
