@@ -51,7 +51,7 @@ const handleRoomSubmit = (event) => {
   const room_name = $room_name.value;
   const dev_lang = $dev_lang.value;
   // 지훈 코드 삽입 (방생성)
-  axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+  axios.get("/room/createRoom", { room: "hi" })
   .then((res) => {
     currentNickname = res.data;
     arenaSocket.emit("create_room", {
@@ -150,21 +150,29 @@ const updateArenaRoom = (roomList)=>{
 // });
 
 // 사용자 접속시 채팅방 리스트 최신화
-arenaSocket.on('updateRoomList', (roomList)=>{
-  
-  updateArenaRoom(roomList)
+arenaSocket.on('updateRoomList', ()=>{
+  axios.get('/room/arenaList', {re:'hi'})
+  .then(res=>{
+    let roomList = JSON.parse(res.data)
+    updateArenaRoom(roomList)
+  })
+
 })
 
 // 방 생성시 채팅방 리스트 최신화(기존의 테이블 tr 모두 삭제 후 최신화)
-arenaSocket.on('updateRoomList2', (roomList)=>{
+arenaSocket.on('updateRoomList2', ()=>{
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
   const $trs = $tbody.querySelectorAll("tr");
-  $trs.forEach($tr => {
-    $tr.remove();
-  });
-  updateArenaRoom(roomList)
+  axios.get('/room/arenaList', {re:'hi'})
+      .then(res=>{
+        let roomList = JSON.parse(res.data)
+        $trs.forEach($tr => {
+          $tr.remove();
+        });
+        updateArenaRoom(roomList)
+      })
 })
 
 
@@ -243,9 +251,17 @@ const leaveRoomBtn = () => {
   chat.style.display = "none";
   
   arenaSocket.emit("leave_room", {currentNickname});
-  location.reload();
-};
 
+};
+arenaSocket.on('leaveuser',(data)=>{
+  axios.post('/room/leave', {data})
+    .then(res=>{
+      let data = JSON.parse(res.data)
+      console.log('떳나',data.result)
+      arenaSocket.emit('userCount',{data:data.result})
+      location.reload();
+    })
+})
 $leave_room.addEventListener("click", leaveRoomBtn);
 
 arenaSocket.on("disconnect", () => {
