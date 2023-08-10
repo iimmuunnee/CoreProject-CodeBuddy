@@ -244,7 +244,7 @@ const countRoomUsers = (room_name) => {
   });
 
   socket.on('newlist',()=>{
-    axios.get('http://localhost:3000/room/arenaList', {re:'hi'})
+    axios.get('/room/arenaList', {re:'hi'})
       .then(res=>{
         let roomList = JSON.parse(res.data)
         ArenaNamespace.emit('updateRoomList2', roomList)
@@ -331,6 +331,8 @@ const countRoomUsers = (room_name) => {
   });
 });
 
-http.listen(3000, function () {
+const host = '0.0.0.0'
+
+http.listen(3000,function () {
   console.log("Code Buddy server listening on port http://localhost:3000/page");
 });

@@ -145,7 +145,7 @@ const updateArenaRoom = (roomList)=>{
     $tbody.prepend(newRow);
     roomName = roomInfo.ROOM_NAME // 방 제목 가져오기
     roomNum = roomInfo.ROOM_NUMBER // 방 번호 가져오기
-    axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+    axios.get("/room/createRoom", { room: "hi" })
     .then((res) => {
       currentNickname = res.data
     })
@@ -222,7 +222,7 @@ const addRoomToTable = (updateRooms) => {
 const enterRoom = (currentNickname, roomName ,roomNum) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
-  axios.post("http://localhost:3000/room/enterRoom", {roomNum})
+  axios.post("/room/enterRoom", {roomNum})
   .then(res => {
     let data = JSON.parse(res.data)
     currentNickname = data.name;
