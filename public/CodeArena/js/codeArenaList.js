@@ -86,14 +86,15 @@ let roomNum
 let roomLinks
 let clickEventHandler = null;
 
-const handleClick = (e) => {
-  const target = e.target;
-  if (target.classList.contains("room-link")) {
-    const roomNumber = target.getAttribute("data-roomnumber");
-    if (roomNumber) {
-      enterRoom(currentNickname, roomName, roomNumber);
-    }
-  }
+const handleClick = (e,re) => {
+  console.log('제바발발',e)
+  // const target = e.target;
+  // if (target.classList.contains("room-link")) {
+  //   const roomNumber = target.getAttribute("data-roomnumber");
+  //   if (roomNumber) {
+  //     enterRoom(currentNickname, roomName, roomNumber);
+  //   }
+  // }
 };
 //최신화 함수
 
@@ -127,11 +128,11 @@ const updateArenaRoom = (roomList)=>{
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
     
-    axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+    axios.get("/room/createRoom", { room: "hi" })
     .then((res) => {
       currentNickname = res.data 
     })
-    clickEventHandler = handleClick;
+    clickEventHandler = handleClick('123');
   $tbody.addEventListener("click", clickEventHandler);
 
     // $tbody.addEventListener("click", (e) => {
@@ -534,5 +535,29 @@ function closeModal() {
 //   modal.style.display = "none";
 // }
 
+// 지훈 javaScript 추가
+
+// 배너 클릭 시, 메인으로
+$('#m_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page`
+  
+})
+
+// Code Chat 클릭시 메인 -> Code Chat 이동
+$('#chat_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/CodeChat/`
+  
+})
+
+// Code Arena 클릭시 메인 -> Code Arena 이동
+$('#arena_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/CodeArena`
+  
+})
+
+// login 클릭시 login 창 이동
+$('#login_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/join`
+})
 
 
