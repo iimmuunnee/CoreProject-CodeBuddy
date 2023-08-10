@@ -73,12 +73,6 @@ const handleRoomSubmit = (event) => {
         nickname: res.data, // 사용자 이름
       });
 
-      console.log("방 핸들 활성화");
-      arenaSocket.emit("enter_room", {
-        room_name: room_name,
-        nickname: res.data, // 사용자 이름
-      });
-
       arenaSocket.on("user_count", ({ user_count }) => {
         console.log("user_count 이벤트 도착");
         console.log(user_count);
@@ -194,7 +188,10 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
-// 방 생성 함수
+arenaSocket.on("enter_room", ({room_name, nickname, roomNum,}) => {
+  enterRoom(nickname, room_name, roomNum)
+})
+
 const enterRoom = (currentNickname, roomName ,roomNum) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
@@ -221,6 +218,7 @@ const enterRoom = (currentNickname, roomName ,roomNum) => {
     $mini_room_users.textContent = `${user_count}/4`;
   });
 
+  arenaSocket.emit("welcome", { nickname: currentNickname });
   $c_c_name.textContent = roomName;
   openarena(); // 방 입장
 };
