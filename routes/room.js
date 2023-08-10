@@ -14,8 +14,8 @@ router.get('/createRoom',(req,res)=>{
 // 유저 접속시 인원수 카운트 증가
 router.post('/enterRoom',(req,res)=>{
     let checkEnd = req.session.userName
-    console.log(checkEnd)
     let roomNum = req.body.roomNum
+    console.log('실행되나?', roomNum)
     let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT+1 WHERE ROOM_NUMBER=?;'
     let conutSql = 'SELECT * FROM TB_ARENAROOM;'
     conn.connect()
@@ -39,9 +39,8 @@ router.post('/enterRoom',(req,res)=>{
 })
 
 // 방에서 유저 접속 종료시 카운트 감소
-router.post('/leaveRoom',(res,req)=>{
-    let checkEnd = req.session.userName
-    let roomNum = req.body.roomNum
+router.post('/leave',(req,res)=>{
+    let roomNum = req.body.data
     let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT-1 WHERE ROOM_NUMBER=?;'
     let conutSql = 'SELECT * FROM TB_ARENAROOM;'
     conn.connect()
@@ -55,7 +54,7 @@ router.post('/leaveRoom',(res,req)=>{
                     console.log('실패')
                 }
                 else{
-                    res.json(JSON.stringify({result:result, name:checkEnd}))
+                    res.json(JSON.stringify({result:result}))
                 }
             })
         }
@@ -66,14 +65,13 @@ router.post('/leaveRoom',(res,req)=>{
 
 // 방 생성시 방 정보 database에 저장
 router.post('/updateroom',(req,res)=>{
-    console.log('방정보',req.body.updateRooms[0])
     let roomInfo = req.body.updateRooms[0]
     let number = roomInfo.room_number
     let name = roomInfo.room_name
     let method = roomInfo.chatRoomMethod
     let lang = roomInfo.dev_lang
     let host = roomInfo.createdBy
-    let count = roomInfo.userCount
+    let count = 1
 
     let sql = 'INSERT INTO TB_ARENAROOM (ROOM_NUMBER, ROOM_NAME, ROOM_LANG, ROOM_HOST, USER_COUNT) VALUES(?,?,?,?,?)'
     let findRoom = 'SELECT * FROM TB_ARENAROOM WHERE ROOM_NUMBER =?'
@@ -85,7 +83,6 @@ router.post('/updateroom',(req,res)=>{
         }
         else{
          conn.query(findRoom,[number],(err,result)=>{
-            console.log('보자보자',result)
             res.json(JSON.stringify(result[0]))
          })
         }

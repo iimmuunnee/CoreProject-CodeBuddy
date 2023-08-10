@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  
+
 
   <!-- jquery -->
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
@@ -35,7 +35,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,500&display=swap"
     rel="stylesheet" />
 
-    <!-- css -->
+  <!-- css -->
   <link rel="stylesheet" href="/CodeArena/css/chatlist.css" />
   <link rel="stylesheet" href="/CodeArena/css/pop_chat.css" />
   <link rel="stylesheet" href="/CodeArena/css/code_arena.css">
@@ -43,7 +43,15 @@
 
 <body>
 
-
+  <header id="head">
+    <div class="m_header">
+      <p class="m_logo" id="m_btn">CodeBuddy</p>
+      <button class="m_btn_c" id="chat_btn">Code Chat</button>
+      <button class="m_btn_a" id="arena_btn">Code Arena</button>
+      <button class="m_btn" id="login_btn">Login</button>
+      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
+    </div>
+  </header>
 
   <section id="notice" class="notice">
     <div class="page-title">
@@ -58,18 +66,13 @@
         <div class="search-window">
           <form action="">
             <div class="search-wrap">
-              <span>
-                채팅방식 :
-                <select name="chat_method" id="chat_method">
-                  <option value="all">전체보기</option>
-                  <option value="one">1:1채팅</option>
-                  <option value="many">오픈채팅</option>
-                </select>
-                개발 언어 :
-                <input type="checkbox" value="HTML" class="l_check" />HTML/CSS
-                <input type="checkbox" value="JavaScript" class="l_check" />JavaScript
-                <input type="checkbox" value="Python" class="l_check" />Python
-                <button class="select">조회</button>
+              <span class="lang">
+                개발 언어
+                <button class="filter-button" data-filter="all">전체</button>
+                <button class="filter-button" data-filter="html/css">HTML/CSS</button>
+                <button class="filter-button" data-filter="javascript">JavaScript</button>
+                <button class="filter-button" data-filter="python">Python</button>
+
               </span>
             </div>
           </form>
@@ -82,7 +85,7 @@
       <div class="container">
         <table class="board-table">
           <thead>
-            <tr>
+            <tr class="borad-table-tr">
               <th scope="col" class="th-num">번호</th>
               <th scope="col" class="th-c_method">채팅방식</th>
               <th scope="col" class="th-lang">개발언어</th>
@@ -353,13 +356,13 @@
 
         <!-- 채팅작성 및 전송 -->
         <div class="c_chatting">
-          <form name="c_chatting_form" class="c_chatting_form" action="">
+          <form name="c_chatting_form" class="c_chatting_form">
             <div class="c_chatting_1">
-              <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
+              <textarea id="form_input" class="form_input" placeholder="채팅을 입력하세요"></textarea>
             </div>
             <div class="c_chatting_2">
               <div class="c_chatting_22">
-                <button class="c_chatting_2_btn">
+                <button class="c_chatting_2_btn" type="submit">
                   <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
                 </button>
               </div>
@@ -393,12 +396,13 @@
 
   <script src="/socket.io/socket.io.js"></script>
   <!-- 비동기 통신 axios -->
-<script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
   <script src="/CodeChat/js/codeEditor.js"></script>
   <script src="/CodeArena/js/codeArenaList.js"></script>
   <script src="/CodeArena/js/popArenaChatRoom.js"></script>
-  
- 
+  <script src="/CodeArena/js/fillter.js"></script>
+
+
   <script>
     const textjs = document.querySelector('#js')
     const textpy = document.querySelector('#python')
@@ -495,7 +499,7 @@
           Timer.value = Math.floor(min) + ':' + (sec < 10 ? '0' : '') + sec;
 
           // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
-          if(min == 0){
+          if (min == 0) {
             if (sec <= 10 && sec > 0) {
               // 여기에 원하는 CSS 변경 코드를 추가합니다.
               Timer_zip.style.boxShadow = '1px 0px 12px 8px red'; // 예시로 글자 색상을 빨간색으로 변경

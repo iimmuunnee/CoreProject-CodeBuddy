@@ -12,19 +12,21 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 999;
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
   height: 80px;
 }
 
 /* 로고 텍스트 스타일 */
 .m_logo {
   cursor: pointer;
-  margin-left: 3%;
+  margin-left: 25%;
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
-  margin-top: 25px;
+  margin-top: 1.5%;
+  color: white;
+  
 }
 
 /* 세 개의 버튼 스타일 */
@@ -36,10 +38,16 @@ body {
   font-size: 1.2rem;
   border: none;
   width: 15%;
+  color: white;
+  margin-top: 10px;
+
 }
 
 .m_btn_c {
-  margin-left: 65%;
+  margin-left: 5%;
+}
+.m_btn {
+  margin-left: 1%;
 }
 
 .m_btn_c,
@@ -50,6 +58,17 @@ body {
 
 .m_title_btn {
   display: flex;
+}
+
+.logout{
+  color: white;
+  cursor: pointer;
+  margin-top: 2%;
+
+}
+
+.logout:hover{
+  text-decoration: underline;
 }
 
 

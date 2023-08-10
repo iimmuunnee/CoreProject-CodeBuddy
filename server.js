@@ -113,34 +113,26 @@ app.use(
     console.log(`backSocket Event: ${event}`);
   });
 
-  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     console.log('닉네임확인',nickname)
-    if (chatRoomMethod === "one_to_one") {
-      chatRoomMethod = "1:1채팅";
-    } else {
-      chatRoomMethod = "오픈채팅";
-    }
-
-    
     const roomInfo = {
       room_number: generateRoomNumber(),
       room_name: room_name,
-      chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
-      createdBy: socket.nickname,
+      createdBy: nickname,
       createdDate: new Date().toISOString().slice(0, 10),
     };
-
     console.log("roomInfo", roomInfo);
-
     rooms.set(room_name, roomInfo);
+    let room_number = roomInfo.room_number
+    console.log("roomInfo의 room_number", room_number);
 
-    socket.emit("enter_room", {room_name, nickname, roomNum,})
+
+    socket.emit("enter_room", {room_name, nickname, room_number,})
  
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log("방목록 보여줘 : ", updatedRoomList);
     ChatNamespace.emit("update_room_list", updatedRoomList);
   });
 
@@ -149,16 +141,10 @@ app.use(
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
+      console.log("enter_room의 roomNum : ", room_number);
+      socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-      socket["roomNum"] = roomNum; // 소캣 객체에 "room_name"이라는 속성 추가
-
-      socket.join(roomNum); // 방에 입장하기
-
-      io.of("/CodeChat")
-        .to(roomNum)
-        .emit("welcome", {
-          nickname,
-        });
+      socket.join(room_number); // 방에 입장하기
         
       socket.emit("userInfo", {nickname})
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
@@ -209,7 +195,6 @@ ArenaNamespace.on("connection", (socket) => {
 
 // 방의 인원수를 세는 함수
 const countRoomUsers = (room_name) => {
-  console.log();
   const room = ArenaNamespace.adapter.rooms.get(room_name);
   return room ? room.size : 0;
 };
@@ -223,35 +208,28 @@ const countRoomUsers = (room_name) => {
   .then(res=>{
     // ArenaNAMEspase.emit("updateRoom",)
     let roomList = JSON.parse(res.data)
-    // console.log('방목록',roomList)
+    // console.log('현재 생성되어있는',roomList)
     // 방목록 arena로 전달
     socket.emit('updateRoomList', roomList)
   })
 
-  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     // console.log("rooms : ", rooms);
     // console.log('닉넴',nickname)
 
-    if (chatRoomMethod === "one_to_one") {
-      chatRoomMethod = "1:1채팅";
-    } else {
-      chatRoomMethod = "오픈채팅";
-    }
 
     const roomInfo = {
       room_number: generateRoomNumber(),
       room_name: room_name,
-      chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
       createdBy: nickname ,
-      userCount : countRoomUsers(room_name) + 1,
+      userCount : countRoomUsers(room_name),
     };
-    // console.log(roomInfo);
+
     rooms.set(room_name, roomInfo);
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log("방리스트알려줘", updatedRoomList);
     socket.emit("update_room_list", updatedRoomList);
   });
 
@@ -267,67 +245,71 @@ const countRoomUsers = (room_name) => {
     ArenaNamespace.emit('countUpdate',(data))
   })
 
-
   // Arena 방 입장 enter_room 감지하기
   socket.on(
     "enter_room",
     ({
       room_name,
       nickname: nickname,
-      roomNum
+      room_number
     }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
-      console.log('입장방', roomNum)
+      console.log('입장방', room_number)
       
-      socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
+      socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-      console.log("enter_room이벤트의 roomNum : ", roomNum);
+      console.log("enter_room이벤트의 room_number : ", room_number);
 
-      socket.join(roomNum); // 방에 입장하기
-      const roomInfo = rooms.get(room_name)
+      socket.join(room_number); // 방에 입장하기
+
+      const roomInfo = rooms.get(room_number)
       if (roomInfo) {
         roomInfo.userCount = (roomInfo.userCount || 0) + 1;
-        rooms.set(room_name, roomInfo);
+        rooms.set(room_number, roomInfo);
       }
 
-      ArenaNamespace.to(room_name).emit("welcome", {nickname});
+      ArenaNamespace.to(room_number).emit("welcome", {nickname});
+      // socket.to(room_number).emit("welcome", {nickname});
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
-      console.log("countRoomUsers(room_name) : ", countRoomUsers(room_name));
+      console.log("countRoomUsers(room_name) : ", countRoomUsers(room_number));
 
       ArenaNamespace
-        .to(room_name)
-        .emit("user_count", { user_count: countRoomUsers(room_name)});
+        .to(room_number)
+        .emit("user_count", { user_count: countRoomUsers(room_number)});
     }
   );
 
   socket.on("new_message", ({currentNickname, message: message,}) => {
-    ArenaNamespace.emit("new_message", {currentNickname, message: message,})
+    let roomNum = socket.room_number
+    ArenaNamespace.to(roomNum).emit("new_message",  {currentNickname, message: message,})
     // 방 이름 정보를 가져와서 해결해야함
   })
 
   socket.on("leave_room", () => {
-    const room_name = socket.room_name;
-    if (room_name) {
-      socket.leave(room_name); // 방에서 퇴장
-      console.log('퇴장',room_name)
+    const room_number = socket.room_number;
+    socket.emit('leaveuser', room_number)
+    if (room_number) {
+      socket.leave(room_number); // 방에서 퇴장
+      console.log('퇴장',room_number)
 
-      const roomInfo = rooms.get(room_name);
+      const roomInfo = rooms.get(room_number);
       if (roomInfo) {
         roomInfo.userCount--; // 유저 인원수 감소
         if (roomInfo.userCount === 0) {
-          rooms.delete(room_name); // 방 삭제
+          rooms.delete(room_number); // 방 삭제
         }
         // 방 정보 갱신하여 방 리스트 업데이트
         const updatedRoomList = Array.from(rooms.values());
         // ArenaNamespace.emit("update_room_list", updatedRoomList);
       }
-      socket.room_name = null; // 방 이름 정보 초기화
+      socket.room_number = null; // 방 이름 정보 초기화
     }
+    
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
-      console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_name));
+      console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
   })
   
   
