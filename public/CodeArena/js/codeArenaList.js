@@ -111,6 +111,7 @@ const updateArenaRoom = (roomList)=>{
   roomList.forEach((roomInfo) => {
     const newRow = document.createElement("tr");
     newRow.id = "room_" + roomInfo.ROOM_NUMBER;
+    // console.log(roomInfo);
     // 방 정보를 td에 추가
     newRow.innerHTML = `
             <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
@@ -120,14 +121,13 @@ const updateArenaRoom = (roomList)=>{
               <a id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
               <p>테스트</p>
              </th>
-            <td>${roomInfo.HOST}</td>
+            <td>${roomInfo.ROOM_HOST}</td>
             <td>${roomInfo.USER_COUNT}/4</td>
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
-    roomName = roomInfo.ROOM_NAME // 방 제목 가져오기
-    roomNum = roomInfo.ROOM_NUMBER // 방 번호 가져오기
-    axios.get("/room/createRoom", { room: "hi" })
+    
+    axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
     .then((res) => {
       currentNickname = res.data 
     })
