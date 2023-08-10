@@ -1,4 +1,4 @@
-const socket = io('/CodeChat')
+// const socket = io('/CodeChat')
 
 const htmlText = document.getElementById('html')
 const cssval = document.getElementById('css').value

@@ -10,6 +10,7 @@ const getNamespaceFromURL = (url) => {
 const currentURL = getCurrentURL();
 const namespace = getNamespaceFromURL(currentURL)
 const arenaSocket = io(namespace);
+// const arenaSocket = io.of('/page/CodeArena');
 
 // socket.io 사용
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
@@ -117,7 +118,7 @@ const updateArenaRoom = (roomList)=>{
             <td>${roomInfo.chatRoomMethod}</td>
             <td>${roomInfo.ROOM_LANG}</td>
             <th>
-              <a href="#" id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <a href="#" id='123' class="room-link" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
               <p>테스트</p>
              </th>
             <td>${roomInfo.HOST}</td>
@@ -126,23 +127,44 @@ const updateArenaRoom = (roomList)=>{
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
     
-        // 클릭 이벤트 핸들러 추가
-        const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
-        roomLinks.forEach((roomLink) => {        
-          roomLink.addEventListener("click", (event) => {
-            console.log('123')
-            axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+          axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
             .then((res) => {
               currentNickname = res.data
             })
-              event.preventDefault(); // 링크 기본 동작 방지
+              e.preventDefault(); // 링크 기본 동작 방지
               roomName = roomLink.dataset.roomname; // 방 제목 가져오기
               roomNum = roomLink.dataset.roomnumber; // 방 번호 가져오기
               console.log("roomName : ", roomName);
               console.log("방 제목으로 입장하는 닉네임 : ", currentNickname);
-              enterRoom(currentNickname, roomName, roomNum); // 해당 방으로 입장하는 함수 호출
-            });
-          });
+              
+
+
+        // 클릭 이벤트 핸들러 추가
+        const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
+        // roomLinks.forEach((roomLink) => {        
+        //   roomLink.addEventListener("click", (event) => {
+        //     console.log('123')
+        //     axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+        //     .then((res) => {
+        //       currentNickname = res.data
+        //     })
+        //       event.preventDefault(); // 링크 기본 동작 방지
+        //       roomName = roomLink.dataset.roomname; // 방 제목 가져오기
+        //       roomNum = roomLink.dataset.roomnumber; // 방 번호 가져오기
+        //       console.log("roomName : ", roomName);
+        //       console.log("방 제목으로 입장하는 닉네임 : ", currentNickname);
+        //       enterRoom(currentNickname, roomName, roomNum); // 해당 방으로 입장하는 함수 호출
+        //     });
+        //   });
+
+        $tbody.addEventListener('click',(e)=>{
+          if(e.target.className == 'room-link'){
+            console.log('제발',e.target.parentElement)
+            enterRoom(currentNickname, roomName, roomNum); // 해당 방으로 입장하는 함수 호출
+            }
+          })
+          
+          
   })
 }
 $('.room-link').click((event)=>{
@@ -168,6 +190,7 @@ arenaSocket.on('updateRoomList2', (roomList)=>{
   });
   updateArenaRoom(roomList)
 })
+
 
 arenaSocket.on('countUpdate',(data)=>{
   console.log('머냐',data.data)

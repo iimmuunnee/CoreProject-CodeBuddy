@@ -143,13 +143,7 @@ app.use(
   });
 
   // 방 입장 enter_room 감지하기
-  socket.on(
-    "enter_room",
-    ({
-      room_name,
-      nickname,
-      roomNum,
-    }) => {
+  socket.on("enter_room",({room_name,nickname,roomNum,}) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
