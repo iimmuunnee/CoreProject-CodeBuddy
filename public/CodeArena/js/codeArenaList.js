@@ -118,7 +118,7 @@ const updateArenaRoom = (roomList)=>{
             <td>${roomInfo.chatRoomMethod}</td>
             <td>${roomInfo.ROOM_LANG}</td>
             <th>
-              <a href="#" id='123' class="room-link" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <a href="#" id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
               <p>테스트</p>
              </th>
             <td>${roomInfo.HOST}</td>
@@ -126,61 +126,29 @@ const updateArenaRoom = (roomList)=>{
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
-    
-          axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
-            .then((res) => {
-              currentNickname = res.data
-            })
-              e.preventDefault(); // 링크 기본 동작 방지
-              roomName = roomLink.dataset.roomname; // 방 제목 가져오기
-              roomNum = roomLink.dataset.roomnumber; // 방 번호 가져오기
-              console.log("roomName : ", roomName);
-              console.log("방 제목으로 입장하는 닉네임 : ", currentNickname);
-              
-
-
-        // 클릭 이벤트 핸들러 추가
-        const roomLinks = document.querySelectorAll(".room-link"); // 각 방의 링크 요소 선택
-        // roomLinks.forEach((roomLink) => {        
-        //   roomLink.addEventListener("click", (event) => {
-        //     console.log('123')
-        //     axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
-        //     .then((res) => {
-        //       currentNickname = res.data
-        //     })
-        //       event.preventDefault(); // 링크 기본 동작 방지
-        //       roomName = roomLink.dataset.roomname; // 방 제목 가져오기
-        //       roomNum = roomLink.dataset.roomnumber; // 방 번호 가져오기
-        //       console.log("roomName : ", roomName);
-        //       console.log("방 제목으로 입장하는 닉네임 : ", currentNickname);
-        //       enterRoom(currentNickname, roomName, roomNum); // 해당 방으로 입장하는 함수 호출
-        //     });
-        //   });
-
-        $tbody.addEventListener('click',(e)=>{
-          if(e.target.className == 'room-link'){
-            console.log('제발',e.target.parentElement)
-            enterRoom(currentNickname, roomName, roomNum); // 해당 방으로 입장하는 함수 호출
-            }
-          })
-          
-          
+    roomName = roomInfo.ROOM_NAME // 방 제목 가져오기
+    roomNum = roomInfo.ROOM_NUMBER // 방 번호 가져오기
+    axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+    .then((res) => {
+      currentNickname = res.data
+    })
+    $tbody.addEventListener("click", (e) => {
+      console.log(e.target.parentElement);
+      if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
+        console.log(roomInfo.ROOM_NUMBER);
+        enterRoom(currentNickname, roomName, roomInfo.ROOM_NUMBER)
+      }
+    })
   })
 }
-$('.room-link').click((event)=>{
-  console.log('맞나',event.target.id)
-})
-
 
 // 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on('updateRoomList', (roomList)=>{
-  console.log('가져와졌나?', roomList)
   updateArenaRoom(roomList)
 })
 
 // 방 생성시 채팅방 리스트 최신화(기존의 테이블 tr 모두 삭제 후 최신화)
 arenaSocket.on('updateRoomList2', (roomList)=>{
-  console.log('업데이트2',roomList)
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
@@ -192,8 +160,8 @@ arenaSocket.on('updateRoomList2', (roomList)=>{
 })
 
 
+// 인원수 실시간 업데이트
 arenaSocket.on('countUpdate',(data)=>{
-  console.log('머냐',data.data)
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
@@ -214,9 +182,7 @@ arenaSocket.on("update_room_list", (roomInfo) => {
   console.log("roomInfo : ", roomInfo);
   // updateRoomList(roomInfo);
   addRoomToTable(roomInfo)
-  
-  
-});
+  });
 
 // //방 목록 database에 새로운 방 추가하는 함수
 const addRoomToTable = (updateRooms) => {
@@ -228,21 +194,19 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
+// 방 생성 함수
 const enterRoom = (currentNickname, roomName ,roomNum) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.post("http://localhost:3000/room/enterRoom", {roomNum})
   .then(res => {
     let data = JSON.parse(res.data)
-    console.log('가져오자',data)
     currentNickname = data.name;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
       nickname: data.name,
       room_number : roomNum
-  
     });
-    console.log('뭔데',data.result)
     arenaSocket.emit('userCount',{data:data.result})
   })
 
@@ -275,6 +239,7 @@ const leaveRoomBtn = () => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
   
+ 
   arenaSocket.emit("leave_room");
   location.reload();
 };
