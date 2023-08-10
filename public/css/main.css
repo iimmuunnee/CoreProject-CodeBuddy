@@ -692,19 +692,21 @@ a:hover .btn-draw.btn--white {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 999;
-  border-bottom: 1px solid;
+  /* border-bottom: 1px solid; */
   height: 80px;
 }
 
 /* 로고 텍스트 스타일 */
 .m_logo {
   cursor: pointer;
-  margin-left: 3%;
+  margin-left: 25%;
   font-family: 'Playfair Display', serif;
   font-size: 1.5rem;
-  margin-top: 28px;
+  margin-top: 1.5%;
+  color: white;
+  
 }
 
 /* 세 개의 버튼 스타일 */
@@ -716,13 +718,16 @@ a:hover .btn-draw.btn--white {
   font-size: 1.2rem;
   border: none;
   width: 15%;
+  color: white;
+  margin-top: 10px;
+
 }
 
 .m_btn_c {
-  margin-left: 25%;
+  margin-left: 5%;
 }
 .m_btn {
-  margin-left: 22%;
+  margin-left: 1%;
 }
 
 .m_btn_c,
@@ -735,6 +740,17 @@ a:hover .btn-draw.btn--white {
   display: flex;
 }
 
+.logout{
+  color: white;
+  cursor: pointer;
+  margin-top: 2%;
+
+}
+
+.logout:hover{
+  text-decoration: underline;
+}
+
 /* 이미지를 표시하는 본문의 제목 div */
 .m_c_img {
   text-align: center;
@@ -744,6 +760,8 @@ a:hover .btn-draw.btn--white {
   /* background-image: url('/img/wow.png'); */
 
 }
+
+
 
 .m_c_img img {
 
@@ -757,14 +775,6 @@ a:hover .btn-draw.btn--white {
 
 }
 
-.logout{
-  color: black;
-  cursor: pointer;
-}
-
-.logout:hover{
-  text-decoration: underline;
-}
 
 
 /* 위에 텍스트로 된 제목 스타일 */

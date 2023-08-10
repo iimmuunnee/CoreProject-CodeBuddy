@@ -40,6 +40,9 @@ const openarena = () => {
 
   let chat = document.getElementById("chat_open");
   chat.style.display = "block";
+
+  let header = document.getElementById("head");
+  header.style.display = "none";
 };
 
 // 방 생성 함수
@@ -117,7 +120,7 @@ const updateArenaRoom = (roomList)=>{
     newRow.innerHTML = `
             <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
             <td>${roomInfo.chatRoomMethod}</td>
-            <td>${roomInfo.ROOM_LANG}</td>
+            <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
             <th>
               <a id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
               <p>테스트</p>
@@ -523,3 +526,6 @@ function closeModal() {
 //   var modal = document.getElementById("modal");
 //   modal.style.display = "none";
 // }
+
+
+

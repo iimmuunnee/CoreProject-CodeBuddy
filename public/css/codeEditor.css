@@ -3,13 +3,13 @@ body {
     height: 97vh;
     font-family: 'Pretendard-Regular';
     
-}
+} 
 
 #container{
     width:100%;
     height: 100vh;
     padding: 0px;
-    display: flex;
+    display: none;
     background-color: #20222d;
     
 }
@@ -32,7 +32,7 @@ body {
     outline:0;
     border: 1px solid black;
     border-radius: 5px;
-    box-shadow: 3px 3px 3px 3px gray;
+    /* box-shadow: 3px 3px 3px 3px gray; */
     background-color: #fff;
 }
 
@@ -48,17 +48,34 @@ li {
     padding: 0;
     list-style: none;
 }
-
-.container {
+.container{
     position: relative;
     top:-2%;
     left: 50%;
     transform: translate(-50%, -0%);
     width: 100%;
     margin: 0 auto;
-    padding: 0px ;
-
-    
+    padding: 0px ; 
+    height: 76%;
+}
+.container1_1{
+    position: relative;
+    top:-2%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px ; 
+    height: 76%;
+}
+.container1_2{
+    position: relative;
+    top:-2%;
+    left: 50%;
+    transform: translate(-50%, -0%);
+    width: 100%;
+    margin: 0 auto;
+    padding: 0px ; 
 }
 .tab-container {
     display: flex;
@@ -123,7 +140,7 @@ li {
     outline:0;
     border: 1px solid black;
     border-radius: 5px;
-    box-shadow: 3px 3px 3px 3px gray;
+    /* box-shadow: 3px 3px 3px 3px gray; */
 }
 
 
@@ -309,12 +326,12 @@ height: 10%;
 .buddy {
 /* display: flex; */
 height: 10%;
-padding :1dvb;
+padding :2dvb;
 }
 
 /* 접속자 전송 체크박스 */
 .checkbox_style{
-margin: 2dvb 15dvb 2dvb 15dvb;
+margin: 5dvb 15dvb 2dvb 15dvb;
 display: flex;
 justify-content: center;
 border-color: white;
@@ -322,7 +339,18 @@ border-color: white;
 .checkbox_style .btn-outline-secondary{
 color : white;
 }
-
+.text-center{
+    border-radius: 0.375rem;
+    height: 7%;
+    width: 13%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 2%;
+    right: 1.2%;
+    background-color: #24283b;
+}
 
 
 
@@ -347,15 +375,13 @@ box-shadow: 0 0.5rem 0.8rem #00000080;
 }
 
 .panels {
-background: rgba(57, 55, 82, 0.5);
-box-shadow: 0 2rem 2rem #00000080;
-min-height: 91dvb;
-
-width: 98dvb;
-
-border-radius: 3px;
-overflow: hidden;
-padding: 20px;
+    /* background: rgba(57, 55, 82, 0.5); */
+    box-shadow: 0 2rem 2rem #00000080;
+    max-height: 75.8dvb;
+    width: 98dvb;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 15px;
 }
 
 .panel {
