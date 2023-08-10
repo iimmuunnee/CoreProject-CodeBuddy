@@ -22,6 +22,7 @@ const addNotice = (message) => {
 };
 
 const handleMessageSubmit = (event) => {
+  console.log("handleMessageSubmit 함수 실행");
   event.preventDefault();
   const message = $form_input.value; // 메시지 입력값 가져오기
   console.log("메세지 핸들러, 메세지 : ", message);
