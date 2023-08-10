@@ -21,7 +21,11 @@ body{
     justify-content: center;
     align-items: center;
     align-content: center;
+    overflow: hidden;
 }
+
+/* header */
+
 /* code arena 페이지 시작 */
 .code_arena_zip {
     width: 100vw;
