@@ -208,12 +208,12 @@ const countRoomUsers = (room_name) => {
   .then(res=>{
     // ArenaNAMEspase.emit("updateRoom",)
     let roomList = JSON.parse(res.data)
-    // console.log('방목록',roomList)
+    console.log('현재 생성되어있는',roomList)
     // 방목록 arena로 전달
     socket.emit('updateRoomList', roomList)
   })
 
-  socket.on("create_room", ({ room_name, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     // console.log("rooms : ", rooms);
     // console.log('닉넴',nickname)
@@ -245,8 +245,6 @@ const countRoomUsers = (room_name) => {
     ArenaNamespace.emit('countUpdate',(data))
   })
 
-  
-console.log("pull할래");
   // Arena 방 입장 enter_room 감지하기
   socket.on(
     "enter_room",
@@ -285,7 +283,8 @@ console.log("pull할래");
   );
 
   socket.on("new_message", ({currentNickname, message: message,}) => {
-    ArenaNamespace.emit("new_message", {currentNickname, message: message,})
+    let roomNum = socket.room_number
+    ArenaNamespace.to(roomNum).emit("new_message",  {currentNickname, message: message,})
     // 방 이름 정보를 가져와서 해결해야함
   })
 

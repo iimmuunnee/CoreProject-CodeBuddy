@@ -95,6 +95,8 @@ const updateArenaRoom = (roomList)=>{
   const $tbody = $board_table.querySelector("tbody");
   const $tr = $tbody.querySelector("tr");
   // $tr.remove();
+  // roomList는 현재 생성된 객체 형태의 방 정보들을 배열에 담김
+  // roomInfo는 현재 생성된 객체 형태의 방 정보
   roomList.forEach((roomInfo) => {
     const newRow = document.createElement("tr");
     newRow.id = "room_" + roomInfo.ROOM_NUMBER;
@@ -116,7 +118,7 @@ const updateArenaRoom = (roomList)=>{
     roomNum = roomInfo.ROOM_NUMBER // 방 번호 가져오기
     axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
     .then((res) => {
-      currentNickname = res.data
+      currentNickname = res.data 
     })
     $tbody.addEventListener("click", (e) => {
       if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
