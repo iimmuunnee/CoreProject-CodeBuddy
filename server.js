@@ -136,6 +136,8 @@ app.use(
 
     rooms.set(room_name, roomInfo);
 
+    socket.emit("enter_room", {room_name, nickname, roomNum,})
+ 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
     console.log("방목록 보여줘 : ", updatedRoomList);
@@ -143,18 +145,12 @@ app.use(
   });
 
   // 방 입장 enter_room 감지하기
-  socket.on(
-    "enter_room",
-    ({
-      room_name,
-      nickname,
-      roomNum,
-    }) => {
+  socket.on("enter_room",({room_name,nickname,roomNum,}) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
 
-      socket["room_name"] = roomNum; // 소캣 객체에 "room_name"이라는 속성 추가
+      socket["roomNum"] = roomNum; // 소캣 객체에 "room_name"이라는 속성 추가
 
       socket.join(roomNum); // 방에 입장하기
 
@@ -166,11 +162,11 @@ app.use(
         
       socket.emit("userInfo", {nickname})
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
-      console.log("user_count : ", countRoomUsers(room_name));
+      console.log("user_count : ", countRoomUsers(roomNum));
 
       io.of("/CodeChat")
         .to(room_name)
-        .emit("user_count", { user_count: countRoomUsers(room_name) });
+        .emit("user_count", { user_count: countRoomUsers(roomNum) });
     }
   );
 
@@ -272,21 +268,23 @@ const countRoomUsers = (room_name) => {
   })
 
 
-  // 방 입장 enter_room 감지하기
+  // Arena 방 입장 enter_room 감지하기
   socket.on(
     "enter_room",
     ({
       room_name,
       nickname: nickname,
+      roomNum
     }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
       
       socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
-      console.log(room_name);
 
-      socket.join(room_name); // 방에 입장하기
+      console.log("enter_room이벤트의 roomNum : ", roomNum);
+
+      socket.join(roomNum); // 방에 입장하기
       const roomInfo = rooms.get(room_name)
       if (roomInfo) {
         roomInfo.userCount = (roomInfo.userCount || 0) + 1;

@@ -32,6 +32,10 @@
       <button class="m_btn" id="login_btn" onclick="location.href='join'">Login</button>
       <button id="userInfo_btn" class="m_btn" style="display: none;">{{name}} / <a onclick="location.href='logout'"
           class="logout">Logout</a></button>
+      <p class="m_logo">CodeBuddy</p>
+      <button id="main_c" class="m_btn_c" onclick="scrollToCodeChat()">Code Chat</button>
+      <button id="main_a" class="m_btn_a" onclick="scrollToCodeArena()">Code Arena</button>
+      <button class="m_btn" id="login_btn">Login</button>
     </div>
   </header>
   <!-- 
@@ -109,6 +113,49 @@
           <span class="velo-slide__btn"><a class="btn-draw btn--white" href="#/"><span class="btn-draw__text"><span
                   onclick="location.href='CodeArena'">Let's go</span></span></a></span>
         </header>
+          <!-- Header -->
+          <header class="velo-slide__header">
+            <h3 class="velo-slide__title"><span class="oh"><span>Code Chat</span></span><span class="oh"><span>Share
+                  Your Opinion</span></span></h3>
+            <p class="velo-slide__text"><span class="oh"><span>코드 에디터와 실시간 채팅이 통합된 서비스로 <br>입문 개발자들은 다양한 사람들과 함께 코드를
+                  공유하고 리뷰하며 <br> 멘토·멘티 관계를 형성하여 성장할 수 있습니다</span></span></p>
+            <span class="velo-slide__btn"><a class="btn-draw btn--white" href="/page/CodeChat"><span
+                  class="btn-draw__text"><span>Let's go</span></span></a></span>
+          </header>
+        </section>
+
+        <!-- Slide -->
+        <section class="velo-slide">
+          <!-- Slide BG -->
+          <div class="velo-slide__bg">
+            <!-- Img -->
+            <figure class="velo-slide__figure" style="background-image: url('/img/vic.jpg')" ;></figure>
+          </div>
+
+          <!-- Header -->
+          <header class="velo-slide__header">
+            <h3 class="velo-slide__title"><span class="oh"><span>Code Arena</span></span><span class="oh"><span>Develop
+                  Your Skills</span></span></h3>
+            <p class="velo-slide__text"><span class="oh"><span>혼자 공부하는 지루함을 이겨내고 <br> 빠르게 문제를 풀며 경쟁할 수 있는 서비스로 여러분을
+                  초대합니다! <br> </span></span></p>
+            <span class="velo-slide__btn"><a class="btn-draw btn--white" href="/page/CodeArena"><span
+                  class="btn-draw__text"><span>Let's go</span></span></a></span>
+          </header>
+        </section>
+
+        <!-- Slide - with Video -->
+
+        <!-- Slides Nav -->
+        <nav class="velo-slides-nav">
+          <ul class="velo-slides-nav__list">
+            <li>
+              <a class="js-velo-slides-prev velo-slides-nav__prev inactive" href="#0"><i class="icon-up-arrow"></i></a>
+            </li>
+            <li>
+              <a class="js-velo-slides-next velo-slides-nav__next" href="#"><i class="icon-down-arrow"></i></a>
+            </li>
+          </ul>
+        </nav>
       </section>
 
       <!-- Slide - with Video -->
