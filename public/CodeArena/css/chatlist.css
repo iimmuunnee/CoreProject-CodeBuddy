@@ -16,7 +16,7 @@ section.notice {
   color: #333333;
   font-weight: 400;
   text-align: center;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Pretendard-Regular';
 }
 
 #board-search .search-window {
@@ -330,12 +330,44 @@ button {
 
 .modal-content {
   background-color: #fff;
-  margin: 15% auto;
-  padding: 40px;
-  border: 1px solid #888;
-  width: 50%;
+  margin: 12% auto;
+  width: 30%;
+  height: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   border-radius: 10px;
-  border: 1px solid #7ac142;
+
+}
+.modal-content1{
+  height: 10%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  background-color: #212121;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.modal-content2{
+  height: 13%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  background-color: #212121;
+}
+.modal-content3{
+  height: 75%;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9vw;
+  border-radius: 1.375rem;
 }
 
 /* 닫기 버튼 스타일 */
@@ -345,35 +377,48 @@ button {
   font-size: 2.3rem;
   font-weight: bold;
   position: relative;
-  top: -12px;
   right: 10px;
 }
 
 .close:hover,
 .close:focus {
-  color: #000;
+  color: white;
   text-decoration: none;
   cursor: pointer;
 }
-
-.m_div {
-  margin-top: 3%;
+.make_room_form{
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  height: 70%;
+  width: 100%;
 }
-
+.m_div1, .m_div2{
+  width: 70%;
+  height: 20%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 #room-name {
   height: 30px;
   width: 80%;
 }
-
-.make-h2{
-  margin-bottom: 20px;
+#room_name{
+  width: 64%;
+  height: 72%;
 }
-
+#dev_lang{
+  width: 64%;
+  height: 72%;
+}
 .make-btn{
-  width: 12%;
-  color: #7ac142;
-  border: 1px solid #7ac142;
-  border-radius: 5px;
+  width: 34%;
+  height: 17%;
+  color: white;
+  background-color: #212121;
+  border-radius: 1.375rem;
   float: right;
-  font-size: 1.0rem;
+  font-size: 0.8vw;
 }
