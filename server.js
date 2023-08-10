@@ -113,34 +113,28 @@ app.use(
     console.log(`backSocket Event: ${event}`);
   });
 
-  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     console.log('닉네임확인',nickname)
-    if (chatRoomMethod === "one_to_one") {
-      chatRoomMethod = "1:1채팅";
-    } else {
-      chatRoomMethod = "오픈채팅";
-    }
-
     
     const roomInfo = {
       room_number: generateRoomNumber(),
       room_name: room_name,
-      chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
-      createdBy: socket.nickname,
+      createdBy: nickname,
       createdDate: new Date().toISOString().slice(0, 10),
     };
-
+    
     console.log("roomInfo", roomInfo);
-
+    
     rooms.set(room_name, roomInfo);
-
+    
     socket.emit("enter_room", {room_name, nickname, roomNum,})
- 
+    
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
     console.log("방목록 보여줘 : ", updatedRoomList);
+    
     ChatNamespace.emit("update_room_list", updatedRoomList);
   });
 
@@ -228,26 +222,20 @@ const countRoomUsers = (room_name) => {
     socket.emit('updateRoomList', roomList)
   })
 
-  socket.on("create_room", ({ room_name, chatRoomMethod, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang,nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     // console.log("rooms : ", rooms);
     // console.log('닉넴',nickname)
 
-    if (chatRoomMethod === "one_to_one") {
-      chatRoomMethod = "1:1채팅";
-    } else {
-      chatRoomMethod = "오픈채팅";
-    }
 
     const roomInfo = {
       room_number: generateRoomNumber(),
       room_name: room_name,
-      chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
       createdBy: nickname ,
-      userCount : countRoomUsers(room_name) + 1,
+      userCount : countRoomUsers(room_name),
     };
-    // console.log(roomInfo);
+
     rooms.set(room_name, roomInfo);
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
