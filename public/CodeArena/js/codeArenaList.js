@@ -10,6 +10,7 @@ const getNamespaceFromURL = (url) => {
 const currentURL = getCurrentURL();
 const namespace = getNamespaceFromURL(currentURL)
 const arenaSocket = io(namespace);
+// const arenaSocket = io.of('/page/CodeArena');
 
 // socket.io 사용
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
@@ -40,22 +41,6 @@ const openarena = () => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "block";
 };
-
-// 방 목록을 갱신하는 함수
-// const updateRoomList = (roomInfo) => {
-//   const existingRoomRow = document.getElementById(
-//     `room_${roomInfo.room_number}`
-//   );
-//   if (existingRoomRow) {
-//     // 기존에 있는 방이라면 인원수만 업데이트
-//     updateRoomUsers(roomInfo.room_number, roomInfo.user_count);
-//   } else {
-//     // 새로운 방이라면 리스트에 추가
-//     addRoomToTable(roomInfo);
-//   }
-// };
-
-
 
 // 방 생성 함수
 const handleRoomSubmit = (event) => {
@@ -111,7 +96,7 @@ const updateArenaRoom = (roomList)=>{
             <td>${roomInfo.chatRoomMethod}</td>
             <td>${roomInfo.ROOM_LANG}</td>
             <th>
-              <a href="#" id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <a id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
               <p>테스트</p>
              </th>
             <td>${roomInfo.HOST}</td>
@@ -125,15 +110,18 @@ const updateArenaRoom = (roomList)=>{
     .then((res) => {
       currentNickname = res.data
     })
+
     $tbody.addEventListener("click", (e) => {
-      console.log(e.target.parentElement);
       if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
-        console.log(roomInfo.ROOM_NUMBER);
-        enterRoom(currentNickname, roomName, roomInfo.ROOM_NUMBER)
+        enterRoom(currentNickname, roomInfo.ROOM_NAME, roomInfo.ROOM_NUMBER)
       }
     })
   })
 }
+
+// arenaSocket.on("connect", () => {
+//   console.log("프론트와 서버와의 연결 성공");
+// });
 
 // 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on('updateRoomList', (roomList)=>{
@@ -142,7 +130,6 @@ arenaSocket.on('updateRoomList', (roomList)=>{
 
 // 방 생성시 채팅방 리스트 최신화(기존의 테이블 tr 모두 삭제 후 최신화)
 arenaSocket.on('updateRoomList2', (roomList)=>{
-  console.log('업데이트2',roomList)
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
@@ -153,8 +140,9 @@ arenaSocket.on('updateRoomList2', (roomList)=>{
   updateArenaRoom(roomList)
 })
 
+
+// 인원수 실시간 업데이트
 arenaSocket.on('countUpdate',(data)=>{
-  console.log('머냐',data.data)
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
@@ -175,9 +163,7 @@ arenaSocket.on("update_room_list", (roomInfo) => {
   console.log("roomInfo : ", roomInfo);
   // updateRoomList(roomInfo);
   addRoomToTable(roomInfo)
-  
-  
-});
+  });
 
 // //방 목록 database에 새로운 방 추가하는 함수
 const addRoomToTable = (updateRooms) => {
@@ -188,13 +174,9 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
-arenaSocket.on("enter_room", ({room_name, nickname, roomNum,}) => {
-  console.log("192) enter_room의 roomNum",roomNum);
-  enterRoom(nickname, room_name, roomNum)
-})
 
 const enterRoom = (currentNickname, roomName, roomNum) => {
-  console.log("enterRoom   실행");
+  console.log("enterRoom 실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.post("http://localhost:3000/room/enterRoom", {roomNum})
   .then(res => {
@@ -204,7 +186,6 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
       room_name: roomName,
       nickname: data.name,
       room_number : roomNum
-  
     });
     arenaSocket.emit('userCount',{data:data.result})
   })
@@ -221,7 +202,6 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
   });
 
   arenaSocket.emit("welcome", { nickname: currentNickname });
-  $c_c_name.textContent = roomName;
   openarena(); // 방 입장
 };
 
@@ -239,6 +219,7 @@ const leaveRoomBtn = () => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
   
+ 
   arenaSocket.emit("leave_room");
   location.reload();
 };
@@ -249,8 +230,82 @@ arenaSocket.on("disconnect", () => {
   console.log("disconnect to server");
 });
 
-// ---------------------------------------------------------------------------------------------------------------------------------------------
+// -------------------------리스트 페이지 끝 -----------CodeArena 페이지 시작---------------------------------------------------------------------
+const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
+const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
+const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
+const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
+const $c_chatting_2 = $c_chatting_form.querySelector(".c_chatting_2")
+const $c_chatting_2_btn = $c_chatting_2.querySelector(".c_chatting_2_btn")
 
+// 공지
+const addNotice = (message) => {
+  console.log("addNotice 함수 실행");
+  const $div = document.createElement("div");
+  console.log("message : ", message);
+  $div.textContent = message;
+  $c_main_content.appendChild($div);
+};
+
+const handleMessageSubmit = (event) => {
+  console.log("handleMessageSubmit 함수 실행")
+  event.preventDefault();
+  const message = $form_input.value; // 메시지 입력값 가져오기
+  console.log("메세지 핸들러, 메세지 : ", message);
+  console.log("userInfo : ", currentNickname);
+
+  arenaSocket.emit(
+    "new_message",
+    {currentNickname, message: message}
+  )
+
+  $form_input.value = ""; // 입력 창 초기화
+};
+// ---------------함수 정의 끝------------------
+
+arenaSocket.on("connect", () => {
+  console.log("프론트와 서버와의 연결 성공");
+});
+
+arenaSocket.on("new_message", ({ currentNickname, message }) => {
+  console.log("new_message이벤트 프론트에서 받음");
+  const $div = document.createElement("div");
+  $div.textContent = `${currentNickname} : ${message}`
+  $c_main_content.appendChild($div);
+
+  // Chat.sendMessage(currentNickname, message);
+});
+
+// 프론트로 온 이벤트 감지
+arenaSocket.onAny((event) => {
+  console.log(`arenaSocket Event: ${event}`);
+});
+
+let hasWelcomed = false;
+arenaSocket.on("welcome", ({nickname}) => {
+  console.log("프론트 welcome 옴");
+  console.log("nickname : ",nickname);
+  if (!hasWelcomed) {
+    addNotice(`${nickname}(이)가 방에 입장했습니다.`);
+    hasWelcomed = true;
+  }
+
+});
+
+arenaSocket.on("user_count", ({ user_count }) => {
+  console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
+  $c_content_num.textContent = `${user_count}`;
+});
+
+arenaSocket.on("bye", ({currentNickname}) => {
+  console.log("프론트 bye이벤트 옴");
+  console.log(`${currentNickname}은 방을 나갔습니다. `);
+  addNotice(`${currentNickname}(이)가 방에서 나갔습니다.`);
+});
+
+$c_chatting_2_btn.addEventListener("click", handleMessageSubmit);
+
+//--------------------------------------------------------------------------------------------------------------------------------------------
 // 페이징 js
 const pagination = document.querySelector(".pagination");
 

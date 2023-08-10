@@ -27,7 +27,7 @@ window.Kakao.init('1a854a52728728015dc620a9bed3df2f');
 
     // <!-- 로그아웃 -->
  
-        window.Kakao.init('본인 JAVASCRIPT API 키');
+        window.Kakao.init('1a854a52728728015dc620a9bed3df2f');
 	function kakaoLogout() {
     	if (!Kakao.Auth.getAccessToken()) {
 		    console.log('Not logged in.');

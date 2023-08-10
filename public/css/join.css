@@ -58,7 +58,7 @@
     transition: all 0.1s ease-out;
   }
   .login-page .login-content form.wrapper-box input:valid {
-    border-bottom: 1px solid #7ac142;
+    border-bottom: 1px solid #24283B;
   }
   .login-page .login-content form.wrapper-box input:focus:invalid {
     border-bottom: 1px solid #EF6161;

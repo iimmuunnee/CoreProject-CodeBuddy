@@ -1,4 +1,3 @@
-
 const htmlText = document.getElementById('html')
 const cssval = document.getElementById('css').value
 
