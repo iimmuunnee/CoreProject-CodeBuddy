@@ -11,7 +11,7 @@ router.get('/createRoom',(req,res)=>{
     res.send(JSON.stringify(checkEnd))
 })
 
-
+// 유저 접속시 인원수 카운트 증가
 router.post('/enterRoom',(req,res)=>{
     let checkEnd = req.session.userName
     console.log(checkEnd)
@@ -37,6 +37,30 @@ router.post('/enterRoom',(req,res)=>{
 
     // res.send(JSON.stringify(checkEnd))
 })
+
+// 방에서 유저 접속 종료시 카운트 감소
+router.post('/leave',(req,res)=>{
+    let roomNum = req.body.data
+    let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT-1 WHERE ROOM_NUMBER=?;'
+    let conutSql = 'SELECT * FROM TB_ARENAROOM;'
+    conn.connect()
+    conn.query(sql,[roomNum],(err,result)=>{
+        if(err){
+            console.log('유저수 카운트 추가 쿼리문 에러')
+        }
+        else{
+            conn.query(conutSql,(err,result)=>{
+                if(err){
+                    console.log('실패')
+                }
+                else{
+                    res.json(JSON.stringify({result:result}))
+                }
+            })
+        }
+    })
+})
+
 
 
 // 방 생성시 방 정보 database에 저장
