@@ -80,13 +80,8 @@ arenaSocket.on("user_count", ({ user_count }) => {
 
 // 방목록 최신화 ------------------지훈---------------------
 
-const clickEvent = ()=>{
-  
-}
-
-
 let currentNickname = "";
-let roomName
+let roomName = ""
 let roomNum
 let roomLinks
 let clickEventHandler = null;
@@ -205,14 +200,12 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
-
 const enterRoom = (currentNickname, roomName, roomNum) => {
   console.log("enterRoom 실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.post("/room/enterRoom", {roomNum})
   .then(res => {
     let data = JSON.parse(res.data)
-    currentNickname = data.name;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
       nickname: data.name,
@@ -220,11 +213,10 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
     });
     arenaSocket.emit('userCount',{data:data.result})
   })
-
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = roomName // Arena 제한 시간 위 방제
-
+  
   arenaSocket.on("user_count", ({ user_count }) => {
     console.log("user_count 이벤트 도착");
     console.log(user_count);
@@ -239,7 +231,7 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
 const $leave_room = document.getElementById("leave_room");
 
 const leaveRoomBtn = () => {
-  
+  let currentNickname
   console.log("leaveRoomBtn 함수 활성화");
   let page = document.getElementById("code_arena_zip");
   page.style.display = "none";                                                                                                                                                                                                                                                                                                                              
@@ -250,8 +242,7 @@ const leaveRoomBtn = () => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
   
- 
-  arenaSocket.emit("leave_room");
+  arenaSocket.emit("leave_room", {currentNickname});
   location.reload();
 };
 
