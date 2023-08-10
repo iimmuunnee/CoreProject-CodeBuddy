@@ -41,7 +41,7 @@ router.post('/enterRoom',(req,res)=>{
 
 // 방 생성시 방 정보 database에 저장
 router.post('/updateroom',(req,res)=>{
-    console.log('방정보',req.body.updateRooms[0])
+    // console.log('방정보',req.body.updateRooms[0])
     let roomInfo = req.body.updateRooms[0]
     let number = roomInfo.room_number
     let name = roomInfo.room_name
@@ -60,7 +60,7 @@ router.post('/updateroom',(req,res)=>{
         }
         else{
          conn.query(findRoom,[number],(err,result)=>{
-            console.log('보자보자',result)
+            // console.log('보자보자',result)
             res.json(JSON.stringify(result[0]))
          })
         }

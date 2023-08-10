@@ -137,7 +137,6 @@ const updateArenaRoom = (roomList)=>{
 
 // 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on('updateRoomList', (roomList)=>{
-  console.log('가져와졌나?', roomList)
   updateArenaRoom(roomList)
 })
 
@@ -184,17 +183,17 @@ arenaSocket.on("update_room_list", (roomInfo) => {
 const addRoomToTable = (updateRooms) => {
   axios.post('/room/updateroom', {updateRooms})
     .then(res=>{
-      console.log('방정보',res.data)
       let roomInfo = JSON.parse(res.data)
       arenaSocket.emit('newlist')
   });
 };
 
 arenaSocket.on("enter_room", ({room_name, nickname, roomNum,}) => {
+  console.log("192) enter_room의 roomNum",roomNum);
   enterRoom(nickname, room_name, roomNum)
 })
 
-const enterRoom = (currentNickname, roomName ,roomNum) => {
+const enterRoom = (currentNickname, roomName, roomNum) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.post("http://localhost:3000/room/enterRoom", {roomNum})
