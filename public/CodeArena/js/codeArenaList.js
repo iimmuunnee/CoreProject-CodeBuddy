@@ -49,20 +49,15 @@ const handleRoomSubmit = (event) => {
   const dev_lang = $dev_lang.value;
   // 지훈 코드 삽입 (방생성)
   axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
-    .then((res) => {
-      currentNickname = res.data;
-      arenaSocket.emit("create_room", {
-        room_name: room_name,
-        dev_lang: dev_lang,
-        nickname: res.data, // 사용자 이름
-      });
-
-      arenaSocket.on("user_count", ({ user_count }) => {
-        console.log("user_count 이벤트 도착");
-        console.log(user_count);
-        $c_content_num.textContent = `${user_count}/4`;
-        $mini_room_users.textContent = `${user_count}/4`;
-      });
+  .then((res) => {
+    currentNickname = res.data;
+    arenaSocket.emit("create_room", {
+      room_name: room_name,
+      dev_lang: dev_lang,
+      nickname: res.data, // 사용자 이름
+    });
+    
+    
       closeModal(); // 모달 닫고
       openarena(); // 방 입장
       arenaSocket.emit("welcome", { nickname: res.data });
@@ -74,13 +69,26 @@ const handleRoomSubmit = (event) => {
   $c_a_u_r_name2.textContent = room_name // Arena 제한 시간 위 방제
 };
 
+arenaSocket.on("user_count", ({ user_count }) => {
+  console.log("user_count 이벤트 도착"), user_count;
+  $c_content_num.textContent = `${user_count}/4`;
+  $mini_room_users.textContent = `${user_count}/4`;
+});
+
 // 방목록 최신화 ------------------지훈---------------------
+
+const clickEvent = ()=>{
+  
+}
+
 
 let currentNickname = "";
 let roomName
 let roomNum
 let roomLinks
+let clickEventHandler = null;
 //최신화 함수
+
 const updateArenaRoom = (roomList)=>{  
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
@@ -110,7 +118,6 @@ const updateArenaRoom = (roomList)=>{
     .then((res) => {
       currentNickname = res.data
     })
-
     $tbody.addEventListener("click", (e) => {
       if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
         enterRoom(currentNickname, roomInfo.ROOM_NAME, roomInfo.ROOM_NUMBER)
@@ -125,6 +132,7 @@ const updateArenaRoom = (roomList)=>{
 
 // 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on('updateRoomList', (roomList)=>{
+  
   updateArenaRoom(roomList)
 })
 
@@ -155,7 +163,6 @@ arenaSocket.on('countUpdate',(data)=>{
 
 
 // --------------------지훈 끝--------------------------------
-
 //
 $make_room_form.addEventListener("submit", handleRoomSubmit);
 
