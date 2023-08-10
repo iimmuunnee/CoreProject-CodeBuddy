@@ -281,15 +281,10 @@ arenaSocket.onAny((event) => {
   console.log(`arenaSocket Event: ${event}`);
 });
 
-let hasWelcomed = false;
 arenaSocket.on("welcome", ({nickname}) => {
   console.log("프론트 welcome 옴");
   console.log("nickname : ",nickname);
-  if (!hasWelcomed) {
-    addNotice(`${nickname}(이)가 방에 입장했습니다.`);
-    hasWelcomed = true;
-  }
-
+  addNotice(`${nickname}(이)가 방에 입장했습니다.`);
 });
 
 arenaSocket.on("user_count", ({ user_count }) => {

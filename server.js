@@ -230,7 +230,7 @@ const countRoomUsers = (room_name) => {
       chatRoomMethod: chatRoomMethod,
       dev_lang: dev_lang,
       createdBy: nickname ,
-      userCount : countRoomUsers(room_name) + 1,
+      userCount : countRoomUsers(room_name),
     };
     // console.log(roomInfo);
     rooms.set(room_name, roomInfo);
@@ -251,6 +251,7 @@ const countRoomUsers = (room_name) => {
     ArenaNamespace.emit('countUpdate',(data))
   })
 
+  
 
   // Arena 방 입장 enter_room 감지하기
   socket.on(
@@ -270,7 +271,7 @@ const countRoomUsers = (room_name) => {
       console.log("enter_room이벤트의 room_number : ", room_number);
 
       socket.join(room_number); // 방에 입장하기
-
+      
       const roomInfo = rooms.get(room_number)
       if (roomInfo) {
         roomInfo.userCount = (roomInfo.userCount || 0) + 1;
@@ -296,6 +297,7 @@ const countRoomUsers = (room_name) => {
 
   socket.on("leave_room", () => {
     const room_number = socket.room_number;
+    socket.emit('leaveuser', room_number)
     if (room_number) {
       socket.leave(room_number); // 방에서 퇴장
       console.log('퇴장',room_number)
@@ -312,6 +314,7 @@ const countRoomUsers = (room_name) => {
       }
       socket.room_number = null; // 방 이름 정보 초기화
     }
+    
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
   })
