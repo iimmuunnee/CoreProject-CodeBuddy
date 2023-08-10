@@ -261,6 +261,7 @@ socket.emit('updateRoomList')
 
       ArenaNamespace.to(room_number).emit("welcome", {nickname});
       // socket.to(room_number).emit("welcome", {nickname});
+      socket["nickname"] = nickname;
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       console.log("countRoomUsers(room_name) : ", countRoomUsers(room_number));
@@ -297,7 +298,15 @@ socket.emit('updateRoomList')
       socket.room_number = null; // 방 이름 정보 초기화
     }
 
+    currentNickname = socket.nickname
+    console.log("socket.nickname", socket.nickname);
     ArenaNamespace.to(room_number).emit("bye", {currentNickname})
+
+    socket.on("leave_count", () => {
+      ArenaNamespace
+      .to(room_number)
+      .emit("user_count", { user_count: countRoomUsers(room_number)});
+    })
     
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
