@@ -719,7 +719,10 @@ a:hover .btn-draw.btn--white {
 }
 
 .m_btn_c {
-  margin-left: 65%;
+  margin-left: 25%;
+}
+.m_btn {
+  margin-left: 22%;
 }
 
 .m_btn_c,
@@ -754,6 +757,14 @@ a:hover .btn-draw.btn--white {
 
 }
 
+.logout{
+  color: black;
+  cursor: pointer;
+}
+
+.logout:hover{
+  text-decoration: underline;
+}
 
 
 /* 위에 텍스트로 된 제목 스타일 */

@@ -8,15 +8,12 @@
 
   <!-- CodeMirror API -->
   <script src="/js/codemirror.js"></script>
-  <!-- CodeMirror CSS -->
-
-  <!-- 언어별 모드  -->
   <!-- CodeMirror HTML -->
   <script src="/js/htmlmixed.js"></script>
   <!-- CodeMirror CSS -->
   <script src="/js/css.js"></script>
   <!-- CodeMirror JavaScript -->
-  <script src="/jsjavascript.js"></script>
+  <script src="/js/javascript.js"></script>
 
   <script src="/js/html-hint.js"></script>
   <script src="/js/javascript-hint.js"></script>
@@ -40,7 +37,7 @@
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
 
   <!-- Theme -->
-  <link rel="stylesheet" href="/css/codemirror.css">
+  <link rel="stylesheet" href="/CodeChat/css/codemirror.css">
   <link rel="stylesheet" href="/css/darcula.css">
   <!-- autocomplete -->
   <link rel="stylesheet" href="/css/show-hint.css">
@@ -275,58 +272,65 @@
     <!-- codechat 방생성하는 모달창 -->
     <div id="modal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 class="make-h2">방 생성</h2>
-        <form id="make_room_form">
-          <div class="m_div">
-            <label for="room-name">방 이름:</label>
-            <input type="text" id="room_name" name="room_name" required />
-          </div>
-          <div class="m_div">
-            <label for="chat-method">채팅방식</label>
-            <select name="chatRoomMethod" id="chatRoomMethod">
-              <option value="one_to_one">1:1채팅</option>
-              <option value="one_to_many">오픈채팅</option>
-            </select>
-          </div>
-          <div class="m_div">
-            <label for="dev-lang">개발언어</label>
-            <select name="dev_lang" id="dev_lang">
-              <option value="html/css">HTML/CSS</option>
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-            </select>
-          </div>
-          <button type="submit" class="make-btn" >만들기</button>
-        </form>
+        <div class="modal-content1">
+          <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-content2">
+          <h2 class="make-h2">방 생성</h2>
+        </div>
+        <div class="modal-content3">
+          <form id="make_room_form" class="make_room_form">
+            <div class="m_div1">
+              <label for="room-name">방 이름:</label>
+              <input type="text" id="room_name" name="room_name" required />
+            </div>
+            <div class="m_div2">
+              <label for="chat-method">채팅방식</label>
+              <select name="chatRoomMethod" id="chatRoomMethod">
+                <option value="one_to_one">1:1채팅</option>
+                <option value="one_to_many">오픈채팅</option>
+              </select>
+            </div>
+            <div class="m_div3">
+              <label for="dev-lang">개발언어</label>
+              <select name="dev_lang" id="dev_lang">
+                <option value="html/css">HTML/CSS</option>
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+              </select>
+            </div>
+            <button type="submit" class="make-btn">만들기</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
   <!-- --------------------------------------------------------------------------- -->
 
   <!-- codechat codeEditor(코드미러) -->
-  <form action="/page/codeEditor" id="inputForm">
+  <form id="inputForm">
 
     <div id="container">
       <div class="left">
         <!-- 메뉴바 -->
         <div class="menuBar">
-          <nav>
+          <button id="leave_room_cc"><i class="fa-solid fa-arrow-left fa-2x" style="color: #ffffff;"></i></button>
+          <!-- <nav>
             <div class="menu-btn">
               <div class="line line--1"></div>
               <div class="line line--2"></div>
               <div class="line line--3"></div>
             </div>
             <div class="nav-links">
-              <a href="" class="link">Home</a>
-              <a href="" class="link">code_buddy</a>
-              <a href="" class="link">code_Arena</a>
+              <a href="/page/" class="link">Home</a>
+              <a href="/page/CodeChat" class="link">Code_Chat</a>
+              <a href="/page/CodeArena" class="link">Code_Arena</a>
             </div>
-          </nav>
+          </nav> -->
         </div>
 
         <!-- 탭 버튼 -->
-        <div class="container ">
+        <div class="container1_1">
           <ul class="tab-container ">
             <li class="tab-container__item active" data-tab="tab1">
               <a class="tab-container__item--title">HTML</a>
@@ -378,7 +382,7 @@
           <!-- 전송버튼 -->
           <div class="text-center">
             <!-- <button id="submit" class="btn btn-warning btn-lg">전송</button> -->
-            <a href="#" class="btn-3d blue">Button</a>
+            <a href="#" class="btn-3d blue">코드 보내기</a>
           </div>
 
         </div>
@@ -401,7 +405,7 @@
             <div class="panels">
               <div class="panel" id="one-panel">
 
-                <div class="container">
+                <div class="container1_2">
                   <ul class="tab-container">
                     <li class="tab-container__item2 active" data-tab="tab4">
                       <a class="tab-container__item2--title">HTML</a>
@@ -434,8 +438,8 @@
                     <!-- Output -->
                     <iframe class="live" id="live2"></iframe>
                   </div>
-                  <div class="text-center sendBtn">
-                    <button id="submit" class="btn btn-warning btn-lg">가져오기</button>
+                  <div class="sendBtn">
+                    <button id="submit" class="chatedi_btn1">코드 가져오기</button>
                   </div>
                 </div>
 
@@ -475,8 +479,8 @@
                     <!-- Output -->
                     <iframe class="live" id="live3"></iframe>
                   </div>
-                  <div class="text-center sendBtn">
-                    <button id="submit" class="btn btn-outline-warning btn-lg">가져오기?</button>
+                  <div class="sendBtn">
+                    <button id="submit" class="chatedi_btn2">코드 가져오기</button>
                   </div>
                 </div>
               </div>
@@ -515,8 +519,8 @@
                     <!-- Output -->
                     <iframe class="live" id="live4"></iframe>
                   </div>
-                  <div class="text-center sendBtn">
-                    <button id="submit" class="btn btn-dark">가져오기?</button>
+                  <div class="sendBtn">
+                    <button id="submit" class="chatedi_btn3">코드 가져오기</button>
                   </div>
                 </div>
               </div>
@@ -530,103 +534,108 @@
 
     <!-- codechat 채팅방 -->
     <!-- chat 버튼 -->
-    <div class="chat_open">
-      <button class="chat_open_btn">
-        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
-      </button>
-    </div>
+  <!-- 채팅방 시작 -->
+  <!-- chat 버튼 -->
+  <div id="chat_open" class="chat_open">
+    <button class="chat_open_btn">
+      <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
+    </button>
+  </div>
 
-    <!-- chat 메인 -->
-    <div id="chat" class="chat">
-      <div class="chat_1">
-        <div class="chat_main">
-          <!-- 채팅방 이름 -->
-          <div class="c_roomname">
-            <div class="c_roomname_1">
-              <div class="c_content_name">
-                <div class="c_c_name"></div>
-                <div class="c_content_num"></div>
-              </div>
-              <div id="c_content_mini" class="c_content_mini">
-                <button class="c_content_mini_btn">
-                  <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
-                </button>
-              </div>
-              <div class="c_content_close">
-                <button class="c_content_close_btn">
-                  <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
-                </button>
-              </div>
+  <!-- chat 메인 -->
+  <div id="chat" class="chat">
+    <div class="chat_1">
+      <div class="chat_main">
+        <!-- 채팅방 이름 -->
+        <div class="c_roomname">
+          <div class="c_roomname_1">
+            <div class="c_content_name">
+              <div class="c_c_name"></div>
+              <div class="c_content_num">(인원)</div>
+            </div>
+            <div id="c_content_mini" class="c_content_mini">
+              <button class="c_content_mini_btn">
+                <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
+              </button>
+            </div>
+            <div class="c_content_close">
+              <button class="c_content_close_btn">
+                <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
+              </button>
             </div>
           </div>
+        </div>
 
-          <!-- 채팅내용 -->
-          <div class="c_main_content">
-            <div class="chat1">
-              <ul>
-                <!-- 동적 생성 -->
-              </ul>
-            </div>
-          </div>
-
-          <div class="chat1 format">
+        <!-- 채팅내용 -->
+        <div class="c_main_content">
+          <div class="chat1">
             <ul>
-              <li>
-                <div class="sender">
-                  <span></span>
-                </div>
-                <div class="message">
-                  <span></span>
-                </div>
-              </li>
+              <!-- 동적 생성 -->
             </ul>
           </div>
+        </div>
 
-          <!-- 채팅작성 및 전송 -->
-          <div class="c_chatting">
-            <form name="c_chatting_form" class="c_chatting_form" action="">
-              <div class="c_chatting_1">
-                <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
+        <div class="chat1 format">
+          <ul>
+            <li>
+              <div class="sender">
+                <span></span>
               </div>
+              <div class="message">
+                <span></span>
+              </div>
+            </li>
+          </ul>
+        </div>
 
-              <div class="c_chatting_2">
-                <div class="c_chatting_22">
-                  <button onclick="send()" class="c_chatting_2_btn">
-                    <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
-                  </button>
-                </div>
-
-                <div class="chat_mini_1_21">
-                  <p id="mini_room_users"></p>
-
-                </div>
-            </form>
-          </div>
+        <!-- 채팅작성 및 전송 -->
+        <div class="c_chatting">
+          <form name="c_chatting_form" class="c_chatting_form" action="">
+            <div class="c_chatting_1">
+              <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
+            </div>
+            <div class="c_chatting_2">
+              <div class="c_chatting_22">
+                <button class="c_chatting_2_btn">
+                  <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
+                </button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="chat_mini" id="chat_mini">
-      <div class="chat_mini_1">
-        <div class="chat_mini_1_1">
-          <div class="chat_mini_1_11">
-            <p id="mini_room_name"></p>
-          </div>
-          <div class="chat_mini_1_21">
-            <p id="mini_room_users">4/6</p>
-          </div>
+  <div class="chat_mini" id="chat_mini">
+    <div class="chat_mini_1">
+      <div class="chat_mini_1_1">
+        <div class="chat_mini_1_11">
+          <p id="mini_room_name"></p>
         </div>
-        <div class="chat_mini_1_2">
-          <button class="chat_mini_1_2btn">
-            <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
-          </button>
+        <div class="chat_mini_1_21">
+          <p id="$mini_room_users">4/6</p>
         </div>
       </div>
+      <div class="chat_mini_1_2">
+        <button class="chat_mini_1_2btn">
+          <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
+        </button>
+      </div>
     </div>
+  </div>
   </section>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/CodeChat/js/codeChatList.js"></script>
   <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+
+  <!-- 코드에디터 -->
+  <script src="/CodeChat/js/codeEditor.js"></script>
+  <!-- 코드에디터 접속자js -->
+  <script src="/js/codeEditor_Jo.js"></script>
+  <!-- 메뉴바 js -->
+  <script src="/js/codeEditor_menuBar.js"></script>
+  <!-- 스크립트를 상단에 올리면 작동을 안하는 문제가 있음 -->
 
   <!-- 세션 로그인 스크립트 -지훈- -->
   <script>
@@ -650,9 +659,44 @@
     // 1. 방 생성 후 code mirror 열기
     $(document).on("click", ".make-btn", (e) => {
       console.log("팝업창 열기");
-      $("#container").css("display", "block");
+      $("#container").css("display", "flex");
       $(".m_header").css("display", "none");
-      $('.notice').css("display","none");
+      $('.notice').css("display", "none");
+      $('.chat_open').css('display','block')
+    });
+
+    // 2. code mirror -> CodeChat 목록페이지 이동
+    $(document).on("click", "#leave_room_cc", (e) => {
+      console.log("보이는 화면 none 처리");
+      $("#container").css("display", "none");
+      $(".m_header").css("display", "flex");
+      $('.notice').css("display", "block");
+    });
+
+    // 1. 팝업창 열기
+    $(document).on("click", ".chat_open", (e) => {
+      console.log("팝업창 열기");
+      $("#chat").css("display", "block");
+    });
+
+    // 1. 팝업창 닫기
+    $(document).on("click", ".c_content_close button", (e) => {
+      console.log("팝업창 닫기");
+      $("#chat").css("display", "none");
+    });
+
+    // 2. chat 축소판 다시 열기
+    $(document).on("click", ".c_content_mini_btn", (e) => {
+      console.log("팝업창 키우기");
+      $("#chat_mini").css("display", "flex");
+      $("#chat").css("display", "none");
+    });
+
+    // 2. chat 축소판 닫기
+    $(document).on("click", ".chat_mini_1_2btn", (e) => {
+      console.log("팝업창 줄이기");
+      $("#chat_mini").css("display", "none");
+      $("#chat").css("display", "block");
     });
 
   </script>

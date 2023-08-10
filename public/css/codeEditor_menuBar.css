@@ -28,13 +28,13 @@ nav.nav-open {
     transform: translateX(-30px);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.1);
-    width: 49.4%;
+    width: 47.4%;
 }
 
 nav .menu-btn {
     position: absolute;
     top: 35%;
-    left: 10%;
+    left: 5%;
     width: 30px;
     cursor: pointer;
     z-index: 2;
