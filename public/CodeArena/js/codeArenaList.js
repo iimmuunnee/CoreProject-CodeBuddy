@@ -86,15 +86,14 @@ let roomNum
 let roomLinks
 let clickEventHandler = null;
 
-const handleClick = (e,re) => {
-  console.log('제바발발',e)
-  // const target = e.target;
-  // if (target.classList.contains("room-link")) {
-  //   const roomNumber = target.getAttribute("data-roomnumber");
-  //   if (roomNumber) {
-  //     enterRoom(currentNickname, roomName, roomNumber);
-  //   }
-  // }
+const handleClick = (e) => {
+  const target = e.target;
+  if (target.classList.contains("room-link")) {
+    const roomNumber = target.getAttribute("data-roomnumber");
+    if (roomNumber) {
+      enterRoom(currentNickname, roomName, roomNumber);
+    }
+  }
 };
 //최신화 함수
 
@@ -132,7 +131,7 @@ const updateArenaRoom = (roomList)=>{
     .then((res) => {
       currentNickname = res.data 
     })
-    clickEventHandler = handleClick('123');
+    clickEventHandler = handleClick;
   $tbody.addEventListener("click", clickEventHandler);
 
     // $tbody.addEventListener("click", (e) => {
