@@ -90,6 +90,7 @@ const handleClick = (e) => {
   const target = e.target;
   if (target.classList.contains("room-link")) {
     const roomNumber = target.getAttribute("data-roomnumber");
+    const roomName = target.getAttribute("data-roomname") // 여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (roomNumber) {
       enterRoom(currentNickname, roomName, roomNumber);
     }
@@ -239,7 +240,6 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
 const $leave_room = document.getElementById("leave_room");
 
 const leaveRoomBtn = () => {
-  let currentNickname
   console.log("leaveRoomBtn 함수 활성화");
   let page = document.getElementById("code_arena_zip");
   page.style.display = "none";                                                                                                                                                                                                                                                                                                                              
@@ -251,6 +251,7 @@ const leaveRoomBtn = () => {
   chat.style.display = "none";
   
   arenaSocket.emit("leave_room", {currentNickname});
+  arenaSocket.emit("leave_count")
 
 };
 arenaSocket.on('leaveuser',(data)=>{
