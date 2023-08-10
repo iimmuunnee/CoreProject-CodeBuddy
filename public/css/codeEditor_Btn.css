@@ -1,18 +1,17 @@
+* {
+  font-family: 'Pretendard-Regular';
+}
 /* 3D Button */
 .btn-3d {
     position: relative;
-    display: inline-block;
-    font-size: 22px;
-    padding: 20px 60px;
     color: white;
-    margin: 0px 10px 10px;
     border-radius: 6px;
     text-align: center;
     transition: top .01s linear;
     text-shadow: 0 1px 0 rgba(0,0,0,0.15);
   }
   .btn-3d.red:hover    {background-color: #e74c3c;}
-  .btn-3d.blue:hover   {background-color: #699DD1;}
+  /* .btn-3d.blue:hover   {background-color: #699DD1;} */
   .btn-3d.green:hover  {background-color: #80C49D;}
   .btn-3d.purple:hover {background-color: #D19ECB;}
   .btn-3d.yellow:hover {background-color: #F0D264;}
@@ -38,12 +37,16 @@
   }
   
   .btn-3d.blue {
-    background-color: #6DA2D9;
-    box-shadow: 0 0 0 1px #6698cb inset,
+    background-color: #24283b;
+    /* box-shadow: 0 0 0 1px #6698cb inset,
           0 0 0 2px rgba(255,255,255,0.15) inset,
           0 8px 0 0 rgba(110, 164, 219, .7),
           0 8px 0 1px rgba(0,0,0,.4),
-          0 8px 8px 1px rgba(0,0,0,0.5);
+          0 8px 8px 1px rgba(0,0,0,0.5); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9vw;
   }
   .btn-3d.blue:active {
     box-shadow: 0 0 0 1px #6191C2 inset,
@@ -106,3 +109,27 @@
           0 0 0 2px rgba(255,255,255,0.15) inset,
           0 0 0 1px rgba(0,0,0,0.4);
   }
+
+/* 가져오기 버튼 css */
+.chatedi_btn1, .chatedi_btn2, .chatedi_btn3{
+  width: 13%;
+  height: 7%;
+  position: absolute;
+  bottom: 0.4%;
+  right: 1.5%;
+  background-color: #24283b;
+  border-radius: 0.375rem;
+  color: white;
+  font-size: 0.9vw;
+}
+
+#leave_room_cc{
+  width: 5%;
+  height: 3%;
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 3%;
+}

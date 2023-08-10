@@ -5,8 +5,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document</title>
-  <link rel="stylesheet" href="/CodeChat/css/chatlist.css" />
-  <link rel="stylesheet" href="/CodeChat/css/pop_chat.css" />
+
+  <!-- CodeMirror API -->
+  <script src="/js/codemirror.js"></script>
+  <!-- CodeMirror HTML -->
+  <script src="/js/htmlmixed.js"></script>
+  <!-- CodeMirror CSS -->
+  <script src="/js/css.js"></script>
+  <!-- CodeMirror JavaScript -->
+  <script src="/js/javascript.js"></script>
+
+  <script src="/js/html-hint.js"></script>
+  <script src="/js/javascript-hint.js"></script>
+  <script src="/js/show-hint.js"></script>
+  <!-- jQurey -->
+  <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+  <!-- 부트스트랩 js -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo&display=swap" rel="stylesheet" />
@@ -17,6 +35,18 @@
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
   <script type="text/javascript" src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+
+  <!-- Theme -->
+  <link rel="stylesheet" href="/CodeChat/css/codemirror.css">
+  <link rel="stylesheet" href="/css/darcula.css">
+  <!-- autocomplete -->
+  <link rel="stylesheet" href="/css/show-hint.css">
+
+  <link rel="stylesheet" href="/CodeChat/css/chatlist.css" />
+  <link rel="stylesheet" href="/CodeChat/css/pop_chat.css" />
+  <link rel="stylesheet" href="/css/codeEditor_menuBar.css">
+  <link rel="stylesheet" href="/css/codeEditor_Btn.css">
+  <link rel="stylesheet" href="/css/codeEditor.css">
 </head>
 
 <body>
@@ -34,14 +64,14 @@
 
   <section id="codeChatList" class="notice">
     <div class="page-title">
-      <div class="container">
+      <div class="container1">
         <h3>CodeChat 채팅방 목록</h3>
       </div>
     </div>
 
     <!-- board seach area -->
     <div id="board-search">
-      <div class="container">
+      <div class="container1">
         <div class="search-window">
           <form action="">
             <div class="search-wrap">
@@ -69,7 +99,7 @@
 
     <!-- board list area -->
     <div id="board-list">
-      <div class="container">
+      <div class="container1">
         <table class="board-table">
           <thead>
             <tr>
@@ -206,161 +236,439 @@
         </div>
       </div>
     </div>
+
+    <!-- codechat 방생성하는 모달창 -->
     <div id="modal" class="modal">
       <div class="modal-content">
-        <span class="close" onclick="closeModal()">&times;</span>
-        <h2 class="make-h2">방 생성</h2>
-        <form id="make_room_form">
-          <div class="m_div">
-            <label for="room-name">방 이름:</label>
-            <input type="text" id="room_name" name="room_name" required />
-          </div>
-          <div class="m_div">
-            <label for="chat-method">채팅방식</label>
-            <select name="chatRoomMethod" id="chatRoomMethod">
-              <option value="one_to_one">1:1채팅</option>
-              <option value="one_to_many">오픈채팅</option>
-            </select>
-          </div>
-          <div class="m_div">
-            <label for="dev-lang">개발언어</label>
-            <select name="dev_lang" id="dev_lang">
-              <option value="html/css">HTML/CSS</option>
-              <option value="javascript">JavaScript</option>
-              <option value="python">Python</option>
-            </select>
-          </div>
-          <button type="submit" class="make-btn">만들기</button>
-        </form>
+        <div class="modal-content1">
+          <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <div class="modal-content2">
+          <h2 class="make-h2">방 생성</h2>
+        </div>
+        <div class="modal-content3">
+          <form id="make_room_form" class="make_room_form">
+            <div class="m_div1">
+              <label for="room-name">방 이름:</label>
+              <input type="text" id="room_name" name="room_name" required />
+            </div>
+            <div class="m_div2">
+              <label for="chat-method">채팅방식</label>
+              <select name="chatRoomMethod" id="chatRoomMethod">
+                <option value="one_to_one">1:1채팅</option>
+                <option value="one_to_many">오픈채팅</option>
+              </select>
+            </div>
+            <div class="m_div3">
+              <label for="dev-lang">개발언어</label>
+              <select name="dev_lang" id="dev_lang">
+                <option value="html/css">HTML/CSS</option>
+                <option value="javascript">JavaScript</option>
+                <option value="python">Python</option>
+              </select>
+            </div>
+            <button type="submit" class="make-btn">만들기</button>
+          </form>
+        </div>
       </div>
     </div>
   </section>
   <!-- --------------------------------------------------------------------------- -->
-  <section id="popCodeChat">
-    <!-- 임시) 나가기 버튼 -->
-    <div class="chat_leave" id="chat_leave">
-      <button id="chat_leave_btn">나가기</button>
-    </div>
 
-    <!-- chat 버튼 -->
-    <div class="chat_open">
-      <button class="chat_open_btn">
-        <i class="fa-solid fa-comment fa-lg" style="color: #ffffff"></i>
-      </button>
-    </div>
+  <!-- codechat codeEditor(코드미러) -->
+  <form id="inputForm">
 
-    <!-- chat 메인 -->
-    <div id="chat" class="chat">
-      <div class="chat_1">
-        <div class="chat_main">
-          <!-- 채팅방 이름 -->
-          <div class="c_roomname">
-            <div class="c_roomname_1">
-              <div class="c_content_name">
-                <div class="c_c_name"></div>
-                <div class="c_content_num"></div>
-              </div>
-              <div id="c_content_mini" class="c_content_mini">
-                <button class="c_content_mini_btn">
-                  <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
-                </button>
-              </div>
-              <div class="c_content_close">
-                <button class="c_content_close_btn">
-                  <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
-                </button>
-              </div>
+    <div id="container">
+      <div class="left">
+        <!-- 메뉴바 -->
+        <div class="menuBar">
+          <button id="leave_room_cc"><i class="fa-solid fa-arrow-left fa-2x" style="color: #ffffff;"></i></button>
+          <!-- <nav>
+            <div class="menu-btn">
+              <div class="line line--1"></div>
+              <div class="line line--2"></div>
+              <div class="line line--3"></div>
             </div>
-          </div>
-
-          <!-- 채팅내용 -->
-          <div class="c_main_content">
-            <div class="chat1">
-              <ul>
-                <!-- 동적 생성 -->
-              </ul>
+            <div class="nav-links">
+              <a href="/page/" class="link">Home</a>
+              <a href="/page/CodeChat" class="link">Code_Chat</a>
+              <a href="/page/CodeArena" class="link">Code_Arena</a>
             </div>
-          </div>
+          </nav> -->
+        </div>
 
-          <div class="chat1 format">
-            <ul>
-              <li>
-                <div class="sender">
-                  <span></span>
-                </div>
-                <div class="message">
-                  <span></span>
-                </div>
+        <!-- 탭 버튼 -->
+        <div class="container1_1">
+          <ul class="tab-container ">
+            <li class="tab-container__item active" data-tab="tab1">
+              <a class="tab-container__item--title">HTML</a>
+            </li>
+            <li class="tab-container__item " data-tab="tab2">
+              <a class="tab-container__item--title">CSS</a>
+            </li>
+            <li class="tab-container__item" data-tab="tab3">
+              <a class="tab-container__item--title">JavaScript</a>
+            </li>
+          </ul>
+          <!-- 코드 에디터  -->
+          <section class="content-container">
+            <article id="tab1" class="content-container__content ">
+              <textarea id="html" name="html"></textarea>
+            </article>
+            <article id="tab2" class="content-container__content ">
+              <textarea id="css" name="css"></textarea>
+            </article>
+            <article id="tab3" class="content-container__content ">
+              <textarea id="js" name="js"></textarea>
+            </article>
+          </section>
+
+          <!-- bottom output -->
+          <div class="outputDiv">
+            <ul class="tab-container bottom">
+              <li class="tab-container__item active">
+                <!-- <a class="tab-container__item--title">OUTPUT</a> -->
               </li>
             </ul>
+            <!-- Output -->
+            <iframe class="live" id="live"></iframe>
           </div>
 
-          <!-- 채팅작성 및 전송 -->
-          <div class="c_chatting">
-            <form name="c_chatting_form" class="c_chatting_form" action="">
-              <div class="c_chatting_1">
-                <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
-              </div>
+          <!-- 접속자 전송 체크박스 -->
+          <div class="checkbox_style">
+            <div class="btn-group " role="group" aria-label="Basic checkbox toggle button group">
+              <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
+              <label class="btn btn-outline-secondary" for="btncheck1">접속자 1</label>
 
-              <div class="c_chatting_2">
-                <div class="c_chatting_22">
-                  <button onclick="send()" class="c_chatting_2_btn">
-                    <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
-                  </button>
+              <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
+              <label class="btn btn-outline-secondary" for="btncheck2">접속자 2</label>
+
+              <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
+              <label class="btn btn-outline-secondary" for="btncheck3">접속자 3</label>
+            </div>
+          </div>
+          <!-- 전송버튼 -->
+          <div class="text-center">
+            <!-- <button id="submit" class="btn btn-warning btn-lg">전송</button> -->
+            <a href="#" class="btn-3d blue">코드 보내기</a>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="right">
+        <!-- 접속자 -->
+        <div class="buddy">
+          <div class="warpper">
+            <input class="radio" id="one" name="group" type="radio" checked>
+            <input class="radio" id="two" name="group" type="radio">
+            <input class="radio" id="three" name="group" type="radio">
+            <input class="radio" id="four" name="group" type="radio">
+
+            <div class="tabs">
+              <label class="tab" id="one-tab" for="one">접속자1</label>
+              <label class="tab" id="two-tab" for="two">접속자2</label>
+              <label class="tab" id="three-tab" for="three">접속자3</label>
+            </div>
+            <div class="panels">
+              <div class="panel" id="one-panel">
+
+                <div class="container1_2">
+                  <ul class="tab-container">
+                    <li class="tab-container__item2 active" data-tab="tab4">
+                      <a class="tab-container__item2--title">HTML</a>
+                    </li>
+                    <li class="tab-container__item2 " data-tab="tab5">
+                      <a class="tab-container__item2--title">CSS</a>
+                    </li>
+                    <li class="tab-container__item2" data-tab="tab6">
+                      <a class="tab-container__item2--title">JavaScript</a>
+                    </li>
+                  </ul>
+                  <!-- 코드 에디터  -->
+                  <section class="content-container2">
+                    <article id="tab4" class="content-container__content2 ">
+                      <textarea id="html2" name="html"></textarea>
+                    </article>
+                    <article id="tab5" class="content-container__content2 ">
+                      <textarea id="css2" name="css"></textarea>
+                    </article>
+                    <article id="tab6" class="content-container__content2">
+                      <textarea id="js2" name="js"></textarea>
+                    </article>
+                  </section>
+                  <div class="outputDiv">
+                    <ul class="tab-container bottom">
+                      <li class="tab-container__item2 active" data-tab="">
+                        <!-- <a class="tab-container__item2--title">OUTPUT</a> -->
+                      </li>
+                    </ul>
+                    <!-- Output -->
+                    <iframe class="live" id="live2"></iframe>
+                  </div>
+                  <div class="sendBtn">
+                    <button id="submit" class="chatedi_btn1">코드 가져오기</button>
+                  </div>
                 </div>
 
-              <div class="chat_mini_1_21">
-                <p id="mini_room_users"></p>
-
               </div>
-            </form>
+              <div class="panel" id="two-panel">
+
+                <div class="container">
+                  <ul class="tab-container">
+                    <li class="tab-container__item3 active" data-tab="tab7">
+                      <a class="tab-container__item3--title">HTML</a>
+                    </li>
+                    <li class="tab-container__item3 " data-tab="tab8">
+                      <a class="tab-container__item3--title">CSS</a>
+                    </li>
+                    <li class="tab-container__item3" data-tab="tab9">
+                      <a class="tab-container__item3--title">JavaScript</a>
+                    </li>
+                  </ul>
+                  <!-- 코드 에디터  -->
+                  <section class="content-container3">
+                    <article id="tab7" class="content-container__content3 ">
+                      <textarea id="html3" name="html"></textarea>
+                    </article>
+                    <article id="tab8" class="content-container__content3 ">
+                      <textarea id="css3" name="css"></textarea>
+                    </article>
+                    <article id="tab9" class="content-container__content3">
+                      <textarea id="js3" name="js"></textarea>
+                    </article>
+                  </section>
+                  <div class="outputDiv">
+                    <ul class="tab-container bottom">
+                      <li class="tab-container__item3 active" data-tab="">
+                        <!-- <a class="tab-container__item2--title">OUTPUT</a> -->
+                      </li>
+                    </ul>
+                    <!-- Output -->
+                    <iframe class="live" id="live3"></iframe>
+                  </div>
+                  <div class="sendBtn">
+                    <button id="submit" class="chatedi_btn2">코드 가져오기</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="panel" id="three-panel">
+                <div class="container">
+                  <ul class="tab-container">
+                    <li class="tab-container__item4 active" data-tab="tab9">
+                      <a class="tab-container__item4--title">HTML</a>
+                    </li>
+                    <li class="tab-container__item4 " data-tab="tab10">
+                      <a class="tab-container__item4--title">CSS</a>
+                    </li>
+                    <li class="tab-container__item4" data-tab="tab11">
+                      <a class="tab-container__item4--title">JavaScript</a>
+                    </li>
+                  </ul>
+                  <!-- 코드 에디터  -->
+                  <section class="content-container4">
+                    <article id="tab9" class="content-container__content4 ">
+                      <textarea id="html4" name="html"></textarea>
+                    </article>
+                    <article id="tab10" class="content-container__content4 ">
+                      <textarea id="css4" name="css"></textarea>
+                    </article>
+                    <article id="tab11" class="content-container__content4">
+                      <textarea id="js4" name="js"></textarea>
+                    </article>
+                  </section>
+                  <div class="outputDiv">
+                    <ul class="tab-container bottom">
+                      <li class="tab-container__item4 active" data-tab="">
+                        <!-- <a class="tab-container__item2--title">OUTPUT</a> -->
+                      </li>
+                    </ul>
+                    <!-- Output -->
+                    <iframe class="live" id="live4"></iframe>
+                  </div>
+                  <div class="sendBtn">
+                    <button id="submit" class="chatedi_btn3">코드 가져오기</button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </form>
+  <section id="popCodeChat">
 
-    <div class="chat_mini" id="chat_mini">
-      <div class="chat_mini_1">
-        <div class="chat_mini_1_1">
-          <div class="chat_mini_1_11">
-            <p id="mini_room_name"></p>
-          </div>
-          <div class="chat_mini_1_21">
-            <p id="mini_room_users">4/6</p>
+    <!-- codechat 채팅방 -->
+    <!-- chat 버튼 -->
+  <!-- 채팅방 시작 -->
+  <!-- chat 버튼 -->
+  <div id="chat_open" class="chat_open">
+    <button class="chat_open_btn">
+      <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
+    </button>
+  </div>
+
+  <!-- chat 메인 -->
+  <div id="chat" class="chat">
+    <div class="chat_1">
+      <div class="chat_main">
+        <!-- 채팅방 이름 -->
+        <div class="c_roomname">
+          <div class="c_roomname_1">
+            <div class="c_content_name">
+              <div class="c_c_name"></div>
+              <div class="c_content_num">(인원)</div>
+            </div>
+            <div id="c_content_mini" class="c_content_mini">
+              <button class="c_content_mini_btn">
+                <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
+              </button>
+            </div>
+            <div class="c_content_close">
+              <button class="c_content_close_btn">
+                <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
+              </button>
+            </div>
           </div>
         </div>
-        <div class="chat_mini_1_2">
-          <button class="chat_mini_1_2btn">
-            <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
-          </button>
+
+        <!-- 채팅내용 -->
+        <div class="c_main_content">
+          <div class="chat1">
+            <ul>
+              <!-- 동적 생성 -->
+            </ul>
+          </div>
         </div>
 
+        <div class="chat1 format">
+          <ul>
+            <li>
+              <div class="sender">
+                <span></span>
+              </div>
+              <div class="message">
+                <span></span>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 채팅작성 및 전송 -->
+        <div class="c_chatting">
+          <form name="c_chatting_form" class="c_chatting_form" action="">
+            <div class="c_chatting_1">
+              <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
+            </div>
+            <div class="c_chatting_2">
+              <div class="c_chatting_22">
+                <button class="c_chatting_2_btn">
+                  <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
+  </div>
+
+  <div class="chat_mini" id="chat_mini">
+    <div class="chat_mini_1">
+      <div class="chat_mini_1_1">
+        <div class="chat_mini_1_11">
+          <p id="mini_room_name"></p>
+        </div>
+        <div class="chat_mini_1_21">
+          <p id="$mini_room_users">4/6</p>
+        </div>
+      </div>
+      <div class="chat_mini_1_2">
+        <button class="chat_mini_1_2btn">
+          <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
+        </button>
+      </div>
+    </div>
+  </div>
   </section>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/CodeChat/js/codeChatList.js"></script>
   <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+
+  <!-- 코드에디터 -->
+  <script src="/CodeChat/js/codeEditor.js"></script>
+  <!-- 코드에디터 접속자js -->
+  <script src="/js/codeEditor_Jo.js"></script>
+  <!-- 메뉴바 js -->
+  <script src="/js/codeEditor_menuBar.js"></script>
+  <!-- 스크립트를 상단에 올리면 작동을 안하는 문제가 있음 -->
+
   <!-- 세션 로그인 스크립트 -지훈- -->
   <script>
-        // 로그인 했을 시 사용자 이름 표시
-        let login = '{{login}}'
-        let logout = '{{logout}}'
-    
-        if(login) {
-          document.querySelector('#login_btn').style.display = 'none'
-          document.querySelector('#userInfo_btn').style.display = 'inline'
-          console.log('로그인',login)
-        }    
-        if(logout){
-          document.querySelector('#login_btn').style.display = 'inline'
-          document.querySelector('#userInfo_btn').style.display = 'none'
-          console.log('로그아웃',logout)
-        }    
+    // 로그인 했을 시 사용자 이름 표시
+    let login = '{{login}}'
+    let logout = '{{logout}}'
+
+    if (login) {
+      document.querySelector('#login_btn').style.display = 'none'
+      document.querySelector('#userInfo_btn').style.display = 'inline'
+      console.log('로그인', login)
+    }
+    if (logout) {
+      document.querySelector('#login_btn').style.display = 'inline'
+      document.querySelector('#userInfo_btn').style.display = 'none'
+      console.log('로그아웃', logout)
+    }    
   </script>
 
- 
+  <script>
+    // 1. 방 생성 후 code mirror 열기
+    $(document).on("click", ".make-btn", (e) => {
+      console.log("팝업창 열기");
+      $("#container").css("display", "flex");
+      $(".m_header").css("display", "none");
+      $('.notice').css("display", "none");
+      $('.chat_open').css('display','block')
+    });
+
+    // 2. code mirror -> CodeChat 목록페이지 이동
+    $(document).on("click", "#leave_room_cc", (e) => {
+      console.log("보이는 화면 none 처리");
+      $("#container").css("display", "none");
+      $(".m_header").css("display", "flex");
+      $('.notice').css("display", "block");
+    });
+
+    // 1. 팝업창 열기
+    $(document).on("click", ".chat_open", (e) => {
+      console.log("팝업창 열기");
+      $("#chat").css("display", "block");
+    });
+
+    // 1. 팝업창 닫기
+    $(document).on("click", ".c_content_close button", (e) => {
+      console.log("팝업창 닫기");
+      $("#chat").css("display", "none");
+    });
+
+    // 2. chat 축소판 다시 열기
+    $(document).on("click", ".c_content_mini_btn", (e) => {
+      console.log("팝업창 키우기");
+      $("#chat_mini").css("display", "flex");
+      $("#chat").css("display", "none");
+    });
+
+    // 2. chat 축소판 닫기
+    $(document).on("click", ".chat_mini_1_2btn", (e) => {
+      console.log("팝업창 줄이기");
+      $("#chat_mini").css("display", "none");
+      $("#chat").css("display", "block");
+    });
+
+  </script>
+
 </body>
 
 </html>
-
