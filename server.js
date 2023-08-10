@@ -279,6 +279,7 @@ const countRoomUsers = (room_name) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
+      console.log('입장방', roomNum)
       
       socket["room_name"] = room_name; // 소캣 객체에 "room_name"이라는 속성 추가
 
@@ -311,6 +312,7 @@ const countRoomUsers = (room_name) => {
     const room_name = socket.room_name;
     if (room_name) {
       socket.leave(room_name); // 방에서 퇴장
+      console.log('퇴장',room_name)
 
       const roomInfo = rooms.get(room_name);
       if (roomInfo) {
