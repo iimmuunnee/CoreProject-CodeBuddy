@@ -4,11 +4,12 @@ table {
 }
 
 section.notice {
-  padding: 40px 0;
+  padding: 125px 0;
 }
 
 .page-title {
-  margin-bottom: 60px;
+  margin-bottom: 30px;
+  /* background-image: url('/img/title.jpg'); */
 }
 
 .page-title h3 {
@@ -26,10 +27,10 @@ section.notice {
 
 #board-search .search-window .search-wrap {
   position: relative;
-  /*   padding-right: 124px; */
+  height: 40px;
   margin: 0 auto;
   width: 80%;
-  /* max-width: 564px; */
+  
 }
 
 /* #board-search .search-window .search-wrap input {
@@ -421,4 +422,87 @@ button {
   border-radius: 1.375rem;
   float: right;
   font-size: 0.8vw;
+}
+
+.filter-button{
+  border: 1px solid;
+  border-radius: 1rem;
+  width: 15%;
+  height: 90%;
+  margin-left: 3%;
+}
+
+.lang{
+  margin-left: 11%;
+}
+
+.filter-button.active {
+  background-color: #4CAF50; 
+  color: white; 
+}
+
+/* header */
+.m_header {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  /* border-bottom: 1px solid; */
+  height: 80px;
+}
+
+/* 로고 텍스트 스타일 */
+.m_logo {
+  cursor: pointer;
+  margin-left: 25%;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin-top: 1.5%;
+  color: white;
+  
+}
+
+/* 세 개의 버튼 스타일 */
+.m_btn_c,
+.m_btn_a,
+.m_btn_m,
+.m_btn {
+  background: none;
+  font-size: 1.2rem;
+  border: none;
+  width: 15%;
+  color: white;
+  margin-top: 10px;
+
+}
+
+.m_btn_c {
+  margin-left: 5%;
+}
+.m_btn {
+  margin-left: 1%;
+}
+
+.m_btn_c,
+.m_btn_a,
+.m_btn:hover {
+  cursor: pointer;
+}
+
+.m_title_btn {
+  display: flex;
+}
+
+.logout{
+  color: white;
+  cursor: pointer;
+  margin-top: 2%;
+
+}
+
+.logout:hover{
+  text-decoration: underline;
 }
