@@ -116,13 +116,11 @@ const updateArenaRoom = (roomList)=>{
     // 방 정보를 td에 추가
     newRow.innerHTML = `
             <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
-            <td>${roomInfo.chatRoomMethod}</td>
             <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
             <th>
               <a id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
               <p>테스트</p>
              </th>
-            <td>${roomInfo.ROOM_HOST}</td>
             <td>${roomInfo.USER_COUNT}/4</td>
       `;
     // 새로운 행을 테이블의 맨 위에 추가

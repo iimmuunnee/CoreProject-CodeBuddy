@@ -86,9 +86,10 @@
                 <!-- <input type="checkbox" value="HTML/CSS" class="l_check" />HTML/CSS -->
                 <!-- <input type="checkbox" value="JavaScript" class="l_check" />JavaScript -->
                 <!-- <input type="checkbox" value="Python" class="l_check" />Python -->
-                <button class="l_val">HTML/CSS</button>
-                <button class="l_val">JavaScript</button>
-                <button class="l_val">Python</button>
+                <button class="filter-button" data-filter="all">전체</button>
+                <button class="filter-button" data-filter="html/css">HTML/CSS</button>
+                <button class="filter-button" data-filter="javascript">JavaScript</button>
+                <button class="filter-button" data-filter="python">Python</button>
                 <!-- <button class="select">조회</button> -->
               </span>
             </div>
@@ -596,6 +597,7 @@
   <script src="/socket.io/socket.io.js"></script>
   <script src="/CodeChat/js/codeChatList.js"></script>
   <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+  <script src="/CodeChat/js/fillter.js"></script>
 
   <!-- 코드에디터 -->
   <script src="/CodeChat/js/codeEditor.js"></script>

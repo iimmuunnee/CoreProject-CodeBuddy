@@ -89,7 +89,7 @@ const addRoomToTable = (updateRooms) => {
   newRow.innerHTML = `
     <td>${updateRooms[0].room_number}</td>
     <td>${updateRooms[0].chatRoomMethod}</td>
-    <td>${updateRooms[0].dev_lang}</td>
+    <td class="item ${roomInfo.ROOM_LANG}">${updateRooms[0].dev_lang}</td>
     <th>
       <a href="#">${updateRooms[0].room_name}</a>
       <p>테스트</p>

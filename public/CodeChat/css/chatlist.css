@@ -267,7 +267,7 @@ section.notice {
 }
 
 #chat_method {
-  margin-right: 12%;
+  margin-right: 2%;
 }
 
 .l_check {
@@ -509,4 +509,21 @@ button {
   border: 1px solid;
   border-radius: 1rem;
   
+}
+
+.filter-button{
+  border: 1px solid;
+  border-radius: 1rem;
+  width: 15%;
+  height: 90%;
+  margin-left: 3%;
+}
+
+.lang{
+  margin-left: 11%;
+}
+
+.filter-button.active {
+  background-color: #4CAF50; 
+  color: white; 
 }
