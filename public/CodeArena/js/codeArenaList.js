@@ -122,8 +122,7 @@ const updateArenaRoom = (roomList)=>{
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
-    roomName = roomInfo.ROOM_NAME // 방 제목 가져오기
-    roomNum = roomInfo.ROOM_NUMBER // 방 번호 가져오기
+    
     axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
     .then((res) => {
       currentNickname = res.data 
