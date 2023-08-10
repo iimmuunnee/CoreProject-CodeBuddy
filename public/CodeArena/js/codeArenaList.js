@@ -72,12 +72,6 @@ const handleRoomSubmit = (event) => {
         nickname: res.data, // 사용자 이름
       });
 
-      console.log("방 핸들 활성화");
-      arenaSocket.emit("enter_room", {
-        room_name: room_name,
-        nickname: res.data, // 사용자 이름
-      });
-
       arenaSocket.on("user_count", ({ user_count }) => {
         console.log("user_count 이벤트 도착");
         console.log(user_count);
@@ -140,10 +134,6 @@ const updateArenaRoom = (roomList)=>{
     })
   })
 }
-$('.room-link').click((event)=>{
-  console.log('맞나',event.target.id)
-})
-
 
 // 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on('updateRoomList', (roomList)=>{
@@ -200,13 +190,16 @@ const addRoomToTable = (updateRooms) => {
   });
 };
 
+arenaSocket.on("enter_room", ({room_name, nickname, roomNum,}) => {
+  enterRoom(nickname, room_name, roomNum)
+})
+
 const enterRoom = (currentNickname, roomName ,roomNum) => {
   console.log("enterRoom   실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.post("http://localhost:3000/room/enterRoom", {roomNum})
   .then(res => {
     let data = JSON.parse(res.data)
-    console.log('가져오자',data)
     currentNickname = data.name;
     arenaSocket.emit("enter_room", {
       room_name: roomName,
@@ -214,7 +207,6 @@ const enterRoom = (currentNickname, roomName ,roomNum) => {
       room_number : roomNum
   
     });
-    console.log('뭔데',data.result)
     arenaSocket.emit('userCount',{data:data.result})
   })
 
@@ -229,6 +221,7 @@ const enterRoom = (currentNickname, roomName ,roomNum) => {
     $mini_room_users.textContent = `${user_count}/4`;
   });
 
+  arenaSocket.emit("welcome", { nickname: currentNickname });
   $c_c_name.textContent = roomName;
   openarena(); // 방 입장
 };
