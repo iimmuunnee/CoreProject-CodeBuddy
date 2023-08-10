@@ -87,16 +87,29 @@ let roomName
 let roomNum
 let roomLinks
 let clickEventHandler = null;
+
+const handleClick = (e) => {
+  const target = e.target;
+  if (target.classList.contains("room-link")) {
+    const roomNumber = target.getAttribute("data-roomnumber");
+    if (roomNumber) {
+      enterRoom(currentNickname, roomName, roomNumber);
+    }
+  }
+};
 //최신화 함수
 
 const updateArenaRoom = (roomList)=>{  
   const $board_list = document.getElementById("board-list");
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
-  const $tr = $tbody.querySelector("tr");
+  const $tr = document.querySelectorAll("tr");
   // $tr.remove();
-  // roomList는 현재 생성된 객체 형태의 방 정보들을 배열에 담김
-  // roomInfo는 현재 생성된 객체 형태의 방 정보
+
+  if (clickEventHandler) {
+    $tbody.removeEventListener("click", clickEventHandler);
+  }
+
   roomList.forEach((roomInfo) => {
     const newRow = document.createElement("tr");
     newRow.id = "room_" + roomInfo.ROOM_NUMBER;
@@ -120,12 +133,18 @@ const updateArenaRoom = (roomList)=>{
     .then((res) => {
       currentNickname = res.data 
     })
-    $tbody.addEventListener("click", (e) => {
-      if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
-        enterRoom(currentNickname, roomInfo.ROOM_NAME, roomInfo.ROOM_NUMBER)
-      }
-    })
+    clickEventHandler = handleClick;
+  $tbody.addEventListener("click", clickEventHandler);
+
+    // $tbody.addEventListener("click", (e) => {
+    //   console.log('뭔데?',e.target.parentElement);
+    //   if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
+    //     console.log(roomInfo.ROOM_NUMBER);
+    //     enterRoom(currentNickname, roomName, roomInfo.ROOM_NUMBER)
+    //   }
+    // })
   })
+  
 }
 
 // arenaSocket.on("connect", () => {

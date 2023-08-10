@@ -208,7 +208,7 @@ const countRoomUsers = (room_name) => {
   .then(res=>{
     // ArenaNAMEspase.emit("updateRoom",)
     let roomList = JSON.parse(res.data)
-    console.log('현재 생성되어있는',roomList)
+    // console.log('현재 생성되어있는',roomList)
     // 방목록 arena로 전달
     socket.emit('updateRoomList', roomList)
   })
