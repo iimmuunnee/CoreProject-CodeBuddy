@@ -90,6 +90,7 @@ const handleClick = (e) => {
   const target = e.target;
   if (target.classList.contains("room-link")) {
     const roomNumber = target.getAttribute("data-roomnumber");
+    const roomName = target.getAttribute("data-roomname") // 여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (roomNumber) {
       enterRoom(currentNickname, roomName, roomNumber);
     }
@@ -125,7 +126,7 @@ const updateArenaRoom = (roomList)=>{
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
     
-    axios.get("http://localhost:3000/room/createRoom", { room: "hi" })
+    axios.get("/room/createRoom", { room: "hi" })
     .then((res) => {
       currentNickname = res.data 
     })
@@ -237,7 +238,6 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
 const $leave_room = document.getElementById("leave_room");
 
 const leaveRoomBtn = () => {
-  let currentNickname
   console.log("leaveRoomBtn 함수 활성화");
   let page = document.getElementById("code_arena_zip");
   page.style.display = "none";                                                                                                                                                                                                                                                                                                                              
@@ -249,6 +249,7 @@ const leaveRoomBtn = () => {
   chat.style.display = "none";
   
   arenaSocket.emit("leave_room", {currentNickname});
+  arenaSocket.emit("leave_count")
 
 };
 arenaSocket.on('leaveuser',(data)=>{
@@ -532,5 +533,27 @@ function closeModal() {
 //   modal.style.display = "none";
 // }
 
+// 지훈 javaScript 추가
 
+// 배너 클릭 시, 메인으로
+$('#m_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page`
+  
+})
 
+// Code Chat 클릭시 메인 -> Code Chat 이동
+$('#chat_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/CodeChat/`
+  
+})
+
+// Code Arena 클릭시 메인 -> Code Arena 이동
+$('#arena_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/CodeArena`
+  
+})
+
+// login 클릭시 login 창 이동
+$('#login_btn').on('click',()=>{
+  window.location.href = `${window.location.origin}/page/join`
+})

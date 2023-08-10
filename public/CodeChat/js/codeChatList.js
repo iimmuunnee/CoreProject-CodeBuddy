@@ -366,13 +366,13 @@ $('#m_btn').on('click',()=>{
 
 // Code Chat 클릭시 메인 -> Code Chat 이동
 $('#chat_btn').on('click',()=>{
-  window.location.href = `${window.location.origin}/page/mainMove/`
+  window.location.href = `${window.location.origin}/page/CodeChat/`
   
 })
 
 // Code Arena 클릭시 메인 -> Code Arena 이동
 $('#arena_btn').on('click',()=>{
-  window.location.href = `${window.location.origin}/page/mainArena`
+  window.location.href = `${window.location.origin}/page/CodeArena`
   
 })
 

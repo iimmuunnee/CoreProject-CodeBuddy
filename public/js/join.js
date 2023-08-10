@@ -13,7 +13,7 @@ let idUse = false
 //아이디 중복검사 
 function idCheckHandler(){
     const data = document.querySelector('#inputId').value
-    axios.post('http://localhost:3000/user/idCheck', {idCheck : data})
+    axios.post('/user/idCheck', {idCheck : data})
         .then(res=>{
             if(res.data){
                 if(data == ''){
@@ -66,7 +66,7 @@ subBtn.addEventListener('click',(event)=>{
         myForm.submit(); // 폼 제출
 
         // 회원가입 성공시 자동 로그인 버튼 클릭
-        axios.post('http://localhost:3000/user/checkend',{ck : 'hello'})
+        axios.post('/user/checkend',{ck : 'hello'})
         .then(res=>{
             if(res.data.success){
                 document.getElementById('loginCk').click()
