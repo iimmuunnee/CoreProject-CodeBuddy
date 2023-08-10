@@ -132,7 +132,7 @@ const updateArenaRoom = (roomList)=>{
     .then((res) => {
       currentNickname = res.data 
     })
-    clickEventHandler = handleClick('123');
+    clickEventHandler = handleClick;
   $tbody.addEventListener("click", clickEventHandler);
 
     // $tbody.addEventListener("click", (e) => {
