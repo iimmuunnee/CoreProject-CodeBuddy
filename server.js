@@ -113,10 +113,9 @@ app.use(
     console.log(`backSocket Event: ${event}`);
   });
 
-  socket.on("create_room", ({ room_name, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     console.log('닉네임확인',nickname)
-    
     const roomInfo = {
       room_number: generateRoomNumber(),
       room_name: room_name,
@@ -124,17 +123,16 @@ app.use(
       createdBy: nickname,
       createdDate: new Date().toISOString().slice(0, 10),
     };
-    
     console.log("roomInfo", roomInfo);
-    
     rooms.set(room_name, roomInfo);
-    
-    socket.emit("enter_room", {room_name, nickname, roomNum,})
-    
+    let room_number = roomInfo.room_number
+    console.log("roomInfo의 room_number", room_number);
+
+
+    socket.emit("enter_room", {room_name, nickname, room_number,})
+ 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log("방목록 보여줘 : ", updatedRoomList);
-    
     ChatNamespace.emit("update_room_list", updatedRoomList);
   });
 
@@ -143,16 +141,10 @@ app.use(
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
+      console.log("enter_room의 roomNum : ", room_number);
+      socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-      socket["roomNum"] = roomNum; // 소캣 객체에 "room_name"이라는 속성 추가
-
-      socket.join(roomNum); // 방에 입장하기
-
-      io.of("/CodeChat")
-        .to(roomNum)
-        .emit("welcome", {
-          nickname,
-        });
+      socket.join(room_number); // 방에 입장하기
         
       socket.emit("userInfo", {nickname})
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
@@ -203,7 +195,6 @@ ArenaNamespace.on("connection", (socket) => {
 
 // 방의 인원수를 세는 함수
 const countRoomUsers = (room_name) => {
-  console.log();
   const room = ArenaNamespace.adapter.rooms.get(room_name);
   return room ? room.size : 0;
 };
@@ -217,12 +208,12 @@ const countRoomUsers = (room_name) => {
   .then(res=>{
     // ArenaNAMEspase.emit("updateRoom",)
     let roomList = JSON.parse(res.data)
-    // console.log('방목록',roomList)
+    // console.log('현재 생성되어있는',roomList)
     // 방목록 arena로 전달
     socket.emit('updateRoomList', roomList)
   })
 
-  socket.on("create_room", ({ room_name, dev_lang,nickname }) => {
+  socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     // console.log("rooms : ", rooms);
     // console.log('닉넴',nickname)
@@ -239,7 +230,6 @@ const countRoomUsers = (room_name) => {
     rooms.set(room_name, roomInfo);
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log("방리스트알려줘", updatedRoomList);
     socket.emit("update_room_list", updatedRoomList);
   });
 
@@ -254,8 +244,6 @@ const countRoomUsers = (room_name) => {
   socket.on('userCount',(data)=>{
     ArenaNamespace.emit('countUpdate',(data))
   })
-
-  
 
   // Arena 방 입장 enter_room 감지하기
   socket.on(
@@ -275,6 +263,7 @@ const countRoomUsers = (room_name) => {
       console.log("enter_room이벤트의 room_number : ", room_number);
 
       socket.join(room_number); // 방에 입장하기
+
       const roomInfo = rooms.get(room_number)
       if (roomInfo) {
         roomInfo.userCount = (roomInfo.userCount || 0) + 1;
@@ -282,6 +271,7 @@ const countRoomUsers = (room_name) => {
       }
 
       ArenaNamespace.to(room_number).emit("welcome", {nickname});
+      // socket.to(room_number).emit("welcome", {nickname});
 
       console.log("입장한 후 소켓이 들어간 방", socket.rooms);
       console.log("countRoomUsers(room_name) : ", countRoomUsers(room_number));
@@ -293,7 +283,8 @@ const countRoomUsers = (room_name) => {
   );
 
   socket.on("new_message", ({currentNickname, message: message,}) => {
-    ArenaNamespace.emit("new_message", {currentNickname, message: message,})
+    let roomNum = socket.room_number
+    ArenaNamespace.to(roomNum).emit("new_message",  {currentNickname, message: message,})
     // 방 이름 정보를 가져와서 해결해야함
   })
 
