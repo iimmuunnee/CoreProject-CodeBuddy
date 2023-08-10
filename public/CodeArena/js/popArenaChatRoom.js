@@ -1,80 +1,75 @@
-// const arenaSocket = io("/CodeArena"); // 이미 codeArenaList에서 선언
-const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
-const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
-const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
-const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
-const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2")
+// // const arenaSocket = io("/CodeArena"); // 이미 codeArenaList에서 선언
+// const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
+// const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
+// const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
+// const $form_input = $c_chatting_form.querySelector("#form_input"); // 채팅 작성 form의 input
+// const $c_chatting_2 = $c_chatting_form.querySelector(".c_chatting_2")
+// const $c_chatting_2_btn = $c_chatting_2.querySelector(".c_chatting_2_btn")
+// const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2")
 
-// 방 떠나기 함수
-const handleLeaveRoom = () => {
-  arenaSocket.emit("leave_room", { room_name: roomName, nickname: nickname });
-  const newUrl = `${window.location.origin}`;
-  window.location.href = newUrl; // 나갈 때 방 입장 전 페이지로 이동
-};
+// // 공지
+// const addNotice = (message) => {
+//   console.log("addNotice 함수 실행");
+//   const $div = document.createElement("div");
+//   console.log("message : ", message);
+//   $div.textContent = message;
+//   $c_main_content.appendChild($div);
+// };
 
-// 공지
-const addNotice = (message) => {
-  console.log("addNotice 함수 실행");
-  const $div = document.createElement("div");
-  console.log("message : ", message);
-  $div.textContent = message;
-  $c_main_content.appendChild($div);
-};
+// const handleMessageSubmit = (event) => {
+//   // alert(console.log("handleMessageSubmit 함수 실행"))
+//   // event.preventDefault();
+//   // const message = $form_input.value; // 메시지 입력값 가져오기
+//   // console.log("메세지 핸들러, 메세지 : ", message);
+//   // console.log("userInfo : ", currentNickname);
 
-const handleMessageSubmit = (event) => {
-  console.log("handleMessageSubmit 함수 실행");
-  event.preventDefault();
-  const message = $form_input.value; // 메시지 입력값 가져오기
-  console.log("메세지 핸들러, 메세지 : ", message);
-  console.log("userInfo : ", currentNickname);
+//   // arenaSocket.emit(
+//   //   "new_message",
+//   //   {currentNickname, message: message}
+//   // )
 
-  arenaSocket.emit(
-    "new_message",
-    {currentNickname, message: message}
-  )
+//   // $form_input.value = ""; // 입력 창 초기화
+// };
+// // ---------------함수 정의 끝------------------
 
-  $form_input.value = ""; // 입력 창 초기화
-};
-// ---------------함수 정의 끝------------------
+// arenaSocket.on("connect", () => {
+//   console.log("프론트와 서버와의 연결 성공");
+// });
 
-arenaSocket.on("connect", () => {
-  // console.log("프론트와 서버와의 연결 성공");
-});
+// arenaSocket.on("new_message", ({ currentNickname, message }) => {
+//   console.log("new_message이벤트 프론트에서 받음");
+//   const $div = document.createElement("div");
+//   $div.textContent = `${currentNickname} : ${message}`
+//   $c_main_content.appendChild($div);
 
-arenaSocket.on("new_message", ({ currentNickname, message }) => {
-  console.log("new_message이벤트 프론트에서 받음");
-  const $div = document.createElement("div");
-  $div.textContent = `${currentNickname} : ${message}`
-  $c_main_content.appendChild($div);
+//   // Chat.sendMessage(currentNickname, message);
+// });
 
-  // Chat.sendMessage(currentNickname, message);
-});
+// // 프론트로 온 이벤트 감지
+// arenaSocket.onAny((event) => {
+//   console.log(`arenaSocket Event: ${event}`);
+// });
 
-// 프론트로 온 이벤트 감지
-arenaSocket.onAny((event) => {
-  console.log(`arenaSocket Event: ${event}`);
-});
+// arenaSocket.on("welcome", ({nickname}) => {
+//   console.log("프론트 welcome 옴");
+//   console.log("nickname : ",nickname);
+//   // $user_count.textContent = `${user_count}명`;
+//   addNotice(`${nickname}(이)가 방에 입장했습니다.`);
+//   // setUserCount(user_count);
+// });
 
-arenaSocket.on("welcome", ({nickname}) => {
-  console.log("프론트 welcome 옴");
-  console.log("nickname : ",nickname);
-  // $user_count.textContent = `${user_count}명`;
-  addNotice(`${nickname}(이)가 방에 입장했습니다.`);
-  // setUserCount(user_count);
-});
+// arenaSocket.on("user_count", ({ user_count }) => {
+//   console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
+//   $c_content_num.textContent = `${user_count}`;
+// });
 
-arenaSocket.on("user_count", ({ user_count }) => {
-  console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
-  $c_content_num.textContent = `${user_count}`;
-});
+// arenaSocket.on("bye", ({currentNickname}) => {
+//   console.log("프론트 bye이벤트 옴");
+//   console.log(`${currentNickname}은 방을 나갔습니다. `);
+//   addNotice(`${currentNickname}(이)가 방에서 나갔습니다.`);
+// });
 
-arenaSocket.on("bye", ({currentNickname}) => {
-  console.log("프론트 bye이벤트 옴");
-  console.log(`${currentNickname}은 방을 나갔습니다. `);
-  addNotice(`${currentNickname}(이)가 방에서 나갔습니다.`);
-});
-
-$c_chatting_form.addEventListener("submit", handleMessageSubmit);
+// $c_chatting_2_btn.addEventListener("click", handleMessageSubmit);
 
 // --------------------------------------------------------------------------------------------------------------------------
 
