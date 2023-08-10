@@ -288,7 +288,7 @@ const countRoomUsers = (room_name) => {
     // 방 이름 정보를 가져와서 해결해야함
   })
 
-  socket.on("leave_room", () => {
+  socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
     socket.emit('leaveuser', room_number)
     if (room_number) {
@@ -307,6 +307,8 @@ const countRoomUsers = (room_name) => {
       }
       socket.room_number = null; // 방 이름 정보 초기화
     }
+
+    ArenaNamespace.to(room_number).emit("bye", {currentNickname})
     
       console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
       console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
