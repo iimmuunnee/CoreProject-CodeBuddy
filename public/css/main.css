@@ -15,6 +15,10 @@
   font-weight: 400;
   font-style: normal;
 }
+@font-face{
+  font-family:'bitbit';
+  src:url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2') ;
+}
 
 /** 
  * Default to Border Box
@@ -701,8 +705,8 @@ a:hover .btn-draw.btn--white {
 /* 로고 텍스트 스타일 */
 .m_logo {
   cursor: pointer;
-  margin-left: 25%;
-  font-family: 'Playfair Display', serif;
+  margin-left: 23%;
+  font-family: 'bitbit';
   font-size: 1.5rem;
   margin-top: 1.5%;
   color: white;
@@ -719,7 +723,6 @@ a:hover .btn-draw.btn--white {
   border: none;
   width: 15%;
   color: white;
-  margin-top: 10px;
 
 }
 

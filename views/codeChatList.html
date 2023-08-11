@@ -53,7 +53,7 @@
 
   <header>
     <div class="m_header">
-      <p class="m_logo" id="m_btn">CodeBuddy</p>
+      <p class="m_logo" id="m_btn">CODE BUDDY</p>
       <button class="m_btn_c" id="chat_btn">Code Chat</button>
       <button class="m_btn_a" id="arena_btn">Code Arena</button>
       <button class="m_btn" id="login_btn">Login</button>
@@ -65,7 +65,7 @@
   <section id="codeChatList" class="notice">
     <div class="page-title">
       <div class="container1">
-        <h3>CodeChat 채팅방 목록</h3>
+        <h3>Code Chat 방 목록</h3>
       </div>
     </div>
 
@@ -75,23 +75,22 @@
         <div class="search-window">
           <form action="">
             <div class="search-wrap">
-              <span>
-                채팅방식 :
-                <select name="chat_method" id="chat_method">
+                  채팅방식 
+                <!-- <select name="chat_method" id="chat_method">
                   <option value="all">전체보기</option>
                   <option value="one">1:1채팅</option>
                   <option value="many">오픈채팅</option>
-                </select>
-                개발 언어 :
-                <!-- <input type="checkbox" value="HTML/CSS" class="l_check" />HTML/CSS -->
-                <!-- <input type="checkbox" value="JavaScript" class="l_check" />JavaScript -->
-                <!-- <input type="checkbox" value="Python" class="l_check" />Python -->
+                </select> -->
+                <button class="filter">전체</button>
+                <button class="filter">1:1채팅</button>
+                <button class="filter">오픈채팅</button><br><br>
+                개발 언어 
                 <button class="filter-button" data-filter="all">전체</button>
                 <button class="filter-button" data-filter="html/css">HTML/CSS</button>
                 <button class="filter-button" data-filter="javascript">JavaScript</button>
                 <button class="filter-button" data-filter="python">Python</button>
-                <!-- <button class="select">조회</button> -->
-              </span>
+                
+              
             </div>
           </form>
         </div>
@@ -107,7 +106,7 @@
               <th scope="col" class="th-num">번호</th>
               <th scope="col" class="th-c_method">채팅방식</th>
               <th scope="col" class="th-lang">개발언어</th>
-              <th scope="col" class="th-title">제목</th>
+              <th scope="col" class="th-title">제목(인원수)</th>
               <th scope="col" class="th-user">작성자</th>
               <th scope="col" class="th-date">등록일</th>
             </tr>

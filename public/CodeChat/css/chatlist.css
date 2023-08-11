@@ -5,6 +5,10 @@ body {
   height: 100%;
   /* overflow: hidden; */
 } 
+@font-face{
+  font-family:'bitbit';
+  src:url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2') ;
+}
 /* header */
 .m_header {
   display: flex;
@@ -21,8 +25,8 @@ body {
 /* 로고 텍스트 스타일 */
 .m_logo {
   cursor: pointer;
-  margin-left: 25%;
-  font-family: 'Playfair Display', serif;
+  margin-left: 23%;
+  font-family: 'bitbit';
   font-size: 1.5rem;
   margin-top: 1.5%;
   color: white;
@@ -39,7 +43,6 @@ body {
   border: none;
   width: 15%;
   color: white;
-  margin-top: 10px;
 
 }
 
@@ -95,8 +98,9 @@ section.notice {
 }
 
 #board-search .search-window {
-  padding: 20px 0;
+  padding: 25px 0;
   background-color: #f9f7f9;
+  height: 75px;
 }
 
 #board-search .search-window .search-wrap {
@@ -505,11 +509,14 @@ button {
   font-size: 0.8vw;
 }
 
-.l_val{
+.filter{
   border: 1px solid;
   border-radius: 1rem;
-  
+  width: 15%;
+  height: 90%;
+  margin-left: 3%;
 }
+
 
 .filter-button{
   border: 1px solid;

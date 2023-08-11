@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>JavaScript Result Display</h1>
+    
+    <textarea id="inputCode" rows="10" cols="50"></textarea>
+    <button id="runButton">Run Code</button>
+    
+    <h2>Result:</h2>
+    <textarea id="outputResult" rows="10" cols="50" readonly></textarea>
+<script>
+   const runButton = document.getElementById("runButton");
+        const inputCode = document.getElementById("inputCode");
+        const outputResult = document.getElementById("outputResult");
+        
+        runButton.addEventListener("click", () => {
+            try {
+                const code = inputCode.value;
+                const result = eval(code); // Evaluate the user's input as JavaScript code
+                
+                outputResult.value = result !== undefined ? result.toString() : "undefined";
+            } catch (error) {
+                outputResult.value = "Error: " + error.message;
+            }
+        });
+
+</script>
+</body>
+</html>
