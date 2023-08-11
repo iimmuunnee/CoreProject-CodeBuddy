@@ -310,9 +310,10 @@ ArenaNamespace.on("connection", (socket) => {
     });
     // 방 이름 정보를 가져와서 해결해야함
   });
+  let user_name
   socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
-    const user_name = currentNickname.currentNickname
+    user_name = currentNickname.currentNickname
     socket.emit("leaveuser", {room_number:room_number, user_name:user_name});
     if (room_number) {
       socket.leave(room_number); // 방에서 퇴장
@@ -348,7 +349,7 @@ ArenaNamespace.on("connection", (socket) => {
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");
     const room_number = socket.room_number;
-    socket.emit("leaveuser", room_number);
+    socket.emit("leaveuser", {room_number:room_number, user_name:user_name});
     if (room_number) {
       socket.leave(room_number); // 방에서 퇴장
       console.log("퇴장", room_number);
