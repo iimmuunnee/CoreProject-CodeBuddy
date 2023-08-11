@@ -3,7 +3,7 @@ body {
   margin: 0;
   flex-direction: column;
   height: 100%;
-  /* overflow: hidden; */
+  overflow-x: hidden;
 } 
 @font-face{
   font-family:'bitbit';
@@ -16,7 +16,8 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0,0,0,0.3);
+
+  background-color: #333;
   z-index: 999;
   height: 80px;
   }
@@ -81,25 +82,31 @@ table {
 }
 
 section.notice {
-  padding: 5.5% 0;
+  padding: 6.7% 0;
+ 
 }
 
 .page-title {
-  margin-bottom: 35px;
+  margin-bottom: 30px;
 }
 
 .page-title h3 {
   font-size: 28px;
   color: #333333;
-  font-weight: 400;
+  font-weight: border;
   text-align: center;
   font-family: 'Noto Sans KR', sans-serif;
+  
 }
 
 #board-search .search-window {
-  padding: 25px 0;
-  background-color: #f9f7f9;
+  padding: 20px 0;
+  background-color: #333;
   height: 75px;
+  color: white;
+  padding-left: 15%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 }
 
 #board-search .search-window .search-wrap {
@@ -135,7 +142,7 @@ section.notice {
 }
 
 .board-table {
-  font-size: 13px;
+  font-size: 14px;
   width: 100%;
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
@@ -393,8 +400,9 @@ button {
   width: 8%;
   font-size: 0.9rem;
   height: 40%;
-  background-color: #24283B;
+  background-color: #333;
   color: white;
+  border-radius: 10px;
 }
 
 /* 모달 스타일 */
@@ -514,6 +522,7 @@ button {
   width: 15%;
   height: 90%;
   margin-left: 3%;
+  color: white;
 }
 
 
@@ -523,6 +532,7 @@ button {
   width: 15%;
   height: 90%;
   margin-left: 3%;
+  color: white;
 }
 
 .lang{
@@ -530,6 +540,6 @@ button {
 }
 
 .filter-button.active {
-  background-color: #4CAF50; 
-  color: white; 
+  background-color: white; 
+  color: blackd; 
 }
