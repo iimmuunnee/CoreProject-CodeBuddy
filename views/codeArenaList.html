@@ -45,7 +45,7 @@
 
   <header id="head">
     <div class="m_header">
-      <p class="m_logo" id="m_btn">CodeBuddy</p>
+      <p class="m_logo" id="m_btn">CODE BUDDY</p>
       <button class="m_btn_c" id="chat_btn">Code Chat</button>
       <button class="m_btn_a" id="arena_btn">Code Arena</button>
       <button class="m_btn" id="login_btn">Login</button>
@@ -55,7 +55,6 @@
 
   <section id="notice" class="notice">
     <div class="page-title">
-      
       <div class="container">
         <h3>CodeArena 채팅방 목록</h3>
       </div>
@@ -90,7 +89,11 @@
               <th scope="col" class="th-num">번호</th>
               <!-- <th scope="col" class="th-c_method">채팅방식</th> -->
               <th scope="col" class="th-lang">개발언어</th>
+<<<<<<< HEAD
               <th scope="col" class="th-title">제목(인원수)</th>
+=======
+              <th scope="col" class="th-title">제목</th>
+>>>>>>> ba27ae5fa2a93aba4dbffbe7aed849a0fa024fc8
               <th scope="col" class="th-user">작성자</th>
               <!-- <th scope="col" class="th-date">인원</th> -->
             </tr>
@@ -223,11 +226,15 @@
               <div class="output_txt">
                 <div class="txt_main">실행결과</div>
                 <div class="text-center sendBtn">
-                  <button id="submit" class="btn btn-dark"><i class="fa-solid fa-code fa-2x"
-                      style="color: #ffffff;"></i></button>
+                  <div class="sil_btns1">
+                    <button id="submit" class="btn btn-dark">코드 실행</button>
+                  </div>
+                  <div class="sil_btns2">
+                    <button id="submit2" class="btn c_a_result">코드 제출</button>
+                  </div>
                 </div>
               </div>
-              <div class="outputDiv">
+              <div id="outputDiv" class="outputDiv">
                 <!-- Output -->
                 <iframe id="live"></iframe>
               </div>
@@ -403,6 +410,16 @@
   <script src="/CodeArena/js/popArenaChatRoom.js"></script>
   <script src="/CodeArena/js/fillter.js"></script>
 
+  <script>
+        const showButton = document.getElementById('submit');
+    const textarea = document.getElementById('js');
+    const displayText = document.getElementsById('outputDiv');
+    
+    showButton.addEventListener('click', () => {
+      const textValue = textarea.value;
+      displayText.textContent = textValue;
+    });
+  </script>
 
   <script>
     const textjs = document.querySelector('#js')
@@ -430,6 +447,8 @@
       spellcheck: true
     });
 
+
+
     // 입력한 코드 출력
     function executeJavaScript() {
       const scriptElement = document.createElement("script");
@@ -449,23 +468,7 @@
 
   </script>
   <script src="/CodeArena/js/popArenaChatRoom.js"></script>
-  <!-- 세션 로그인 스크립트 -지훈- -->
-  <script>
-    // 로그인 했을 시 사용자 이름 표시
-    let login = '{{login}}'
-    let logout = '{{logout}}'
-
-    if (login) {
-      document.querySelector('#login_btn').style.display = 'none'
-      document.querySelector('#userInfo_btn').style.display = 'inline'
-      console.log('로그인', login)
-    }
-    if (logout) {
-      document.querySelector('#login_btn').style.display = 'inline'
-      document.querySelector('#userInfo_btn').style.display = 'none'
-      console.log('로그아웃', logout)
-    }    
-  </script>
+  
   <script>
     // 1. 팝업창 열기
     $(document).on("click", ".chat_open", (e) => {
