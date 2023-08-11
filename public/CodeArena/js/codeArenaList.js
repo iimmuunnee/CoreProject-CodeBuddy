@@ -278,7 +278,7 @@ arenaSocket.on("leaveuser", (data) => {
     let data = JSON.parse(res.data);
     // console.log("떳나", data.result);
     arenaSocket.emit("userCount", { data: data.result });
-    // location.reload();
+    location.reload();
   });
 });
 $leave_room.addEventListener("click", leaveRoomBtn);

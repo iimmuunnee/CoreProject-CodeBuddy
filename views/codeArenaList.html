@@ -89,11 +89,7 @@
               <th scope="col" class="th-num">번호</th>
               <!-- <th scope="col" class="th-c_method">채팅방식</th> -->
               <th scope="col" class="th-lang">개발언어</th>
-<<<<<<< HEAD
               <th scope="col" class="th-title">제목(인원수)</th>
-=======
-              <th scope="col" class="th-title">제목</th>
->>>>>>> ba27ae5fa2a93aba4dbffbe7aed849a0fa024fc8
               <th scope="col" class="th-user">작성자</th>
               <!-- <th scope="col" class="th-date">인원</th> -->
             </tr>
@@ -166,28 +162,15 @@
       <div class="c_a_center">
         <!-- 문제 제시  -->
         <div class="c_a_left">
-          <div class="c_a_l_title">1. 별 개수를 늘리기</div>
+          <div class="c_a_l_title">1. 잭팟 5배~!</div>
           <div class="c_a_l_que">
-            <pre>오늘은 스타트링크에 다니는 사람들이 모여서 축구를 해보려고 한다. 축구는 평일 오후에 하고 의무 참석도 아니다. 축구를 하기 위해 모인 사람은 총 N명이고 신기하게도 N은 짝수이다. 이제 N/2명으로 이루어진 스타트 팀과 링크 팀으로 사람들을 나눠야 한다.
+            <pre>
+              정수 n이 주어질 때, n의 5배가 반환되는 함수를 작성하시오.
+              함수명은 변경해서는 안되며 return으로 값을 반환하시오.
+              모든 구문의 끝에는 세미콜론(;)으로 마무리를 하시오.
 
-                      BOJ를 운영하는 회사 답게 사람에게 번호를 1부터 N까지로 배정했고, 아래와 같은 능력치를 조사했다. 능력치 Sij는 i번 사람과 j번 사람이 같은 팀에 속했을 때, 팀에 더해지는 능력치이다. 팀의 능력치는 팀에 속한 모든 쌍의 능력치 Sij의 합이다. Sij는 Sji와 다를 수도 있으며, i번 사람과 j번 사람이 같은 팀에 속했을 때, 팀에 더해지는 능력치는 Sij와 Sji이다.
-                      
-                      N=4이고, S가 아래와 같은 경우를 살펴보자.
-                      
-                      i\j	1	2	3	4
-                      1	 	1	2	3
-                      2	4	 	5	6
-                      3	7	1	 	2
-                      4	3	4	5	 
-                      예를 들어, 1, 2번이 스타트 팀, 3, 4번이 링크 팀에 속한 경우에 두 팀의 능력치는 아래와 같다.
-                      
-                      스타트 팀: S12 + S21 = 1 + 4 = 5
-                      링크 팀: S34 + S43 = 2 + 5 = 7
-                      1, 3번이 스타트 팀, 2, 4번이 링크 팀에 속하면, 두 팀의 능력치는 아래와 같다.
-                      
-                      스타트 팀: S13 + S31 = 2 + 7 = 9
-                      링크 팀: S24 + S42 = 6 + 4 = 10
-                      축구를 재미있게 하기 위해서 스타트 팀의 능력치와 링크 팀의 능력치의 차이를 최소로 하려고 한다. 위의 예제와 같은 경우에는 1, 4번이 스타트 팀, 2, 3번 팀이 링크 팀에 속하면 스타트 팀의 능력치는 6, 링크 팀의 능력치는 6이 되어서 차이가 0이 되고 이 값이 최소이다.</pre>
+
+            </pre>
           </div>
           <div class="c_a_l_ans">답 이미지</div>
         </div>
@@ -440,22 +423,51 @@
     // 코드 실행 버튼
     const codeStart = document.getElementById('codeStart')
     let jsValue
+    js.setValue(`function codeBuddy(n){
+      let result;
+        return result;
+    }`)
 
-    // 입력한 코드 출력
+    // 입력한 코드 문자열로 가져와서 jsValue 변수에 담기
     function executeJavaScript() {      
-      jsValue = `console.log('${js.getValue()}');`  
+      jsValue = js.getValue().replace(/\n/g,'')
     }
 
     CodeMirror.on(js, 'change', executeJavaScript);
 
+    // 코드실행 버튼 클릭 이벤트
     codeStart.addEventListener('click',(e)=>{
       e.preventDefault()
-      const scriptElement = document.createElement("script");
-      scriptElement.innerHTML = `console.log('${js.getValue()}');`
-      outPut.contentWindow.document.body.appendChild(scriptElement);
+      // codeStart 요청을 보내서 문제번호와 일치하는 입력값과 출력값 database에서 반환
       axios.post('/codeArena/codeStart', {jsValue})
         .then(res=>{
-          console.log('받아라')
+          let data = JSON.parse(res.data)
+          //입력값
+          let resultInput = data[0].RESULT_INPUT
+          //출력값
+          let resultOutput = data[0].RESULT_OUTPUT   
+          console.log('되나????',resultInput)
+          console.log('되나????',resultOutput)
+
+          // script 태그 생성
+          const scriptElement = document.createElement("script");
+          // 생성한 script 태그안에 사용자가 입력한 값 추가
+          scriptElement.innerHTML = `let n = ${resultInput} 
+                                     let outPut = ${resultOutput}
+                                     ${jsValue}
+                                     if(codeBuddy(n) == outPut){
+                                       alert('정답입니다.')
+                                     }
+                                     else{
+                                      alert('이딴걸 틀리네 ㅋㅋ')
+                                     }`
+          //scriptElement.innerHTML = ''
+          // scriptElement.innerHTML += jsValue
+          
+          // script를 body 태그 안에 추가(script가 정상작동하게 하기위함)
+          outPut.contentWindow.document.body.appendChild(scriptElement);
+          
+          
         })
     })
     
