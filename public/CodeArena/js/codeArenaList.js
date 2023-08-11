@@ -43,6 +43,13 @@ const openarena = () => {
 
   let header = document.getElementById("head");
   header.style.display = "none";
+  
+  //code editor 기본 값 입력
+  js.setValue(`function codeBuddy(n){
+    let result;
+    result = '정답을입력하세요';
+    return result;
+}`)
 };
 
 // 방 생성 함수
@@ -276,17 +283,25 @@ const leaveRoomBtn = () => {
 arenaSocket.on("leaveuser", (data) => {
   axios.post("/room/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
-    // console.log("떳나", data.result);
+    console.log("떳나", data.result);
     arenaSocket.emit("userCount", { data: data.result });
     location.reload();
   });
 });
 $leave_room.addEventListener("click", leaveRoomBtn);
 
+
+
 // 인원 수 초과 됐을 때
 arenaSocket.on("user_full", () => {
   alert("방 인원 초과")
 })
+
+window.addEventListener("beforeunload", () => {
+  arenaSocket.emit("leave_count");
+  arenaSocket.emit("leave_room", { currentNickname });
+});
+
 
 arenaSocket.on("disconnect", () => {
   console.log("disconnect to server");
