@@ -111,6 +111,7 @@ ChatNamespace.on("connection", (socket) => {
     console.log(`backSocket Event: ${event}`);
   });
 
+  // 방 생성
   socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     console.log("닉네임확인", nickname);
@@ -122,7 +123,7 @@ ChatNamespace.on("connection", (socket) => {
       createdDate: new Date().toISOString().slice(0, 10),
     };
     console.log("roomInfo", roomInfo);
-    rooms.set(room_name, roomInfo);
+    rooms.set(room_number, roomInfo);
     let room_number = roomInfo.room_number;
     console.log("roomInfo의 room_number", room_number);
 
@@ -148,7 +149,7 @@ ChatNamespace.on("connection", (socket) => {
     console.log("user_count : ", countRoomUsers(roomNum));
 
     io.of("/CodeChat")
-      .to(room_name)
+      .to(roomNum)
       .emit("user_count", { user_count: countRoomUsers(roomNum) });
   });
 
@@ -215,7 +216,7 @@ ArenaNamespace.on("connection", (socket) => {
       userCount: countRoomUsers(room_name),
     };
 
-    rooms.set(room_name, roomInfo);
+    rooms.set(roomInfo.room_number, roomInfo);
 
     socket.on("check_admin", (nickname) => {
       console.log("check_admin / nickname", nickname.nickname);
@@ -232,7 +233,9 @@ ArenaNamespace.on("connection", (socket) => {
 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    socket.emit("update_room_list", updatedRoomList);
+    // socket.emit("update_room_list", updatedRoomList);
+    // 방 생성 후 방장 입장
+    socket.emit('host_enterRoom', updatedRoomList)
   });
 
   socket.on("newlist", () => {
@@ -252,14 +255,19 @@ ArenaNamespace.on("connection", (socket) => {
 
     socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-    console.log("enter_room이벤트의 room_number : ", room_number);
-
-    socket.join(room_number); // 방에 입장하기
-
     const roomInfo = rooms.get(room_number);
     if (roomInfo) {
       roomInfo.userCount = (roomInfo.userCount || 0) + 1;
       rooms.set(room_number, roomInfo);
+    }
+    console.log("enter_room이벤트의 room_number : ", room_number);
+    console.log("enter_room 이벤트 join 하기 직전의 인원수", countRoomUsers(room_number));
+
+    if (countRoomUsers(room_number) >= 4){ // 들어가기 전에 방의 인원이 4명이면 입장 불가
+      socket.emit("user_full")
+    } else {
+      console.log("enter_room의 room_number",room_number);
+      socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
     }
 
     ArenaNamespace.to(room_number).emit("welcome", { nickname });
@@ -282,7 +290,7 @@ ArenaNamespace.on("connection", (socket) => {
     });
     // 방 이름 정보를 가져와서 해결해야함
   });
-
+console.log("SDfsadf");
   socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
     socket.emit("leaveuser", room_number);

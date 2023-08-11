@@ -71,7 +71,7 @@ router.post('/updateroom',(req,res)=>{
     let method = roomInfo.chatRoomMethod
     let lang = roomInfo.dev_lang
     let host = roomInfo.createdBy
-    let count = 1
+    let count = roomInfo.userCount
 
     let sql = 'INSERT INTO TB_ARENAROOM (ROOM_NUMBER, ROOM_NAME, ROOM_LANG, ROOM_HOST, USER_COUNT) VALUES(?,?,?,?,?)'
     let findRoom = 'SELECT * FROM TB_ARENAROOM WHERE ROOM_NUMBER =?'
