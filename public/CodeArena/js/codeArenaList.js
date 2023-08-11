@@ -576,3 +576,59 @@ $("#arena_btn").on("click", () => {
 $("#login_btn").on("click", () => {
   window.location.href = `${window.location.origin}/page/join`;
 });
+
+
+// Code Arena Code Editor -----지훈--------
+
+
+
+
+// code arena  -------설아---------
+
+// 타이머 기능 구현 추가
+const Timer = document.getElementById('timer'); //스코어 기록창-분
+const Timer_zip = document.getElementById('c_a_above1'); //스코어 기록창-분
+
+let time = 600000;
+let min = 10;
+let sec = 60;
+
+Timer.value = min + ":" + '00';
+
+function TIMER() {
+  PlAYTIME = setInterval(function () {
+    time = time - 1000; //1초씩 줄어듦
+    min = time / (60 * 1000); //초를 분으로 나눠준다.
+
+    if (sec > 0) { //sec=60 에서 1씩 빼서 출력해준다.
+      sec = sec - 1;
+      // sec이 10보다 작을 때 '0'을 붙여서 2자리 형식으로 만들어줍니다.
+      Timer.value = Math.floor(min) + ':' + (sec < 10 ? '0' : '') + sec;
+
+      // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
+      if (min == 0) {
+        if (sec <= 10 && sec > 0) {
+          // 여기에 원하는 CSS 변경 코드를 추가합니다.
+          Timer_zip.style.boxShadow = '1px 0px 12px 8px red'; // 예시로 글자 색상을 빨간색으로 변경
+          Timer_zip.style.animation = 'blink 1s infinite';
+        } else {
+          // 원하는 CSS 초기 상태를 설정합니다.
+          Timer_zip.style.boxShadow = '1px 0px 12px 8px white'; // 예시로 글자 색상을 기본으로 변경
+          Timer_zip.style.animation = 'none';
+        }
+      }
+    }
+    if (sec === 0) {
+      // 0에서 -1을 하면 -59가 출력된다.
+      // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
+      sec = 60;
+      Timer.value = Math.floor(min) + ':' + '00'
+    }
+
+  }, 1000); //1초마다 
+}
+
+TIMER();
+setTimeout(function () {
+  clearInterval(PlAYTIME);
+}, 600000); //600000
