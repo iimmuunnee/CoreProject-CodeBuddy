@@ -233,8 +233,7 @@ ArenaNamespace.on("connection", (socket) => {
 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
-    console.log('다시보자',updatedRoomList)
-    socket.emit("update_room_list", updatedRoomList);
+    // socket.emit("update_room_list", updatedRoomList);
     // 방 생성 후 방장 입장
     socket.emit('host_enterRoom', updatedRoomList)
   });

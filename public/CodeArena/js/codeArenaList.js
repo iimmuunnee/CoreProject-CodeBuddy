@@ -159,8 +159,15 @@ const updateArenaRoom = (roomList) => {
 
 // 사용자 접속시 채팅방 리스트 최신화
 arenaSocket.on("updateRoomList", () => {
+  const $board_list = document.getElementById("board-list");
+  const $board_table = $board_list.querySelector(".board-table");
+  const $tbody = $board_table.querySelector("tbody");
+  const $trs = $tbody.querySelectorAll("tr");
   axios.get("/room/arenaList", { re: "hi" }).then((res) => {
     let roomList = JSON.parse(res.data);
+    $trs.forEach(($tr) => {
+      $tr.remove();
+    });
     updateArenaRoom(roomList);
   });
 });
@@ -196,6 +203,12 @@ arenaSocket.on('host_enterRoom', (data)=>{
   let nickName =data[0].createdBy
   let roomName = data[0].room_name
   let roomNum = data[0].room_number
+  const addRoomToTable = (updateRooms) => {
+    axios.post("/room/updateroom", { updateRooms }).then((res) => {
+      let roomInfo = JSON.parse(res.data);
+    });
+  };
+  addRoomToTable(data)
   enterRoom(nickName, roomName, roomNum)
 })
 
@@ -208,6 +221,9 @@ arenaSocket.on("update_room_list", (roomInfo) => {
   // updateRoomList(roomInfo);
   addRoomToTable(roomInfo);
 });
+
+
+
 
 // //방 목록 database에 새로운 방 추가하는 함수
 const addRoomToTable = (updateRooms) => {
