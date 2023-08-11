@@ -70,6 +70,8 @@ const handleRoomSubmit = (event) => {
   $c_c_name.textContent = room_name; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = room_name; // Arena 제한 시간 위 방제
+  // $c_content_num.textContent = `1/4`; // 채팅방 펼쳤을 때 인원 수
+  // $mini_room_users.textContent = `1/4`; // 채팅방 접었을 때 인원 수
 };
 
 arenaSocket.on("admin_status", ({ isAdmin }) => {
@@ -79,10 +81,11 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   }
 });
 
+// 
 arenaSocket.on("user_count", ({ user_count }) => {
-  console.log("user_count 이벤트 도착"), user_count;
-  $c_content_num.textContent = `${user_count}/4`;
-  $mini_room_users.textContent = `${user_count}/4`;
+  console.log("user_count 이벤트 도착", user_count);
+  $c_content_num.textContent = `${user_count}/4`; // 채팅방 펼쳤을 때 인원 수
+  $mini_room_users.textContent = `${user_count}/4`; // 채팅방 접었을 때 인원 수
 });
 
 // 방목록 최신화 ------------------지훈---------------------
@@ -97,7 +100,7 @@ const handleClick = (e) => {
   const target = e.target;
   if (target.classList.contains("room-link")) {
     const roomNumber = target.getAttribute("data-roomnumber");
-    const roomName = target.getAttribute("data-roomname"); // 여기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    const roomName = target.getAttribute("data-roomname");
     if (roomNumber) {
       enterRoom(currentNickname, roomName, roomNumber);
     }
@@ -258,6 +261,11 @@ arenaSocket.on("leaveuser", (data) => {
   });
 });
 $leave_room.addEventListener("click", leaveRoomBtn);
+
+// 인원 수 초과 됐을 때
+arenaSocket.on("user_full", () => {
+  alert("방 인원 초과")
+})
 
 arenaSocket.on("disconnect", () => {
   console.log("disconnect to server");
