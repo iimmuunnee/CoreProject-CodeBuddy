@@ -89,7 +89,7 @@
               <th scope="col" class="th-num">번호</th>
               <!-- <th scope="col" class="th-c_method">채팅방식</th> -->
               <th scope="col" class="th-lang">개발언어</th>
-              <th scope="col" class="th-title">제목</th>
+              <th scope="col" class="th-title">제목(인원수)</th>
               <th scope="col" class="th-user">작성자</th>
               <!-- <th scope="col" class="th-date">인원</th> -->
             </tr>
@@ -162,28 +162,15 @@
       <div class="c_a_center">
         <!-- 문제 제시  -->
         <div class="c_a_left">
-          <div class="c_a_l_title">1. 별 개수를 늘리기</div>
+          <div class="c_a_l_title">1. 잭팟 5배~!</div>
           <div class="c_a_l_que">
-            <pre>오늘은 스타트링크에 다니는 사람들이 모여서 축구를 해보려고 한다. 축구는 평일 오후에 하고 의무 참석도 아니다. 축구를 하기 위해 모인 사람은 총 N명이고 신기하게도 N은 짝수이다. 이제 N/2명으로 이루어진 스타트 팀과 링크 팀으로 사람들을 나눠야 한다.
+            <pre>
+              정수 n이 주어질 때, n의 5배가 반환되는 함수를 작성하시오.
+              함수명은 변경해서는 안되며 return으로 값을 반환하시오.
+              모든 구문의 끝에는 세미콜론(;)으로 마무리를 하시오.
 
-                      BOJ를 운영하는 회사 답게 사람에게 번호를 1부터 N까지로 배정했고, 아래와 같은 능력치를 조사했다. 능력치 Sij는 i번 사람과 j번 사람이 같은 팀에 속했을 때, 팀에 더해지는 능력치이다. 팀의 능력치는 팀에 속한 모든 쌍의 능력치 Sij의 합이다. Sij는 Sji와 다를 수도 있으며, i번 사람과 j번 사람이 같은 팀에 속했을 때, 팀에 더해지는 능력치는 Sij와 Sji이다.
-                      
-                      N=4이고, S가 아래와 같은 경우를 살펴보자.
-                      
-                      i\j	1	2	3	4
-                      1	 	1	2	3
-                      2	4	 	5	6
-                      3	7	1	 	2
-                      4	3	4	5	 
-                      예를 들어, 1, 2번이 스타트 팀, 3, 4번이 링크 팀에 속한 경우에 두 팀의 능력치는 아래와 같다.
-                      
-                      스타트 팀: S12 + S21 = 1 + 4 = 5
-                      링크 팀: S34 + S43 = 2 + 5 = 7
-                      1, 3번이 스타트 팀, 2, 4번이 링크 팀에 속하면, 두 팀의 능력치는 아래와 같다.
-                      
-                      스타트 팀: S13 + S31 = 2 + 7 = 9
-                      링크 팀: S24 + S42 = 6 + 4 = 10
-                      축구를 재미있게 하기 위해서 스타트 팀의 능력치와 링크 팀의 능력치의 차이를 최소로 하려고 한다. 위의 예제와 같은 경우에는 1, 4번이 스타트 팀, 2, 3번 팀이 링크 팀에 속하면 스타트 팀의 능력치는 6, 링크 팀의 능력치는 6이 되어서 차이가 0이 되고 이 값이 최소이다.</pre>
+
+            </pre>
           </div>
           <div class="c_a_l_ans">답 이미지</div>
         </div>
@@ -223,10 +210,10 @@
                 <div class="txt_main">실행결과</div>
                 <div class="text-center sendBtn">
                   <div class="sil_btns1">
-                    <button id="submit" class="btn btn-dark">코드 실행</button>
+                    <button id="codeStart" class="btn btn-dark">코드 실행</button>
                   </div>
                   <div class="sil_btns2">
-                    <button id="submit2" class="btn c_a_result">코드 제출</button>
+                    <button id="codeSubmit" class="btn c_a_result">코드 제출</button>
                   </div>
                 </div>
               </div>
@@ -253,50 +240,17 @@
             </div>
           </div>
           <div class="c_a_p_user">
-            <div class="c_a_p_u1">
+            <!-- <div class="c_a_p_u1">
               <div class="u_info">
-                <div class="u_i_img">1등</div>
-                <div class="u_i_nick">vudghk675</div>
+                <div class="u_i_img" id="host_user">방장</div>
+                <div class="u_i_nick" id="host_nickname">vudghk675</div>
               </div>
               <div class="u_remain">
                 <div class="u_r_ques">
                   <div class="u_r_circle">ok</div>
                 </div>
               </div>
-            </div>
-            <div class="c_a_p_u2">
-              <div class="u_info">
-                <div class="u_i_img">1등</div>
-                <div class="u_i_nick">vudghk675</div>
-              </div>
-              <div class="u_remain">
-                <div class="u_r_ques">
-                  <div class="u_r_circle">ok</div>
-                </div>
-              </div>
-            </div>
-            <div class="c_a_p_u3">
-              <div class="u_info">
-                <div class="u_i_img">1등</div>
-                <div class="u_i_nick">vudghk675</div>
-              </div>
-              <div class="u_remain">
-                <div class="u_r_ques">
-                  <div class="u_r_circle">ok</div>
-                </div>
-              </div>
-            </div>
-            <div class="c_a_p_u4">
-              <div class="u_info">
-                <div class="u_i_img">1등</div>
-                <div class="u_i_nick">vudghk675</div>
-              </div>
-              <div class="u_remain">
-                <div class="u_r_ques">
-                  <div class="u_r_circle">ok</div>
-                </div>
-              </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -406,17 +360,7 @@
   <script src="/CodeArena/js/popArenaChatRoom.js"></script>
   <script src="/CodeArena/js/fillter.js"></script>
 
-  <script>
-        const showButton = document.getElementById('submit');
-    const textarea = document.getElementById('js');
-    const displayText = document.getElementsById('outputDiv');
-    
-    showButton.addEventListener('click', () => {
-      const textValue = textarea.value;
-      displayText.textContent = textValue;
-    });
-  </script>
-
+ 
   <script>
     const textjs = document.querySelector('#js')
     const textpy = document.querySelector('#python')
@@ -442,107 +386,85 @@
       matchBrackets: true,
       spellcheck: true
     });
-
-
-
-    // 입력한 코드 출력
-    function executeJavaScript() {
-      const scriptElement = document.createElement("script");
-      scriptElement.innerHTML = js.getValue();
-      outPut.contentWindow.document.body.appendChild(scriptElement);
-    }
-
-    function executePython() {
-      // Python 코드 실행을 위한 코드를 추가하세요.
-      const pythonScript = document.createElement("script");
-      pythonScript.innerHTML = python.getValue();
-      outPut.contentWindow.document.body.appendChild(pythonScript);
-    }
-
-    CodeMirror.on(js, 'change', executeJavaScript);
-    CodeMirror.on(python, 'change', executePython);
-
-  </script>
-  <script src="/CodeArena/js/popArenaChatRoom.js"></script>
   
-  <script>
-    // 1. 팝업창 열기
-    $(document).on("click", ".chat_open", (e) => {
-      console.log("팝업창 열기");
-      $("#chat").css("display", "block");
-    });
+    // 코드 실행 버튼
+    const codeStart = document.getElementById('codeStart')
+    let jsValue    
 
-    // 1. 팝업창 닫기
-    $(document).on("click", ".c_content_close button", (e) => {
-      console.log("팝업창 닫기");
-      $("#chat").css("display", "none");
-    });
-
-    // 2. chat 축소판 다시 열기
-    $(document).on("click", ".c_content_mini_btn", (e) => {
-      console.log("팝업창 키우기");
-      $("#chat_mini").css("display", "flex");
-      $("#chat").css("display", "none");
-    });
-
-    // 2. chat 축소판 닫기
-    $(document).on("click", ".chat_mini_1_2btn", (e) => {
-      console.log("팝업창 줄이기");
-      $("#chat_mini").css("display", "none");
-      $("#chat").css("display", "block");
-    });
-  </script>
-
-  <script>
-    // 타이머 기능 구현 추가
-    const Timer = document.getElementById('timer'); //스코어 기록창-분
-    const Timer_zip = document.getElementById('c_a_above1'); //스코어 기록창-분
-
-    let time = 600000;
-    let min = 10;
-    let sec = 60;
-
-    Timer.value = min + ":" + '00';
-
-    function TIMER() {
-      PlAYTIME = setInterval(function () {
-        time = time - 1000; //1초씩 줄어듦
-        min = time / (60 * 1000); //초를 분으로 나눠준다.
-
-        if (sec > 0) { //sec=60 에서 1씩 빼서 출력해준다.
-          sec = sec - 1;
-          // sec이 10보다 작을 때 '0'을 붙여서 2자리 형식으로 만들어줍니다.
-          Timer.value = Math.floor(min) + ':' + (sec < 10 ? '0' : '') + sec;
-
-          // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
-          if (min == 0) {
-            if (sec <= 10 && sec > 0) {
-              // 여기에 원하는 CSS 변경 코드를 추가합니다.
-              Timer_zip.style.boxShadow = '1px 0px 12px 8px red'; // 예시로 글자 색상을 빨간색으로 변경
-              Timer_zip.style.animation = 'blink 1s infinite';
-            } else {
-              // 원하는 CSS 초기 상태를 설정합니다.
-              Timer_zip.style.boxShadow = '1px 0px 12px 8px white'; // 예시로 글자 색상을 기본으로 변경
-              Timer_zip.style.animation = 'none';
-            }
-          }
-        }
-        if (sec === 0) {
-          // 0에서 -1을 하면 -59가 출력된다.
-          // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
-          sec = 60;
-          Timer.value = Math.floor(min) + ':' + '00'
-        }
-
-      }, 1000); //1초마다 
+    // 입력한 코드 문자열로 가져와서 jsValue 변수에 담기
+    function executeJavaScript() {      
+      jsValue = js.getValue().replace(/\n/g,'')
     }
 
-    TIMER();
-    setTimeout(function () {
-      clearInterval(PlAYTIME);
-    }, 600000); //600000
+    // code editor에 입력할때마다 입력값 변수에 담는 함수 실행
+    CodeMirror.on(js, 'change', executeJavaScript);
+
+    // 코드실행 버튼 클릭 이벤트
+    codeStart.addEventListener('click', async(e)=>{
+      e.preventDefault()
+      // codeStart 요청을 보내서 문제번호와 일치하는 입력값과 출력값 database에서 반환
+      const res = await axios.post('/codeArena/codeStart', {jsValue})
+        .then(res=>{
+          let data = JSON.parse(res.data)
+          //입력값
+          let resultInput = data[0].RESULT_INPUT
+          //출력값
+          let resultOutput = data[0].RESULT_OUTPUT   
+
+          // script 태그 생성
+          const scriptElement = document.createElement("script");
+          // 생성한 script 태그안에 사용자가 입력한 값 추가
+          scriptElement.innerHTML = `var n = ${resultInput};
+                                     var outPut = ${resultOutput};
+                                     ${jsValue};
+                                     try{
+                                      console.log('코드실행중');
+                                      if(typeof codeBuddy !== 'undefined'){
+                                          if(codeBuddy(n) == outPut){
+                                            alert('정답입니다.');
+                                          }
+                                          else{
+                                            alert('이딴걸 틀리네 ㅋㅋ');
+                                          }
+                                      }
+                                      else {
+                                        throw new Error('codeBuddy 함수가 정의되지 않았습니다.');
+                                      }
+                                      }catch(err){
+                                        console.error('에러발생');
+                                        alert('세미콜론 여부를 확인하세요');
+                                      }
+                                      `
+                                      
+          
+          // script를 body 태그 안에 추가(script가 정상작동하게 하기위함)
+          outPut.contentWindow.document.body.appendChild(scriptElement);
+          
+          
+        })
+    })
+    
+
   </script>
 
+  <script>
+
+    
+    // 로그인 했을 시 사용자 이름 표시 지훈 스크립트
+    let login = '{{login}}'
+    let logout = '{{logout}}'
+
+    if (login) {
+      document.querySelector('#login_btn').style.display = 'none'
+      document.querySelector('#userInfo_btn').style.display = 'inline'
+      console.log('로그인', login)
+    }
+    if (logout) {
+      document.querySelector('#login_btn').style.display = 'inline'
+      document.querySelector('#userInfo_btn').style.display = 'none'
+      console.log('로그아웃', logout)
+    }    
+  </script>
 
 
 </body>

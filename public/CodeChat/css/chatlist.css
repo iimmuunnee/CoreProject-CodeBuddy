@@ -97,8 +97,9 @@ section.notice {
 }
 
 #board-search .search-window {
-  padding: 20px 0;
+  padding: 25px 0;
   background-color: #f9f7f9;
+  height: 75px;
 }
 
 #board-search .search-window .search-wrap {
@@ -507,11 +508,14 @@ button {
   font-size: 0.8vw;
 }
 
-.l_val{
+.filter{
   border: 1px solid;
   border-radius: 1rem;
-  
+  width: 15%;
+  height: 90%;
+  margin-left: 3%;
 }
+
 
 .filter-button{
   border: 1px solid;

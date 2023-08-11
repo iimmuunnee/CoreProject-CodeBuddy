@@ -13,6 +13,7 @@ const page = require("./routes/page");
 const user = require("./routes/user");
 const room = require("./routes/room");
 const kakao = require("./routes/kakaoLogin");
+const codeArena = require('./routes/codeArena')
 
 // 네임스페이스로 io 서버 분리 /CodeChat, /CodeArena
 const ChatNamespace = io.of("/CodeChat");
@@ -78,11 +79,13 @@ app.use("/page", page);
 app.use("/user", user);
 app.use(kakao);
 app.use("/room", room);
+app.use('/codeArena', codeArena)
 
 // "Chat" namespace에 접속한 클라이언트 처리
 ChatNamespace.on("connection", (socket) => {
   const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
   const rooms = new Map();
+  const users = new Map(); // 방 번호를 기준으로 방에 들어간 사용자 저장
   console.log("Chat 네임스페이스에 클라이언트가 연결되었습니다.");
   // console.log("입장하기 전 소켓이 들어간 방", socket.rooms);
   // 함수 정의
@@ -125,7 +128,7 @@ ChatNamespace.on("connection", (socket) => {
     console.log("roomInfo", roomInfo);
     rooms.set(room_number, roomInfo);
     let room_number = roomInfo.room_number;
-    console.log("roomInfo의 room_number", room_number);
+    console.log("방번호를 알려줘", roomInfo.room_number);
 
     socket.emit("enter_room", { room_name, nickname, room_number });
 
@@ -135,12 +138,14 @@ ChatNamespace.on("connection", (socket) => {
   });
 
   // 방 입장 enter_room 감지하기
-  socket.on("enter_room", ({ room_name, nickname, roomNum }) => {
+  socket.on("enter_room", ({ room_name, nickname, roomNum, room_host }) => {
     console.log("서버 enter_room 이벤트 활성화");
     // console.log("enter_room의 room_name", room_name);
     console.log("enter_room의 nickname", nickname);
     console.log("enter_room의 roomNum : ", room_number);
     socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
+
+    if (countRoomUsers(roomNum) >= 4)
 
     socket.join(room_number); // 방에 입장하기
 
@@ -170,14 +175,12 @@ ChatNamespace.on("connection", (socket) => {
 });
 
 // -------------------------------------------------------- CodeArena 시작 ----------------------------------------------------------------------------------
-
 // "Arena" namespace에 접속한 클라이언트 처리
 ArenaNamespace.on("connection", (socket) => {
   console.log("Arena 네임스페이스에 클라이언트가 연결되었습니다.");
-
-  const rooms = new Map(); // 방 정보를 저장할 Map
+  
   const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
-
+  const rooms = new Map(); // 방 정보를 저장할 Map
   // 함수 정의
   // 방 번호를 생성하는 함수
   const generateRoomNumber = () => {
@@ -217,6 +220,7 @@ ArenaNamespace.on("connection", (socket) => {
     };
 
     rooms.set(roomInfo.room_number, roomInfo);
+    console.log("방을 만들었을 때 rooms", rooms);
 
     socket.on("check_admin", (nickname) => {
       console.log("check_admin / nickname", nickname.nickname);
@@ -225,6 +229,7 @@ ArenaNamespace.on("connection", (socket) => {
 
       if (nickname.nickname == roomInfo.createdBy) {
         isAdmin = true;
+        socket["isAdmin"] = true;
       } else {
         isAdmin = false;
       }
@@ -243,11 +248,12 @@ ArenaNamespace.on("connection", (socket) => {
   });
 
   socket.on("userCount", (data) => {
+    console.log('보자보자보자보자')
     ArenaNamespace.emit("countUpdate", data);
   });
 
   // Arena 방 입장 enter_room 감지하기
-  socket.on("enter_room", ({ room_name, nickname: nickname, room_number }) => {
+  socket.on("enter_room", ({ room_name, nickname: nickname, room_number, room_host }) => {
     console.log("서버 enter_room 이벤트 활성화");
     // console.log("enter_room의 room_name", room_name);
     console.log("enter_room의 nickname", nickname);
@@ -256,6 +262,7 @@ ArenaNamespace.on("connection", (socket) => {
     socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
     const roomInfo = rooms.get(room_number);
+    console.log("enter_room 이벤트에서 roomInfo 제대로가져와지나?", roomInfo);
     if (roomInfo) {
       roomInfo.userCount = (roomInfo.userCount || 0) + 1;
       rooms.set(room_number, roomInfo);
@@ -268,9 +275,22 @@ ArenaNamespace.on("connection", (socket) => {
     } else {
       console.log("enter_room의 room_number",room_number);
       socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
+      ArenaNamespace.to(room_number).emit("welcome", { nickname });
+
+      if (room_host != nickname){
+        users.push(nickname) // 입장한 사람 배열에 저장
+        usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
+        ArenaNamespace.to(room_number).emit("enter_normal_user", {nickname, usersMap})
+        console.log(users);
+      }
+      else{
+        users.push(nickname) // 입장한 사람 배열에 저장
+        usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
+        ArenaNamespace.to(room_number).emit("enter_host_user", {nickname, usersMap})
+        console.log("users",users);
+      }
     }
 
-    ArenaNamespace.to(room_number).emit("welcome", { nickname });
     // socket.to(room_number).emit("welcome", {nickname});
     socket["nickname"] = nickname;
 
@@ -290,7 +310,6 @@ ArenaNamespace.on("connection", (socket) => {
     });
     // 방 이름 정보를 가져와서 해결해야함
   });
-console.log("SDfsadf");
   socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
     socket.emit("leaveuser", room_number);
@@ -327,6 +346,37 @@ console.log("SDfsadf");
 
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");
+    const room_number = socket.room_number;
+    socket.emit("leaveuser", room_number);
+    if (room_number) {
+      socket.leave(room_number); // 방에서 퇴장
+      console.log("퇴장", room_number);
+
+      const roomInfo = rooms.get(room_number);
+      if (roomInfo) {
+        roomInfo.userCount--; // 유저 인원수 감소
+        if (roomInfo.userCount === 0) {
+          rooms.delete(room_number); // 방 삭제
+        }
+        // 방 정보 갱신하여 방 리스트 업데이트
+        const updatedRoomList = Array.from(rooms.values());
+        // ArenaNamespace.emit("update_room_list", updatedRoomList);
+      }
+      socket.room_number = null; // 방 이름 정보 초기화
+    }
+
+    const currentNickname = socket.nickname;
+    console.log("socket.nickname", socket.nickname);
+    ArenaNamespace.to(room_number).emit("bye", { currentNickname });
+
+    socket.on("leave_count", () => {
+      ArenaNamespace.to(room_number).emit("user_count", {
+        user_count: countRoomUsers(room_number),
+      });
+    });
+
+    console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
+    console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
   });
 
   socket.on("disconnet", () => {
