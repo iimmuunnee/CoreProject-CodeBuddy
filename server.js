@@ -266,10 +266,9 @@ ArenaNamespace.on("connection", (socket) => {
     if (countRoomUsers(room_number) >= 4){ // 들어가기 전에 방의 인원이 4명이면 입장 불가
       socket.emit("user_full")
     } else {
+      console.log("enter_room의 room_number",room_number);
       socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
     }
-
-
 
     ArenaNamespace.to(room_number).emit("welcome", { nickname });
     // socket.to(room_number).emit("welcome", {nickname});
