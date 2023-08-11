@@ -223,10 +223,10 @@
                 <div class="txt_main">실행결과</div>
                 <div class="text-center sendBtn">
                   <div class="sil_btns1">
-                    <button id="submit" class="btn btn-dark">코드 실행</button>
+                    <button id="codeStart" class="btn btn-dark">코드 실행</button>
                   </div>
                   <div class="sil_btns2">
-                    <button id="submit2" class="btn c_a_result">코드 제출</button>
+                    <button id="codeSubmit" class="btn c_a_result">코드 제출</button>
                   </div>
                 </div>
               </div>
@@ -253,7 +253,7 @@
             </div>
           </div>
           <div class="c_a_p_user">
-            <div class="c_a_p_u1">
+            <!-- <div class="c_a_p_u1">
               <div class="u_info">
                 <div class="u_i_img" id="host_user">방장</div>
                 <div class="u_i_nick" id="host_nickname">vudghk675</div>
@@ -263,40 +263,7 @@
                   <div class="u_r_circle">ok</div>
                 </div>
               </div>
-            </div>
-            <div class="c_a_p_u2">
-              <div class="u_info">
-                <div class="u_i_img" id="user_1">1번</div>
-                <div class="u_i_nick" id="nickname_1">vudghk675</div>
-              </div>
-              <div class="u_remain">
-                <div class="u_r_ques">
-                  <div class="u_r_circle">ok</div>
-                </div>
-              </div>
-            </div>
-            <div class="c_a_p_u3">
-              <div class="u_info">
-                <div class="u_i_img" id="user_2">2번</div>
-                <div class="u_i_nick" id="nickname_2">vudghk675</div>
-              </div>
-              <div class="u_remain">
-                <div class="u_r_ques">
-                  <div class="u_r_circle">ok</div>
-                </div>
-              </div>
-            </div>
-            <div class="c_a_p_u4">
-              <div class="u_info">
-                <div class="u_i_img" id="user_3">3번</div>
-                <div class="u_i_nick" id="nickname_3">vudghk675</div>
-              </div>
-              <div class="u_remain">
-                <div class="u_r_ques">
-                  <div class="u_r_circle">ok</div>
-                </div>
-              </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -406,17 +373,7 @@
   <script src="/CodeArena/js/popArenaChatRoom.js"></script>
   <script src="/CodeArena/js/fillter.js"></script>
 
-  <script>
-        const showButton = document.getElementById('submit');
-    const textarea = document.getElementById('js');
-    const displayText = document.getElementsById('outputDiv');
-    
-    showButton.addEventListener('click', () => {
-      const textValue = textarea.value;
-      displayText.textContent = textValue;
-    });
-  </script>
-
+ 
   <script>
     const textjs = document.querySelector('#js')
     const textpy = document.querySelector('#python')
@@ -443,106 +400,47 @@
       spellcheck: true
     });
 
-
+    // 코드 실행 버튼
+    const codeStart = document.getElementById('codeStart')
+    let jsValue
 
     // 입력한 코드 출력
-    function executeJavaScript() {
-      const scriptElement = document.createElement("script");
-      scriptElement.innerHTML = js.getValue();
-      outPut.contentWindow.document.body.appendChild(scriptElement);
-    }
-
-    function executePython() {
-      // Python 코드 실행을 위한 코드를 추가하세요.
-      const pythonScript = document.createElement("script");
-      pythonScript.innerHTML = python.getValue();
-      outPut.contentWindow.document.body.appendChild(pythonScript);
+    function executeJavaScript() {      
+      jsValue = `console.log('${js.getValue()}');`  
     }
 
     CodeMirror.on(js, 'change', executeJavaScript);
-    CodeMirror.on(python, 'change', executePython);
 
-  </script>
-  <script src="/CodeArena/js/popArenaChatRoom.js"></script>
-  
-  <script>
-    // 1. 팝업창 열기
-    $(document).on("click", ".chat_open", (e) => {
-      console.log("팝업창 열기");
-      $("#chat").css("display", "block");
-    });
+    codeStart.addEventListener('click',(e)=>{
+      e.preventDefault()
+      const scriptElement = document.createElement("script");
+      scriptElement.innerHTML = `console.log('${js.getValue()}');`
+      outPut.contentWindow.document.body.appendChild(scriptElement);
+      axios.post('/codeArena/codeStart', {jsValue})
+        .then(res=>{
+          console.log('받아라')
+        })
+    })
+    
 
-    // 1. 팝업창 닫기
-    $(document).on("click", ".c_content_close button", (e) => {
-      console.log("팝업창 닫기");
-      $("#chat").css("display", "none");
-    });
-
-    // 2. chat 축소판 다시 열기
-    $(document).on("click", ".c_content_mini_btn", (e) => {
-      console.log("팝업창 키우기");
-      $("#chat_mini").css("display", "flex");
-      $("#chat").css("display", "none");
-    });
-
-    // 2. chat 축소판 닫기
-    $(document).on("click", ".chat_mini_1_2btn", (e) => {
-      console.log("팝업창 줄이기");
-      $("#chat_mini").css("display", "none");
-      $("#chat").css("display", "block");
-    });
   </script>
 
   <script>
-    // 타이머 기능 구현 추가
-    const Timer = document.getElementById('timer'); //스코어 기록창-분
-    const Timer_zip = document.getElementById('c_a_above1'); //스코어 기록창-분
+    // 로그인 했을 시 사용자 이름 표시 지훈 스크립트
+    let login = '{{login}}'
+    let logout = '{{logout}}'
 
-    let time = 600000;
-    let min = 10;
-    let sec = 60;
-
-    Timer.value = min + ":" + '00';
-
-    function TIMER() {
-      PlAYTIME = setInterval(function () {
-        time = time - 1000; //1초씩 줄어듦
-        min = time / (60 * 1000); //초를 분으로 나눠준다.
-
-        if (sec > 0) { //sec=60 에서 1씩 빼서 출력해준다.
-          sec = sec - 1;
-          // sec이 10보다 작을 때 '0'을 붙여서 2자리 형식으로 만들어줍니다.
-          Timer.value = Math.floor(min) + ':' + (sec < 10 ? '0' : '') + sec;
-
-          // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
-          if (min == 0) {
-            if (sec <= 10 && sec > 0) {
-              // 여기에 원하는 CSS 변경 코드를 추가합니다.
-              Timer_zip.style.boxShadow = '1px 0px 12px 8px red'; // 예시로 글자 색상을 빨간색으로 변경
-              Timer_zip.style.animation = 'blink 1s infinite';
-            } else {
-              // 원하는 CSS 초기 상태를 설정합니다.
-              Timer_zip.style.boxShadow = '1px 0px 12px 8px white'; // 예시로 글자 색상을 기본으로 변경
-              Timer_zip.style.animation = 'none';
-            }
-          }
-        }
-        if (sec === 0) {
-          // 0에서 -1을 하면 -59가 출력된다.
-          // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
-          sec = 60;
-          Timer.value = Math.floor(min) + ':' + '00'
-        }
-
-      }, 1000); //1초마다 
+    if (login) {
+      document.querySelector('#login_btn').style.display = 'none'
+      document.querySelector('#userInfo_btn').style.display = 'inline'
+      console.log('로그인', login)
     }
-
-    TIMER();
-    setTimeout(function () {
-      clearInterval(PlAYTIME);
-    }, 600000); //600000
+    if (logout) {
+      document.querySelector('#login_btn').style.display = 'inline'
+      document.querySelector('#userInfo_btn').style.display = 'none'
+      console.log('로그아웃', logout)
+    }    
   </script>
-
 
 
 </body>
