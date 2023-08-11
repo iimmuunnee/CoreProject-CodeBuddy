@@ -61,7 +61,7 @@ const handleRoomSubmit = (event) => {
 
     arenaSocket.emit("check_admin", { nickname: res.data });
 
-    // closeModal(); // 모달 닫고
+    closeModal(); // 모달 닫고
     // openarena(); // 방 입장
     arenaSocket.emit("welcome", { nickname: res.data });
     $room_name.value = ""; // 방 입력칸 초기화
@@ -196,6 +196,7 @@ arenaSocket.on("countUpdate", (data) => {
   updateArenaRoom(data.data);
 });
 
+//방장이 방 생성시 database에 방 정보 입력 및 방 입장 처리
 arenaSocket.on('host_enterRoom', (data)=>{
   let nickName =data[0].createdBy
   let roomName = data[0].room_name
@@ -219,9 +220,6 @@ arenaSocket.on("update_room_list", (roomInfo) => {
   addRoomToTable(roomInfo);
 });
 
-
-
-
 // //방 목록 database에 새로운 방 추가하는 함수
 const addRoomToTable = (updateRooms) => {
   axios.post("/room/updateroom", { updateRooms }).then((res) => {
@@ -229,7 +227,6 @@ const addRoomToTable = (updateRooms) => {
     arenaSocket.emit("newlist");
   });
 };
-
 const enterRoom = (currentNickname, roomName, roomNum) => {
   console.log("enterRoom 실행");
   console.log("enterRoom 함수의 currentNickname : ", currentNickname);
@@ -278,7 +275,7 @@ arenaSocket.on("leaveuser", (data) => {
     let data = JSON.parse(res.data);
     console.log("떳나", data.result);
     arenaSocket.emit("userCount", { data: data.result });
-    location.reload();
+    // location.reload();
   });
 });
 $leave_room.addEventListener("click", leaveRoomBtn);
