@@ -16,11 +16,10 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0,0,0,0.3);
   z-index: 999;
-  /* border-bottom: 1px solid; */
   height: 80px;
-}
+  }
 
 /* 로고 텍스트 스타일 */
 .m_logo {
