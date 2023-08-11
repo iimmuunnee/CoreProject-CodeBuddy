@@ -43,18 +43,34 @@ router.post('/leave',(req,res)=>{
     let roomNum = req.body.data
     let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT-1 WHERE ROOM_NUMBER=?;'
     let conutSql = 'SELECT * FROM TB_ARENAROOM;'
+    let deleteRoom = 'DELETE FROM TB_ARENAROOM WHERE USER_COUNT=0'
     conn.connect()
     conn.query(sql,[roomNum],(err,result)=>{
         if(err){
-            console.log('유저수 카운트 추가 쿼리문 에러')
+            console.log('유저수 카운트 감소 쿼리문 에러')
         }
         else{
-            conn.query(conutSql,(err,result)=>{
+            conn.query(deleteRoom,(err,result)=>{
                 if(err){
-                    console.log('실패')
+                    console.log('채팅방 행 삭제 쿼리문 에러')
+                    conn.query(conutSql,(err,result)=>{
+                        if(err){
+                            console.log('실패')
+                        }
+                        else{
+                            res.json(JSON.stringify({result:result}))
+                        }
+                    })
                 }
                 else{
-                    res.json(JSON.stringify({result:result}))
+                    conn.query(conutSql,(err,result)=>{
+                        if(err){
+                            console.log('실패')
+                        }
+                        else{
+                            res.json(JSON.stringify({result:result}))
+                        }
+                    })
                 }
             })
         }
@@ -75,7 +91,6 @@ router.post('/updateroom',(req,res)=>{
 
     let sql = 'INSERT INTO TB_ARENAROOM (ROOM_NUMBER, ROOM_NAME, ROOM_LANG, ROOM_HOST, USER_COUNT) VALUES(?,?,?,?,?)'
     let findRoom = 'SELECT * FROM TB_ARENAROOM WHERE ROOM_NUMBER =?'
-
     conn.connect()
     conn.query(sql,[number,name,lang,host,count],(err,result)=>{
         if(err){
