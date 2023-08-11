@@ -111,6 +111,7 @@ ChatNamespace.on("connection", (socket) => {
     console.log(`backSocket Event: ${event}`);
   });
 
+  // 방 생성
   socket.on("create_room", ({ room_name, dev_lang, nickname }) => {
     console.log("create_room 이벤트 서버로 도착");
     console.log("닉네임확인", nickname);
@@ -122,7 +123,7 @@ ChatNamespace.on("connection", (socket) => {
       createdDate: new Date().toISOString().slice(0, 10),
     };
     console.log("roomInfo", roomInfo);
-    rooms.set(room_name, roomInfo);
+    rooms.set(room_number, roomInfo);
     let room_number = roomInfo.room_number;
     console.log("roomInfo의 room_number", room_number);
 
@@ -215,7 +216,7 @@ ArenaNamespace.on("connection", (socket) => {
       userCount: countRoomUsers(room_name),
     };
 
-    rooms.set(room_name, roomInfo);
+    rooms.set(roomInfo.room_number, roomInfo);
 
     socket.on("check_admin", (nickname) => {
       console.log("check_admin / nickname", nickname.nickname);
@@ -232,7 +233,10 @@ ArenaNamespace.on("connection", (socket) => {
 
     // 업데이트된 방 리스트 전체에 브로드캐스팅
     const updatedRoomList = Array.from(rooms.values());
+    console.log('다시보자',updatedRoomList)
     socket.emit("update_room_list", updatedRoomList);
+    // 방 생성 후 방장 입장
+    socket.emit('host_enterRoom', updatedRoomList)
   });
 
   socket.on("newlist", () => {

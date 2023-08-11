@@ -56,13 +56,13 @@ const handleRoomSubmit = (event) => {
     arenaSocket.emit("create_room", {
       room_name: room_name,
       dev_lang: dev_lang,
-      nickname: res.data, // 사용자 이름
+      nickname: res.data, // 방 생성자 이름
     });
 
     arenaSocket.emit("check_admin", { nickname: res.data });
 
-    closeModal(); // 모달 닫고
-    openarena(); // 방 입장
+    // closeModal(); // 모달 닫고
+    // openarena(); // 방 입장
     arenaSocket.emit("welcome", { nickname: res.data });
     $room_name.value = ""; // 방 입력칸 초기화
   });
@@ -74,6 +74,7 @@ const handleRoomSubmit = (event) => {
   // $mini_room_users.textContent = `1/4`; // 채팅방 접었을 때 인원 수
 };
 
+// 방 생성시 방장 권한 부여
 arenaSocket.on("admin_status", ({ isAdmin }) => {
   console.log("admin_status", isAdmin);
   if (isAdmin) {
@@ -190,6 +191,13 @@ arenaSocket.on("countUpdate", (data) => {
   });
   updateArenaRoom(data.data);
 });
+
+arenaSocket.on('host_enterRoom', (data)=>{
+  let nickName =data[0].createdBy
+  let roomName = data[0].room_name
+  let roomNum = data[0].room_number
+  enterRoom(nickName, roomName, roomNum)
+})
 
 // --------------------지훈 끝--------------------------------
 //
