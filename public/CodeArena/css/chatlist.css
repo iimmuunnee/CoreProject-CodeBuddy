@@ -17,14 +17,18 @@ section.notice {
 .page-title h3 {
   font-size: 28px;
   color: #333333;
-  font-weight: 400;
+  font-weight: border;
   text-align: center;
   font-family: 'Pretendard-Regular';
 }
 
 #board-search .search-window {
   padding: 20px 0;
-  background-color: #f9f7f9;
+  background-color: #333;
+  color: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
 }
 
 #board-search .search-window .search-wrap {
@@ -295,6 +299,9 @@ button {
   width: 8%;
   font-size: 0.9rem;
   height: 40%;
+  background-color: #333;
+  color: white;
+  border-radius: 10px;
 }
 
 /* 모달 스타일 */
@@ -410,6 +417,7 @@ button {
   width: 15%;
   height: 90%;
   margin-left: 3%;
+  color: white;
 }
 
 .lang{
@@ -417,8 +425,8 @@ button {
 }
 
 .filter-button.active {
-  background-color: #4CAF50; 
-  color: white; 
+  background-color: white; 
+  color: #24283b; 
 }
 
 /* header */
@@ -428,7 +436,7 @@ button {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #333;
   z-index: 999;
   /* border-bottom: 1px solid; */
   height: 80px;

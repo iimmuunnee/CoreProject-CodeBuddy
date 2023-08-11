@@ -49,14 +49,16 @@
       <button class="m_btn_c" id="chat_btn">Code Chat</button>
       <button class="m_btn_a" id="arena_btn">Code Arena</button>
       <button class="m_btn" id="login_btn">Login</button>
-      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
+      <button id="userInfo_btn" class="m_btn" style="display: none;">{{name}} / <a onclick="location.href='/page/logout'"
+        class="logout">Logout</a></button>
+  </div>
     </div>
   </header>
 
   <section id="notice" class="notice">
     <div class="page-title">
       <div class="container">
-        <h3>CodeArena 채팅방 목록</h3>
+        <h3>Code Arena 방 목록</h3>
       </div>
     </div>
 
@@ -168,9 +170,8 @@
               정수 n이 주어질 때, n의 5배가 반환되는 함수를 작성하시오.
               함수명은 변경해서는 안되며 return으로 값을 반환하시오.
               모든 구문의 끝에는 세미콜론(;)으로 마무리를 하시오.
-
-
             </pre>
+
           </div>
           <div class="c_a_l_ans">답 이미지</div>
         </div>
@@ -351,6 +352,35 @@
 
 
   <!-- js 파일 경로 -->
+  <script>
+    // 로그인 했을 시 사용자 이름 표시
+    let login = '{{login}}'
+    let logout = '{{logout}}'
+
+    if (login) {
+      document.querySelector('#login_btn').style.display = 'none'
+      document.querySelector('#userInfo_btn').style.display = 'inline'
+      console.log('로그인', login)
+    }
+    if (logout) {
+      document.querySelector('#login_btn').style.display = 'inline'
+      document.querySelector('#userInfo_btn').style.display = 'none'
+      console.log('로그아웃', logout)
+    }
+
+    // 메인 이외의 다른 페이지에서 Code Chat 클릭시 메인이동 후 Code Chat 클릭
+    let moveCode = '{{code}}'
+    if (moveCode) {
+      document.getElementById('main_c').click()
+    }
+
+    let moveArena = '{{arena}}'
+    if (moveArena) {
+      document.getElementById('main_a').click()
+    }
+
+  </script>
+
 
   <script src="/socket.io/socket.io.js"></script>
   <!-- 비동기 통신 axios -->
