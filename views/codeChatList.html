@@ -57,7 +57,9 @@
       <button class="m_btn_c" id="chat_btn">Code Chat</button>
       <button class="m_btn_a" id="arena_btn">Code Arena</button>
       <button class="m_btn" id="login_btn">Login</button>
-      <button id="userInfo_btn" class="m_btn" style="display : none">{{name}}님</button>
+      <button id="userInfo_btn" class="m_btn" style="display: none;">{{name}} / <a
+          onclick="location.href='/page/logout'" class="logout">Logout</a></button>
+    </div>
     </div>
   </header>
 
@@ -75,22 +77,17 @@
         <div class="search-window">
           <form action="">
             <div class="search-wrap">
-                  채팅방식 
-                <!-- <select name="chat_method" id="chat_method">
-                  <option value="all">전체보기</option>
-                  <option value="one">1:1채팅</option>
-                  <option value="many">오픈채팅</option>
-                </select> -->
-                <button class="filter">전체</button>
-                <button class="filter">1:1채팅</button>
-                <button class="filter">오픈채팅</button><br><br>
-                개발 언어 
-                <button class="filter-button" data-filter="all">전체</button>
-                <button class="filter-button" data-filter="html/css">HTML/CSS</button>
-                <button class="filter-button" data-filter="javascript">JavaScript</button>
-                <button class="filter-button" data-filter="python">Python</button>
-                
-              
+              채팅방식
+              <button class="filter">전체</button>
+              <button class="filter">1:1채팅</button>
+              <button class="filter">오픈채팅</button><br><br>
+              개발 언어
+              <button class="filter-button" data-filter="all" style="margin-left: 2.5% !important;">전체</button>
+              <button class="filter-button" data-filter="html/css">HTML/CSS</button>
+              <button class="filter-button" data-filter="javascript">JavaScript</button>
+              <button class="filter-button" data-filter="python">Python</button>
+
+
             </div>
           </form>
         </div>
@@ -108,7 +105,7 @@
               <th scope="col" class="th-lang">개발언어</th>
               <th scope="col" class="th-title">제목(인원수)</th>
               <th scope="col" class="th-user">작성자</th>
-              <th scope="col" class="th-date">등록일</th>
+              <!-- <th scope="col" class="th-date">등록일</th> -->
             </tr>
           </thead>
           <tbody>
@@ -184,7 +181,7 @@
               <td>2017.07.01</td>
             </tr>
 
-            
+
 
             <tr>
               <td>3</td>
@@ -198,7 +195,7 @@
               <td>2017.07.01</td>
             </tr>
 
-            
+
 
             <tr>
               <td>1</td>
@@ -502,96 +499,96 @@
 
     <!-- codechat 채팅방 -->
     <!-- chat 버튼 -->
-  <!-- 채팅방 시작 -->
-  <!-- chat 버튼 -->
-  <div id="chat_open" class="chat_open">
-    <button class="chat_open_btn">
-      <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
-    </button>
-  </div>
+    <!-- 채팅방 시작 -->
+    <!-- chat 버튼 -->
+    <div id="chat_open" class="chat_open">
+      <button class="chat_open_btn">
+        <i class="fa-solid fa-comment fa-2x" style="color: #24283B"></i>
+      </button>
+    </div>
 
-  <!-- chat 메인 -->
-  <div id="chat" class="chat">
-    <div class="chat_1">
-      <div class="chat_main">
-        <!-- 채팅방 이름 -->
-        <div class="c_roomname">
-          <div class="c_roomname_1">
-            <div class="c_content_name">
-              <div class="c_c_name"></div>
-              <div class="c_content_num">(인원)</div>
-            </div>
-            <div id="c_content_mini" class="c_content_mini">
-              <button class="c_content_mini_btn">
-                <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
-              </button>
-            </div>
-            <div class="c_content_close">
-              <button class="c_content_close_btn">
-                <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- 채팅내용 -->
-        <div class="c_main_content">
-          <div class="chat1">
-            <ul>
-              <!-- 동적 생성 -->
-            </ul>
-          </div>
-        </div>
-
-        <div class="chat1 format">
-          <ul>
-            <li>
-              <div class="sender">
-                <span></span>
+    <!-- chat 메인 -->
+    <div id="chat" class="chat">
+      <div class="chat_1">
+        <div class="chat_main">
+          <!-- 채팅방 이름 -->
+          <div class="c_roomname">
+            <div class="c_roomname_1">
+              <div class="c_content_name">
+                <div class="c_c_name"></div>
+                <div class="c_content_num">(인원)</div>
               </div>
-              <div class="message">
-                <span></span>
+              <div id="c_content_mini" class="c_content_mini">
+                <button class="c_content_mini_btn">
+                  <i class="fa-solid fa-caret-down fa-lg" style="color: #ffffff"></i>
+                </button>
               </div>
-            </li>
-          </ul>
-        </div>
-
-        <!-- 채팅작성 및 전송 -->
-        <div class="c_chatting">
-          <form name="c_chatting_form" class="c_chatting_form" action="">
-            <div class="c_chatting_1">
-              <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
-            </div>
-            <div class="c_chatting_2">
-              <div class="c_chatting_22">
-                <button class="c_chatting_2_btn">
-                  <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
+              <div class="c_content_close">
+                <button class="c_content_close_btn">
+                  <i class="fa-solid fa-xmark fa-lg" style="color: #ffffff"></i>
                 </button>
               </div>
             </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
+          </div>
 
-  <div class="chat_mini" id="chat_mini">
-    <div class="chat_mini_1">
-      <div class="chat_mini_1_1">
-        <div class="chat_mini_1_11">
-          <p id="mini_room_name"></p>
+          <!-- 채팅내용 -->
+          <div class="c_main_content">
+            <div class="chat1">
+              <ul>
+                <!-- 동적 생성 -->
+              </ul>
+            </div>
+          </div>
+
+          <div class="chat1 format">
+            <ul>
+              <li>
+                <div class="sender">
+                  <span></span>
+                </div>
+                <div class="message">
+                  <span></span>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- 채팅작성 및 전송 -->
+          <div class="c_chatting">
+            <form name="c_chatting_form" class="c_chatting_form" action="">
+              <div class="c_chatting_1">
+                <textarea id="form_input" class="form_input" placeholder="댓글을 입력하세요"></textarea>
+              </div>
+              <div class="c_chatting_2">
+                <div class="c_chatting_22">
+                  <button class="c_chatting_2_btn">
+                    <i class="fa-solid fa-envelope-circle-check fa-2x"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <div class="chat_mini_1_21">
-          <p id="$mini_room_users">4/6</p>
-        </div>
-      </div>
-      <div class="chat_mini_1_2">
-        <button class="chat_mini_1_2btn">
-          <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
-        </button>
       </div>
     </div>
-  </div>
+
+    <div class="chat_mini" id="chat_mini">
+      <div class="chat_mini_1">
+        <div class="chat_mini_1_1">
+          <div class="chat_mini_1_11">
+            <p id="mini_room_name"></p>
+          </div>
+          <div class="chat_mini_1_21">
+            <p id="$mini_room_users">4/6</p>
+          </div>
+        </div>
+        <div class="chat_mini_1_2">
+          <button class="chat_mini_1_2btn">
+            <i class="fa-solid fa-caret-up fa-lg" style="color: #ffffff"></i>
+          </button>
+        </div>
+      </div>
+    </div>
   </section>
   <script src="/socket.io/socket.io.js"></script>
   <script src="/CodeChat/js/codeChatList.js"></script>
@@ -631,7 +628,7 @@
       $("#container").css("display", "flex");
       $(".m_header").css("display", "none");
       $('.notice').css("display", "none");
-      $('.chat_open').css('display','block')
+      $('.chat_open').css('display', 'block')
     });
 
     // 2. code mirror -> CodeChat 목록페이지 이동
