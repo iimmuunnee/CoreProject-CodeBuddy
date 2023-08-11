@@ -125,7 +125,7 @@ ChatNamespace.on("connection", (socket) => {
     console.log("roomInfo", roomInfo);
     rooms.set(room_number, roomInfo);
     let room_number = roomInfo.room_number;
-    console.log("roomInfo의 room_number", room_number);
+    console.log("방번호를 알려줘", roomInfo.room_number);
 
     socket.emit("enter_room", { room_name, nickname, room_number });
 

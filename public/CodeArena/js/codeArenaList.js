@@ -79,6 +79,7 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   console.log("admin_status", isAdmin);
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
+    
   }
 });
 
