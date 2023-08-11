@@ -77,8 +77,6 @@ const handleRoomSubmit = (event) => {
   $c_c_name.textContent = room_name; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = room_name; // Arena 제한 시간 위 방제
-  $c_content_num.textContent = `안된거야`; // 채팅방 펼쳤을 때 인원 수
-  $mini_room_users.textContent = `안된거야`; // 채팅방 접었을 때 인원 수
 };
 
 // 방 생성시 방장 권한 부여
@@ -86,14 +84,13 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   console.log("admin_status", isAdmin);
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
-    
+    arenaSocket["isAdmin"] = isAdmin
   }
 });
 
 
 // 방목록 최신화 ------------------지훈---------------------
 
-let currentNickname = "";
 let roomName = "";
 let roomNum;
 let roomLinks;
@@ -105,8 +102,9 @@ const handleClick = (e) => {
     let roomNumber = target.getAttribute("data-roomnumber");
     roomNumber = parseInt(roomNumber)
     const roomName = target.getAttribute("data-roomname");
+    const roomHost = target.getAttribute("data-roomhost")
     if (roomNumber) {
-      enterRoom(currentNickname, roomName, roomNumber);
+      enterRoom(roomName, roomNumber, roomHost);
     }
   }
 };
@@ -132,10 +130,10 @@ const updateArenaRoom = (roomList) => {
             <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
             <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
             <th>
-              <a id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}">${roomInfo.ROOM_NAME}</a>
+              <a id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 4 )</a>
               <p>테스트</p>
              </th>
-            <td>${roomInfo.USER_COUNT}/4</td>
+            <td>${roomInfo.ROOM_HOST}</td>
       `;
     // 새로운 행을 테이블의 맨 위에 추가
     $tbody.prepend(newRow);
@@ -149,15 +147,6 @@ const updateArenaRoom = (roomList) => {
       // console.log("updateArenaRoom", roomInfo.USER_COUNT);
       $c_content_num.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 펼쳤을 때 인원 수
       $mini_room_users.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 접었을 때 인원 수
-
-
-    // $tbody.addEventListener("click", (e) => {
-    //   console.log('뭔데?',e.target.parentElement);
-    //   if (e.target.className === `room-link room-${roomInfo.ROOM_NUMBER}`){
-    //     console.log(roomInfo.ROOM_NUMBER);
-    //     enterRoom(currentNickname, roomName, roomInfo.ROOM_NUMBER)
-    //   }
-    // })
   });
 };
 
@@ -173,6 +162,7 @@ arenaSocket.on("updateRoomList", () => {
   const $trs = $tbody.querySelectorAll("tr");
   axios.get("/room/arenaList", { re: "hi" }).then((res) => {
     let roomList = JSON.parse(res.data);
+    console.log("roomList : ",roomList);
     $trs.forEach(($tr) => {
       $tr.remove();
     });
@@ -212,13 +202,14 @@ arenaSocket.on('host_enterRoom', (data)=>{
   let nickName =data[0].createdBy
   let roomName = data[0].room_name
   let roomNum = data[0].room_number
+  console.log("", data);
   const addRoomToTable = (updateRooms) => {
     axios.post("/room/updateroom", { updateRooms }).then((res) => {
       let roomInfo = JSON.parse(res.data);
     });
   };
   addRoomToTable(data)
-  enterRoom(nickName, roomName, roomNum)
+  enterRoom(roomName, roomNum, nickName)
 })
 
 // --------------------지훈 끝--------------------------------
@@ -238,7 +229,7 @@ const addRoomToTable = (updateRooms) => {
     arenaSocket.emit("newlist");
   });
 };
-const enterRoom = (currentNickname, roomName, roomNum) => {
+const enterRoom = (roomName, roomNum, roomHost) => {
   console.log("enterRoom 실행");
   // console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   axios.post("/room/enterRoom", { roomNum }).then((res) => {
@@ -247,6 +238,7 @@ const enterRoom = (currentNickname, roomName, roomNum) => {
       room_name: roomName,
       nickname: data.name,
       room_number: roomNum,
+      room_host : roomHost
     });
     arenaSocket.emit("userCount", { data: data.result });
   });
@@ -283,7 +275,6 @@ const leaveRoomBtn = () => {
 arenaSocket.on("leaveuser", (data) => {
   axios.post("/room/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
-    console.log("떳나", data.result);
     arenaSocket.emit("userCount", { data: data.result });
     location.reload();
   });
@@ -360,6 +351,60 @@ arenaSocket.on("welcome", ({ nickname }) => {
   console.log("nickname : ", nickname);
   addNotice(`${nickname}(이)가 방에 입장했습니다.`);
 });
+
+arenaSocket.on("enter_host_user", ({nickname ,usersMap}) => {
+  updateArenaNickname(nickname, usersMap)
+})
+
+arenaSocket.on("enter_normal_user", ({nickname, usersMap}) => {
+  updateArenaNickname(nickname, usersMap)
+})
+
+const updateArenaNickname = (nickname, usersMap) => {
+  let cnt1 = 1
+  // usersMap.forEach((users) => {
+  //   const newUser = document.createElement("div");
+  //   if (cnt1 == 1){
+  //     newUser.className = `c_a_p_u${cnt1}` 
+  //     newUser.innerHTML += `
+  //     <div class="u_info">
+  //     <div class="u_i_img">방장</div>
+  //     <div class="u_i_nick">${nickname}</div>
+  //     </div>
+  //     <div class="u_remain">
+  //     <div div class="u_r_ques">
+  //     <div class="u_r_circle">ok</div>
+  //     </div>
+  //     </div>
+  //     `;
+  //     const $c_a_p_user = document.querySelector(".c_a_p_user")
+  //     $c_a_p_user.append(newUser);
+  //     cnt1 ++
+  //   } else{ // cnt1 2 ~ 4
+  //     newUser.className = `c_a_p_u${cnt1}` 
+  //     newUser.innerHTML += `
+  //     <div class="u_info">
+  //     <div class="u_i_img">일반</div>
+  //     <div class="u_i_nick">${nickname}</div>
+  //     </div>
+  //     <div class="u_remain">
+  //     <div div class="u_r_ques">
+  //     <div class="u_r_circle">ok</div>
+  //     </div>
+  //     </div>
+  //     `;
+  //     const $c_a_p_user = document.querySelector(".c_a_p_user")
+  //     $c_a_p_user.append(newUser);
+  //     cnt1 ++
+  //   }
+  // })
+  // cnt2 ++
+}
+
+arenaSocket.on("normal_user_leave", ({nickname}) => {
+  document.getElementById(`nickname_${cnt2}`).textContent = "???";
+  cnt2 --
+})
 
 // arenaSocket.on("user_count", ({ user_count }) => {
 //   // console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
