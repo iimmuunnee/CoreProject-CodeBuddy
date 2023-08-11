@@ -51,7 +51,7 @@ const openarena = () => {
     return result;
 }`)
 };
-
+let currentNickname
 // 방 생성 함수
 const handleRoomSubmit = (event) => {
   event.preventDefault();
@@ -242,6 +242,12 @@ const enterRoom = (roomName, roomNum, roomHost) => {
     });
     arenaSocket.emit("userCount", { data: data.result });
   });
+  //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저접속
+  axios.post('/room/connectUser', {roomNum})
+    .then(res=>{
+      let data = JSON.parse(res.data)
+      console.log('가져와져랏', data)
+    })
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = roomName; // Arena 제한 시간 위 방제
@@ -273,7 +279,10 @@ const leaveRoomBtn = () => {
   arenaSocket.emit("leave_count");
 };
 arenaSocket.on("leaveuser", (data) => {
-  axios.post("/room/leave", { data }).then((res) => {
+  //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
+  axios.post('/room/disconnectUser', {data})
+  
+  axios.post("/room/leave", {data}).then((res) => {
     let data = JSON.parse(res.data);
     arenaSocket.emit("userCount", { data: data.result });
     location.reload();
@@ -288,17 +297,17 @@ arenaSocket.on("user_full", () => {
   alert("방 인원 초과")
 })
 
-window.addEventListener("beforeunload", () => {
-  arenaSocket.emit("leave_count");
-  arenaSocket.emit("leave_room", { currentNickname });
-});
+// window.addEventListener("beforeunload", () => {
+//   arenaSocket.emit("leave_count");
+//   arenaSocket.emit("leave_room", { currentNickname });
+// });
 
 
 arenaSocket.on("disconnect", () => {
   console.log("disconnect to server");
 });
 
-// -------------------------리스트 페이지 끝 -----------CodeArena 페이지 시작---------------------------------------------------------------------
+// -------------------------리s스트 페이지 끝 -----------CodeArena 페이지 시작---------------------------------------------------------------------
 const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
 const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
 const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form

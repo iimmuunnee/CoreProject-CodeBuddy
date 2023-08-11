@@ -3,6 +3,7 @@ const router = express.Router()
 
 // 데이터베이스 연결
 const db = require('../config/database')
+const { stringify } = require('qs')
 let conn = db.init()
 
 // 방 생성시 생성한 사용자 정보 응답
@@ -40,7 +41,7 @@ router.post('/enterRoom',(req,res)=>{
 
 // 방에서 유저 접속 종료시 카운트 감소
 router.post('/leave',(req,res)=>{
-    let roomNum = req.body.data
+    let roomNum = req.body.data.room_number
     let sql = 'UPDATE TB_ARENAROOM SET USER_COUNT = USER_COUNT-1 WHERE ROOM_NUMBER=?;'
     let conutSql = 'SELECT * FROM TB_ARENAROOM;'
     let deleteRoom = 'DELETE FROM TB_ARENAROOM WHERE USER_COUNT=0'
@@ -52,7 +53,7 @@ router.post('/leave',(req,res)=>{
         else{
             conn.query(deleteRoom,(err,result)=>{
                 if(err){
-                    console.log('채팅방 행 삭제 쿼리문 에러')
+                    console.log('채팅방 행 삭제 쿼리문 에러',err)
                     conn.query(conutSql,(err,result)=>{
                         if(err){
                             console.log('실패')
@@ -115,5 +116,53 @@ router.get('/arenaList',(req,res)=>{
     })
 })
 
+router.post('/connectUser',(req,res)=>{
+    let userName = req.session.userName
+    let roomNum = req.body.roomNum
+    console.log(roomNum)
+    let sql = 'INSERT INTO ARENA_USER VALUES(?,?);'
+    let sql2 = 'SELECT * FROM ARENA_USER;'
+    conn.connect()
+    conn.query(sql,[roomNum, userName],(err,result)=>{
+        if(err){
+            console.log('유저이름 추가 쿼리문 에러')
+        }
+        else{
+            conn.query(sql2,(err,result)=>{
+                if(err){
+                    console.log('테이블 불러오기 실패')
+                }
+                else{
+                    res.json(JSON.stringify(result))
+                }
+            })
+        }
+    })
+})
 
+
+router.post('/disconnectUser',(req,res)=>{
+    let data = req.body.data
+    let userName = data.user_name
+    let roomNum = data.room_number
+    console.log('뭐더라',data)
+    let sql = 'DELETE FROM ARENA_USER WHERE CONN_USER=? AND ROOM_NUMBER =?;'
+    let sql2 = 'SELECT * FROM ARENA_USER;'
+    conn.connect()
+    conn.query(sql,[userName,roomNum],(err,result)=>{
+        if(err){
+            console.log('삭제 쿼리문 오류',err)
+        }
+        else{
+            conn.query(sql2,(err,result)=>{
+                if(err){
+                    console.log('에바지')
+                }
+                else{
+                    res.json(JSON.stringify(result))
+                }
+            })
+        }
+    })
+})
 module.exports = router
