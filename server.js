@@ -13,7 +13,7 @@ const page = require("./routes/page");
 const user = require("./routes/user");
 const room = require("./routes/room");
 const kakao = require("./routes/kakaoLogin");
-const codeArena = require('./routes/codeArena')
+const codeArena = require("./routes/codeArena");
 
 // 네임스페이스로 io 서버 분리 /CodeChat, /CodeArena
 const ChatNamespace = io.of("/CodeChat");
@@ -79,7 +79,7 @@ app.use("/page", page);
 app.use("/user", user);
 app.use(kakao);
 app.use("/room", room);
-app.use('/codeArena', codeArena)
+app.use("/codeArena", codeArena);
 
 // "Chat" namespace에 접속한 클라이언트 처리
 ChatNamespace.on("connection", (socket) => {
@@ -145,9 +145,7 @@ ChatNamespace.on("connection", (socket) => {
     console.log("enter_room의 roomNum : ", room_number);
     socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-    if (countRoomUsers(roomNum) >= 4)
-
-    socket.join(room_number); // 방에 입장하기
+    if (countRoomUsers(roomNum) >= 4) socket.join(room_number); // 방에 입장하기
 
     socket.emit("userInfo", { nickname });
     console.log("입장한 후 소켓이 들어간 방", socket.rooms);
@@ -178,7 +176,7 @@ ChatNamespace.on("connection", (socket) => {
 // "Arena" namespace에 접속한 클라이언트 처리
 ArenaNamespace.on("connection", (socket) => {
   console.log("Arena 네임스페이스에 클라이언트가 연결되었습니다.");
-  
+
   const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
   const rooms = new Map(); // 방 정보를 저장할 Map
   // 함수 정의
@@ -240,7 +238,7 @@ ArenaNamespace.on("connection", (socket) => {
     const updatedRoomList = Array.from(rooms.values());
     // socket.emit("update_room_list", updatedRoomList);
     // 방 생성 후 방장 입장
-    socket.emit('host_enterRoom', updatedRoomList)
+    socket.emit("host_enterRoom", updatedRoomList);
   });
 
   socket.on("newlist", () => {
@@ -248,73 +246,87 @@ ArenaNamespace.on("connection", (socket) => {
   });
 
   socket.on("userCount", (data) => {
-    console.log('보자보자보자보자')
+    console.log("보자보자보자보자");
     ArenaNamespace.emit("countUpdate", data);
   });
 
   // Arena 방 입장 enter_room 감지하기
-  socket.on("enter_room", ({ room_name, nickname: nickname, room_number, room_host }) => {
-    console.log("서버 enter_room 이벤트 활성화");
-    // console.log("enter_room의 room_name", room_name);
-    console.log("enter_room의 nickname", nickname);
-    console.log("입장방", room_number);
+  socket.on(
+    "enter_room",
+    ({ room_name, nickname: nickname, room_number, room_host }) => {
+      console.log("서버 enter_room 이벤트 활성화");
+      // console.log("enter_room의 room_name", room_name);
+      console.log("enter_room의 nickname", nickname);
+      console.log("입장방", room_number);
 
-    socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
+      socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-    const roomInfo = rooms.get(room_number);
-    console.log("enter_room 이벤트에서 roomInfo 제대로가져와지나?", roomInfo);
-    if (roomInfo) {
-      roomInfo.userCount = (roomInfo.userCount || 0) + 1;
-      rooms.set(room_number, roomInfo);
+      const roomInfo = rooms.get(room_number);
+      console.log("enter_room 이벤트에서 roomInfo 제대로가져와지나?", roomInfo);
+      if (roomInfo) {
+        roomInfo.userCount = (roomInfo.userCount || 0) + 1;
+        rooms.set(room_number, roomInfo);
+      }
+      console.log("enter_room이벤트의 room_number : ", room_number);
+      console.log(
+        "enter_room 이벤트 join 하기 직전의 인원수",
+        countRoomUsers(room_number)
+      );
+
+      if (countRoomUsers(room_number) >= 4) {
+        // 들어가기 전에 방의 인원이 4명이면 입장 불가
+        socket.emit("user_full");
+      } else {
+        console.log("enter_room의 room_number", room_number);
+        socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
+        ArenaNamespace.to(room_number).emit("welcome", { nickname });
+
+        // if (room_host != nickname){
+        //   users.push(nickname) // 입장한 사람 배열에 저장
+        //   usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
+        //   ArenaNamespace.to(room_number).emit("enter_normal_user", {nickname, usersMap})
+        //   console.log(users);
+        // }
+        // else{
+        //   users.push(nickname) // 입장한 사람 배열에 저장
+        //   usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
+        //   ArenaNamespace.to(room_number).emit("enter_host_user", {nickname, usersMap})
+        //   console.log("users",users);
+        // }
+      }
+
+      // socket.to(room_number).emit("welcome", {nickname});
+      socket["nickname"] = nickname;
+
+      console.log("입장한 후 소켓이 들어간 방", socket.rooms);
+      console.log("countRoomUsers(room_name) : ", countRoomUsers(room_number));
+
+      ArenaNamespace.to(room_number).emit("user_count", {
+        user_count: countRoomUsers(room_number),
+      });
     }
-    console.log("enter_room이벤트의 room_number : ", room_number);
-    console.log("enter_room 이벤트 join 하기 직전의 인원수", countRoomUsers(room_number));
-
-    if (countRoomUsers(room_number) >= 4){ // 들어가기 전에 방의 인원이 4명이면 입장 불가
-      socket.emit("user_full")
-    } else {
-      console.log("enter_room의 room_number",room_number);
-      socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
-      ArenaNamespace.to(room_number).emit("welcome", { nickname });
-
-      // if (room_host != nickname){
-      //   users.push(nickname) // 입장한 사람 배열에 저장
-      //   usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
-      //   ArenaNamespace.to(room_number).emit("enter_normal_user", {nickname, usersMap})
-      //   console.log(users);
-      // }
-      // else{
-      //   users.push(nickname) // 입장한 사람 배열에 저장
-      //   usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
-      //   ArenaNamespace.to(room_number).emit("enter_host_user", {nickname, usersMap})
-      //   console.log("users",users);
-      // }
-    }
-
-    // socket.to(room_number).emit("welcome", {nickname});
-    socket["nickname"] = nickname;
-
-    console.log("입장한 후 소켓이 들어간 방", socket.rooms);
-    console.log("countRoomUsers(room_name) : ", countRoomUsers(room_number));
-
-    ArenaNamespace.to(room_number).emit("user_count", {
-      user_count: countRoomUsers(room_number),
-    });
-  });
+  );
 
   socket.on("new_message", ({ currentNickname, message: message }) => {
     let roomNum = socket.room_number;
-    ArenaNamespace.to(roomNum).emit("new_message", {
-      currentNickname,
-      message: message,
-    });
+    console.log(socket.nickname);
+    socket
+      .emit("my_message", { currentNickname, message: message });
+
+    socket.broadcast
+      .to(roomNum)
+      .emit("other_message", { currentNickname, message: message });
+
     // 방 이름 정보를 가져와서 해결해야함
   });
-  let user_name
+  let user_name;
   socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
-    user_name = currentNickname.currentNickname
-    socket.emit("leaveuser", {room_number:room_number, user_name:user_name});
+    user_name = currentNickname.currentNickname;
+    socket.emit("leaveuser", {
+      room_number: room_number,
+      user_name: user_name,
+    });
     if (room_number) {
       socket.leave(room_number); // 방에서 퇴장
       console.log("퇴장", room_number);
@@ -349,7 +361,10 @@ ArenaNamespace.on("connection", (socket) => {
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");
     const room_number = socket.room_number;
-    socket.emit("leaveuser", {room_number:room_number, user_name:user_name});
+    socket.emit("leaveuser", {
+      room_number: room_number,
+      user_name: user_name,
+    });
     if (room_number) {
       socket.leave(room_number); // 방에서 퇴장
       console.log("퇴장", room_number);
