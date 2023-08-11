@@ -30,6 +30,7 @@ const $mini_room_name = document.getElementById("mini_room_name"); // 미니 방
 const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 인원수 적는 곳
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
 const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2");
+const $host_nickname = document.getElementById("host_nickname") // 방장의 닉네임
 
 const openarena = () => {
   let page = document.getElementById("code_arena_zip");
@@ -65,13 +66,12 @@ const handleRoomSubmit = (event) => {
     // openarena(); // 방 입장
     // arenaSocket.emit("welcome", { nickname: res.data });
     $room_name.value = ""; // 방 입력칸 초기화
+    $host_nickname.textContent = res.data // 방장의 닉네임 적는 곳
   });
 
   $c_c_name.textContent = room_name; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = room_name; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = room_name; // Arena 제한 시간 위 방제
-  $c_content_num.textContent = `안된거야`; // 채팅방 펼쳤을 때 인원 수
-  $mini_room_users.textContent = `안된거야`; // 채팅방 접었을 때 인원 수
 };
 
 // 방 생성시 방장 권한 부여
@@ -79,6 +79,7 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   console.log("admin_status", isAdmin);
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
+    arenaSocket["isAdmin"] = isAdmin
   }
 });
 
@@ -203,6 +204,7 @@ arenaSocket.on('host_enterRoom', (data)=>{
   let nickName =data[0].createdBy
   let roomName = data[0].room_name
   let roomNum = data[0].room_number
+  console.log("", data);
   const addRoomToTable = (updateRooms) => {
     axios.post("/room/updateroom", { updateRooms }).then((res) => {
       let roomInfo = JSON.parse(res.data);
@@ -275,7 +277,6 @@ const leaveRoomBtn = () => {
 arenaSocket.on("leaveuser", (data) => {
   axios.post("/room/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
-    // console.log("떳나", data.result);
     arenaSocket.emit("userCount", { data: data.result });
     location.reload();
   });
@@ -344,6 +345,25 @@ arenaSocket.on("welcome", ({ nickname }) => {
   console.log("nickname : ", nickname);
   addNotice(`${nickname}(이)가 방에 입장했습니다.`);
 });
+let cnt1 = 2
+let cnt2 = 1
+arenaSocket.on("normal_user", ({nickname}) => {
+  const newUser = document.createElement("div");
+  newUser.className = `c_a_p_u${cnt1}` // 여기 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  newUser.innerHTML = `
+  <div class="u_info">
+    <div class="u_i_img" id="user_${cnt2}">1번</div>
+    <div class="u_i_nick" id="nickname_${cnt2}">${nickname}</div>
+  </div>
+  <div class="u_remain">
+    <div div class="u_r_ques">
+    <div class="u_r_circle">ok</div>
+    </div>
+  </div>
+`;
+const $c_a_p_user = document.querySelector(".c_a_p_user")
+$c_a_p_user.append(newUser);
+}) 
 
 // arenaSocket.on("user_count", ({ user_count }) => {
 //   // console.log(`user_count 이벤트의 사용자 수: ${user_count}`);

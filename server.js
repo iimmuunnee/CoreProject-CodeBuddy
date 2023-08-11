@@ -217,6 +217,7 @@ ArenaNamespace.on("connection", (socket) => {
     };
 
     rooms.set(roomInfo.room_number, roomInfo);
+    console.log("방을 만들었을 때 rooms", rooms);
 
     socket.on("check_admin", (nickname) => {
       console.log("check_admin / nickname", nickname.nickname);
@@ -225,6 +226,7 @@ ArenaNamespace.on("connection", (socket) => {
 
       if (nickname.nickname == roomInfo.createdBy) {
         isAdmin = true;
+        socket["isAdmin"] = true;
       } else {
         isAdmin = false;
       }
@@ -256,6 +258,7 @@ ArenaNamespace.on("connection", (socket) => {
     socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
     const roomInfo = rooms.get(room_number);
+    console.log("enter_room 이벤트에서 roomInfo 제대로가져와지나?", roomInfo);
     if (roomInfo) {
       roomInfo.userCount = (roomInfo.userCount || 0) + 1;
       rooms.set(room_number, roomInfo);
@@ -268,9 +271,12 @@ ArenaNamespace.on("connection", (socket) => {
     } else {
       console.log("enter_room의 room_number",room_number);
       socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
+      ArenaNamespace.to(room_number).emit("welcome", { nickname });
+      // if (roomInfo.createdBy != nickname){
+      //   ArenaNamespace.to(room_number).emit("normal_user", {nickname})
+      // }
     }
 
-    ArenaNamespace.to(room_number).emit("welcome", { nickname });
     // socket.to(room_number).emit("welcome", {nickname});
     socket["nickname"] = nickname;
 
@@ -290,7 +296,6 @@ ArenaNamespace.on("connection", (socket) => {
     });
     // 방 이름 정보를 가져와서 해결해야함
   });
-console.log("SDfsadf");
   socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
     socket.emit("leaveuser", room_number);
