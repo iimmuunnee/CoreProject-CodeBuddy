@@ -291,7 +291,7 @@ ArenaNamespace.on("connection", (socket) => {
     });
     // 방 이름 정보를 가져와서 해결해야함
   });
-
+console.log("SDfsadf");
   socket.on("leave_room", (currentNickname) => {
     const room_number = socket.room_number;
     socket.emit("leaveuser", room_number);
