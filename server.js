@@ -248,6 +248,7 @@ ArenaNamespace.on("connection", (socket) => {
   });
 
   socket.on("userCount", (data) => {
+    console.log('보자보자보자보자')
     ArenaNamespace.emit("countUpdate", data);
   });
 
@@ -345,6 +346,37 @@ ArenaNamespace.on("connection", (socket) => {
 
   socket.on("disconnecting", () => {
     console.log("서버 disconnecting 이벤트 활성화");
+    const room_number = socket.room_number;
+    socket.emit("leaveuser", room_number);
+    if (room_number) {
+      socket.leave(room_number); // 방에서 퇴장
+      console.log("퇴장", room_number);
+
+      const roomInfo = rooms.get(room_number);
+      if (roomInfo) {
+        roomInfo.userCount--; // 유저 인원수 감소
+        if (roomInfo.userCount === 0) {
+          rooms.delete(room_number); // 방 삭제
+        }
+        // 방 정보 갱신하여 방 리스트 업데이트
+        const updatedRoomList = Array.from(rooms.values());
+        // ArenaNamespace.emit("update_room_list", updatedRoomList);
+      }
+      socket.room_number = null; // 방 이름 정보 초기화
+    }
+
+    const currentNickname = socket.nickname;
+    console.log("socket.nickname", socket.nickname);
+    ArenaNamespace.to(room_number).emit("bye", { currentNickname });
+
+    socket.on("leave_count", () => {
+      ArenaNamespace.to(room_number).emit("user_count", {
+        user_count: countRoomUsers(room_number),
+      });
+    });
+
+    console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
+    console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
   });
 
   socket.on("disconnet", () => {
