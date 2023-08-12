@@ -149,7 +149,6 @@ ChatNamespace.on("connection", (socket) => {
 
     socket.emit("userInfo", { nickname });
     console.log("입장한 후 소켓이 들어간 방", socket.rooms);
-    console.log("user_count : ", countRoomUsers(roomNum));
 
     io.of("/CodeChat")
       .to(roomNum)
@@ -246,18 +245,19 @@ ArenaNamespace.on("connection", (socket) => {
   });
 
   socket.on("userCount", (data) => {
-    console.log("보자보자보자보자");
     ArenaNamespace.emit("countUpdate", data);
   });
 
   // Arena 방 입장 enter_room 감지하기
   socket.on(
     "enter_room",
-    ({ room_name, nickname: nickname, room_number, room_host }) => {
+    ({ room_name, nickname: nickname, room_number, room_host, conn_user }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("enter_room의 nickname", nickname);
       console.log("입장방", room_number);
+      console.log("enter_room의 conn_user", conn_user);
+      console.log("서버 enter_room", conn_user);
 
       socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
@@ -282,17 +282,18 @@ ArenaNamespace.on("connection", (socket) => {
         console.log("입장한 방의 방장 닉네임", room_host); // 입장한 방의 방장 닉네임 room_host
         ArenaNamespace.to(room_number).emit("welcome", { nickname });
 
-        if (room_host != nickname){
-          users.push(nickname) // 입장한 사람 배열에 저장
-          usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
-          ArenaNamespace.to(room_number).emit("enter_normal_user", {room_host, usersMap})
-          console.log(users);
-        }
-        else{
-          users.push(nickname) // 입장한 사람 배열에 저장
-          usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
-          ArenaNamespace.to(room_number).emit("enter_host_user", {room_host, usersMap})
-          console.log("users",users);
+        if (room_host != nickname) {
+          ArenaNamespace.to(room_number).emit("enter_normal_user", {
+            conn_user,
+            room_host,
+            room_number,
+          });
+        } else {
+          ArenaNamespace.to(room_number).emit("enter_host_user", {
+            conn_user,
+            room_host,
+            room_number,
+          });
         }
       }
 
@@ -319,19 +320,25 @@ ArenaNamespace.on("connection", (socket) => {
 
     // 방 이름 정보를 가져와서 해결해야함
   });
+
+  let disconn_arena_user;
+  let room_number;
   let user_name;
-  socket.on("leave_room", (currentNickname) => {
-    const room_number = socket.room_number;
+  socket.on("leave_room", (currentNickname, user_data) => {
+    room_number = socket.room_number;
     user_name = currentNickname.currentNickname;
+    const roomInfo = rooms.get(room_number);
+    console.log("leave_room / roomInfo : ", roomInfo);
+    const disconn_arena_user = user_data;
     socket.emit("leaveuser", {
       room_number: room_number,
       user_name: user_name,
     });
+
     if (room_number) {
       socket.leave(room_number); // 방에서 퇴장
       console.log("퇴장", room_number);
 
-      const roomInfo = rooms.get(room_number);
       if (roomInfo) {
         roomInfo.userCount--; // 유저 인원수 감소
         if (roomInfo.userCount === 0) {
@@ -347,6 +354,7 @@ ArenaNamespace.on("connection", (socket) => {
     currentNickname = socket.nickname;
     console.log("socket.nickname", socket.nickname);
     ArenaNamespace.to(room_number).emit("bye", { currentNickname });
+    // ArenaNamespace.to(room_number).emit("enter_normal_user", {conn_user, room_host, room_number})
 
     socket.on("leave_count", () => {
       ArenaNamespace.to(room_number).emit("user_count", {
@@ -356,6 +364,18 @@ ArenaNamespace.on("connection", (socket) => {
 
     console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
     console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
+  });
+  // leave_room 이벤트 끝
+
+  socket.on("disconn_arena_user", ({ user_data }) => {
+    // console.log("disconn_arena_user : ", user_data);
+    disconn_arena_user = user_data;
+    // room_number = socket.room_number;
+    console.log("disconn_arena_user : ", room_number);
+    ArenaNamespace.to(room_number).emit("leave_normal_user", {
+      disconn_arena_user: user_data,
+      room_number: room_number,
+    });
   });
 
   socket.on("disconnecting", () => {
@@ -395,6 +415,7 @@ ArenaNamespace.on("connection", (socket) => {
     console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
     console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
   });
+  // ArenaNamespace.
 
   socket.on("disconnet", () => {
     console.log("서버 disconnect 이벤트 활성화");

@@ -230,9 +230,18 @@ const addRoomToTable = (updateRooms) => {
     arenaSocket.emit("newlist");
   });
 };
+
+let conn_user_data;
 const enterRoom = (roomName, roomNum, roomHost) => {
   console.log("enterRoom 실행");
   // console.log("enterRoom 함수의 currentNickname : ", currentNickname);
+  //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저접속
+  axios.post("/codeArena/connectUser", { roomNum }).then((res) => {
+    conn_user_data = JSON.parse(res.data);
+    console.log("가져와져랏", conn_user_data);
+    // arenaSocket.emit("conn_user", data) // 전체 유저가 접속한 방번호와 닉네임 객체
+  });
+
   axios.post("/codeArena/enterRoom", { roomNum }).then((res) => {
     let data = JSON.parse(res.data);
     currentNickname = data.name;
@@ -241,13 +250,9 @@ const enterRoom = (roomName, roomNum, roomHost) => {
       nickname: data.name,
       room_number: roomNum,
       room_host: roomHost,
+      conn_user: conn_user_data,
     });
     arenaSocket.emit("userCount", { data: data.result });
-  });
-  //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저접속
-  axios.post("/codeArena/connectUser", { roomNum }).then((res) => {
-    let data = JSON.parse(res.data);
-    console.log("가져와져랏", data);
   });
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
@@ -279,14 +284,24 @@ const leaveRoomBtn = () => {
   arenaSocket.emit("leave_room", { currentNickname });
   arenaSocket.emit("leave_count");
 };
+
+let disconn_user_data;
 arenaSocket.on("leaveuser", (data) => {
+  console.log("leaveuser의 data", data);
+  let room_host = data.room_host;
+  // data안엔 room_number, user_name
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
-  axios.post("/codeArena/disconnectUser", { data });
+  axios.post("/codeArena/disconnectUser", { data }).then((res) => {
+    disconn_user_data = JSON.parse(res.data);
+    console.log("이거 뭐임?", disconn_user_data);
+    arenaSocket.emit("disconn_arena_user", { user_data: disconn_user_data });
+    // arenaSocket.emit("disconn_arena_user", {disconn_user_data})
+  });
 
   axios.post("/codeArena/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
     arenaSocket.emit("userCount", { data: data.result });
-    location.reload();
+    // location.reload();
   });
 });
 $leave_room.addEventListener("click", leaveRoomBtn);
@@ -365,53 +380,107 @@ arenaSocket.on("welcome", ({ nickname }) => {
   addNotice(`${nickname}(이)가 방에 입장했습니다.`);
 });
 
-arenaSocket.on("enter_host_user", ({ userList, room_host }) => {
-  updateArenaNickname(userList, room_host);
+arenaSocket.on("enter_host_user", ({ conn_user, room_host, room_number }) => {
+  const $c_a_p_user = document.querySelector(".c_a_p_user");
+  const $divs = $c_a_p_user.querySelectorAll("div");
+  $divs.forEach(($div) => {
+    $div.remove();
+  });
+  // userList는 전체 유저가 입장한 방번호와 닉네임을 객체로 배열에 넣은 것
+  console.log("enter_host_user", conn_user);
+  // room_number는 입장하는 방의 번호
+  console.log("enter_host_user", room_host);
+  // room_host는 입장하는 방을 만든 이
+  console.log("enter_host_user", room_number);
+  updateArenaNickname(conn_user, room_host, room_number);
 });
 
-arenaSocket.on("enter_normal_user", ({ userList, room_host }) => {
-  updateArenaNickname(userList, room_host);
+arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
+  const $c_a_p_user = document.querySelector(".c_a_p_user");
+  const $divs = $c_a_p_user.querySelectorAll("div");
+  $divs.forEach(($div) => {
+    $div.remove();
+  });
+  updateArenaNickname(conn_user, room_host, room_number);
 });
 
-const updateArenaNickname = (userList, room_host) => {
-  userList.forEach((userInfo) => {
+arenaSocket.on("leave_normal_user", ({ disconn_arena_user, room_number }) => {
+  console.log("leave_normal_user");
+  $("div").remove(".c_a_p_u2");
+  updateArenaNickname2(disconn_arena_user, room_number);
+});
+
+const updateArenaNickname = (conn_user, room_host, room_number) => {
+  console.log("conn_user", conn_user);
+  const $c_a_p_user = document.querySelector(".c_a_p_user");
+  conn_user.forEach((userInfo) => {
     const newUser = document.createElement("div");
-    if (room_host == userInfo.CONN_USER) {
-      // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 방장일 때
-      newUser.className = `c_a_p_u1`;
-      newUser.innerHTML += `
-      <div class="u_info">
-      <div class="u_i_img">방장</div>
-      <div class="u_i_nick">${nickname}</div>
-      </div>
-      <div class="u_remain">
-      <div div class="u_r_ques">
-      <div class="u_r_circle">ok</div>
-      </div>
-      </div>
-      `;
-      const $c_a_p_user = document.querySelector(".c_a_p_user");
-      $c_a_p_user.append(newUser);
-    } else {
-      // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
-      newUser.className = `c_a_p_u2`;
-      newUser.innerHTML += `
-      <div class="u_info">
-      <div class="u_i_img">일반</div>
-      <div class="u_i_nick">${nickname}</div>
-      </div>
-      <div class="u_remain">
-      <div div class="u_r_ques">
-      <div class="u_r_circle">ok</div>
-      </div>
-      </div>
-      `;
-      const $c_a_p_user = document.querySelector(".c_a_p_user");
-      $c_a_p_user.append(newUser);
+    if (userInfo.ROOM_NUMBER == room_number) {
+      if (room_host == userInfo.CONN_USER) {
+        // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 방장일 때
+        newUser.className = `c_a_p_u1`;
+        newUser.innerHTML += `
+        <div class="u_info">
+        <div class="u_i_img">방장</div>
+        <div class="u_i_nick">${room_host}</div>
+        </div>
+        <div class="u_remain">
+        <div div class="u_r_ques">
+        <div class="u_r_circle">ok</div>
+        </div>
+        </div>
+        `;
+        $c_a_p_user.append(newUser);
+      } else {
+        // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
+        newUser.className = `c_a_p_u2`;
+        newUser.innerHTML += `
+        <div class="u_info">
+        <div class="u_i_img">일반</div>
+        <div class="u_i_nick">${userInfo.CONN_USER}</div>
+        </div>
+        <div class="u_remain">
+        <div div class="u_r_ques">
+        <div class="u_r_circle">ok</div>
+        </div>
+        </div>
+        `;
+        $c_a_p_user.append(newUser);
+      }
     }
   });
 };
 
+const updateArenaNickname2 = (conn_user, room_number) => {
+  console.log("updateArenaNickname2 함수 실행");
+  console.log("conn_user", conn_user);
+  const $c_a_p_user = document.querySelector(".c_a_p_user");
+
+  let cnt = 1;
+  conn_user.forEach((userInfo) => {
+    const newUser = document.createElement("div");
+    if (userInfo.ROOM_NUMBER == room_number) {
+      if (cnt != 1) {
+        // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
+        newUser.className = `c_a_p_u2`;
+        newUser.innerHTML += `
+          <div class="u_info">
+          <div class="u_i_img">일반</div>
+          <div class="u_i_nick">${userInfo.CONN_USER}</div>
+          </div>
+          <div class="u_remain">
+          <div div class="u_r_ques">
+          <div class="u_r_circle">ok</div>
+          </div>
+          </div>
+          `;
+        $c_a_p_user.append(newUser);
+      } else {
+        cnt++;
+      }
+    }
+  });
+};
 
 // arenaSocket.on("user_count", ({ user_count }) => {
 //   // console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
