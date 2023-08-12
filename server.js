@@ -279,20 +279,21 @@ ArenaNamespace.on("connection", (socket) => {
       } else {
         console.log("enter_room의 room_number", room_number);
         socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
+        console.log("입장한 방의 방장 닉네임", room_host); // 입장한 방의 방장 닉네임 room_host
         ArenaNamespace.to(room_number).emit("welcome", { nickname });
 
-        // if (room_host != nickname){
-        //   users.push(nickname) // 입장한 사람 배열에 저장
-        //   usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
-        //   ArenaNamespace.to(room_number).emit("enter_normal_user", {nickname, usersMap})
-        //   console.log(users);
-        // }
-        // else{
-        //   users.push(nickname) // 입장한 사람 배열에 저장
-        //   usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
-        //   ArenaNamespace.to(room_number).emit("enter_host_user", {nickname, usersMap})
-        //   console.log("users",users);
-        // }
+        if (room_host != nickname){
+          users.push(nickname) // 입장한 사람 배열에 저장
+          usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
+          ArenaNamespace.to(room_number).emit("enter_normal_user", {room_host, usersMap})
+          console.log(users);
+        }
+        else{
+          users.push(nickname) // 입장한 사람 배열에 저장
+          usersMap.set(room_number, users) // 방 번호를 key로 Map객체에 배열 저장
+          ArenaNamespace.to(room_number).emit("enter_host_user", {room_host, usersMap})
+          console.log("users",users);
+        }
       }
 
       // socket.to(room_number).emit("welcome", {nickname});
@@ -310,8 +311,7 @@ ArenaNamespace.on("connection", (socket) => {
   socket.on("new_message", ({ currentNickname, message: message }) => {
     let roomNum = socket.room_number;
     console.log(socket.nickname);
-    socket
-      .emit("my_message", { currentNickname, message: message });
+    socket.emit("my_message", { currentNickname, message: message });
 
     socket.broadcast
       .to(roomNum)

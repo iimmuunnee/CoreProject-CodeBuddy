@@ -119,6 +119,7 @@ const updateArenaRoom = (roomList) => {
   if (clickEventHandler) {
     $tbody.removeEventListener("click", clickEventHandler);
   }
+  console.log("updateArenaRoom", roomList);
 
   roomList.forEach((roomInfo) => {
     const newRow = document.createElement("tr");
@@ -295,16 +296,16 @@ arenaSocket.on("user_full", () => {
   alert("방 인원 초과");
 });
 
-// window.addEventListener("beforeunload", () => {
-//   arenaSocket.emit("leave_count");
-//   arenaSocket.emit("leave_room", { currentNickname });
-// });
+window.addEventListener("beforeunload", () => {
+  arenaSocket.emit("leave_count");
+  arenaSocket.emit("leave_room", { currentNickname });
+});
 
 arenaSocket.on("disconnect", () => {
   console.log("disconnect to server");
 });
 
-// -------------------------리s스트 페이지 끝 -----------CodeArena 페이지 시작---------------------------------------------------------------------
+// -------------------------리스트 페이지 끝 -----------CodeArena 페이지 시작---------------------------------------------------------------------
 const $c_main_content = $chat_main.querySelector(".c_main_content"); // 채팅 내용이 들어갈 곳
 const $c_chatting = $chat_main.querySelector(".c_chatting"); // 채팅작성 및 전송
 const $c_chatting_form = $c_chatting.querySelector(".c_chatting_form"); // 채팅 작성 form
@@ -364,59 +365,53 @@ arenaSocket.on("welcome", ({ nickname }) => {
   addNotice(`${nickname}(이)가 방에 입장했습니다.`);
 });
 
-arenaSocket.on("enter_host_user", ({ nickname, usersMap }) => {
-  updateArenaNickname(nickname, usersMap);
+arenaSocket.on("enter_host_user", ({ userList, room_host }) => {
+  updateArenaNickname(userList, room_host);
 });
 
-arenaSocket.on("enter_normal_user", ({ nickname, usersMap }) => {
-  updateArenaNickname(nickname, usersMap);
+arenaSocket.on("enter_normal_user", ({ userList, room_host }) => {
+  updateArenaNickname(userList, room_host);
 });
 
-const updateArenaNickname = (nickname, usersMap) => {
-  let cnt1 = 1;
-  // usersMap.forEach((users) => {
-  //   const newUser = document.createElement("div");
-  //   if (cnt1 == 1){
-  //     newUser.className = `c_a_p_u${cnt1}`
-  //     newUser.innerHTML += `
-  //     <div class="u_info">
-  //     <div class="u_i_img">방장</div>
-  //     <div class="u_i_nick">${nickname}</div>
-  //     </div>
-  //     <div class="u_remain">
-  //     <div div class="u_r_ques">
-  //     <div class="u_r_circle">ok</div>
-  //     </div>
-  //     </div>
-  //     `;
-  //     const $c_a_p_user = document.querySelector(".c_a_p_user")
-  //     $c_a_p_user.append(newUser);
-  //     cnt1 ++
-  //   } else{ // cnt1 2 ~ 4
-  //     newUser.className = `c_a_p_u${cnt1}`
-  //     newUser.innerHTML += `
-  //     <div class="u_info">
-  //     <div class="u_i_img">일반</div>
-  //     <div class="u_i_nick">${nickname}</div>
-  //     </div>
-  //     <div class="u_remain">
-  //     <div div class="u_r_ques">
-  //     <div class="u_r_circle">ok</div>
-  //     </div>
-  //     </div>
-  //     `;
-  //     const $c_a_p_user = document.querySelector(".c_a_p_user")
-  //     $c_a_p_user.append(newUser);
-  //     cnt1 ++
-  //   }
-  // })
-  // cnt2 ++
+const updateArenaNickname = (userList, room_host) => {
+  userList.forEach((userInfo) => {
+    const newUser = document.createElement("div");
+    if (room_host == userInfo.CONN_USER) {
+      // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 방장일 때
+      newUser.className = `c_a_p_u1`;
+      newUser.innerHTML += `
+      <div class="u_info">
+      <div class="u_i_img">방장</div>
+      <div class="u_i_nick">${nickname}</div>
+      </div>
+      <div class="u_remain">
+      <div div class="u_r_ques">
+      <div class="u_r_circle">ok</div>
+      </div>
+      </div>
+      `;
+      const $c_a_p_user = document.querySelector(".c_a_p_user");
+      $c_a_p_user.append(newUser);
+    } else {
+      // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
+      newUser.className = `c_a_p_u2`;
+      newUser.innerHTML += `
+      <div class="u_info">
+      <div class="u_i_img">일반</div>
+      <div class="u_i_nick">${nickname}</div>
+      </div>
+      <div class="u_remain">
+      <div div class="u_r_ques">
+      <div class="u_r_circle">ok</div>
+      </div>
+      </div>
+      `;
+      const $c_a_p_user = document.querySelector(".c_a_p_user");
+      $c_a_p_user.append(newUser);
+    }
+  });
 };
 
-arenaSocket.on("normal_user_leave", ({ nickname }) => {
-  document.getElementById(`nickname_${cnt2}`).textContent = "???";
-  cnt2--;
-});
 
 // arenaSocket.on("user_count", ({ user_count }) => {
 //   // console.log(`user_count 이벤트의 사용자 수: ${user_count}`);
