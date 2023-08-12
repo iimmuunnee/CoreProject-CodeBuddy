@@ -155,13 +155,17 @@
     <div class="code_arena">
       <!-- 나가기 -->
       <div class="c_a_above2">
-        <div class="arrow">
+        <div id="arrow"  class="arrow">
           <button id="leave_room"><i class="fa-solid fa-arrow-left fa-2x" style="color: #ffffff;"></i></button>
         </div>
       </div>
       <div class="c_a_center">
+        <!-- 문제 Start 버튼 -->
+        <div id="c_a_center_button" class="c_a_center_button">
+          <button class="c_a_center_button2">문제 START!</button>
+        </div>
         <!-- 문제 제시  -->
-        <div class="c_a_left">
+        <div id="c_a_left" class="c_a_left" style="display: none;">
           <div class="c_a_l_title">1. 잭팟 5배~!</div>
           <div class="c_a_l_que">
             <pre>
@@ -176,7 +180,7 @@
         </div>
 
         <!-- 문제 코드 작성 -->
-        <div class="c_a_right">
+        <div id="c_a_right" class="c_a_right" style="display: none;">
           <form class="c_a_right_form" action="http://localhost:3000/" id="inputForm">
             <div class="c_a_right_1">
               <div class="c_a_right_1_1">
