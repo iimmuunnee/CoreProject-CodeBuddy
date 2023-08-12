@@ -88,7 +88,6 @@ router.post('/idCheck',(req,res)=>{
 router.post('/login',(req,res)=>{
     let id = req.body.userId
     let pw = req.body.userPw
-
     let loginSql = 'SELECT USER_ID, USER_PW, USER_NICK, USER_NAME, USER_LEVEL FROM TB_USER WHERE USER_ID =?'
     conn.connect()
 
@@ -99,6 +98,8 @@ router.post('/login',(req,res)=>{
         else{
             if(result.length == 0){
                 console.log('해당 아이디가 존재하지 않습니다.')
+                let faLogin = req.session.loginFalse = true
+                res.render('join',{loginFalse : faLogin})
             }
             else{
                 if(result[0].USER_ID == id && result[0].USER_PW == pw){
@@ -111,9 +112,12 @@ router.post('/login',(req,res)=>{
                     let seLevel = req.session.userlevel = userLevel
                     let seLogin = req.session.login = true
                     res.render('main',{login : seLogin, name : seName, level : seLevel})
+
                 }
                 else{
                     console.log('로그인이 실패하였습니다.')
+                    let faLogin = req.session.loginFalse = true
+                    res.render('join',{loginFalse : faLogin})
                 }
             }
         }

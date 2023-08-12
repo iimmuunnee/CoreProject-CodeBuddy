@@ -1,10 +1,12 @@
 // 지훈 수정 - 회원가입 아이디 검증 로직
 
-
 const idBtn = document.getElementById('idBtn')
 const idCk = document.getElementById('idCk')
 const subBtn = document.getElementById('subBtn')
 const idInput = document.querySelector('#inputId')
+const pwInput = document.querySelector('#pwInput')
+const nameInput = document.querySelector('#userName')
+const nickInput = document.querySelector('#userNick')
 // 아이디 중복체크 확인여부
 let dupCk = false
 // 아이디 사용가능 여부
@@ -60,7 +62,11 @@ subBtn.addEventListener('click',(event)=>{
         checkMsg.style.color = 'red'
         }
     }
-    if(dupCk && idUse){
+    if(pwInput.value == '' || nameInput.value == '' || nickInput.value == ''){
+        checkMsg.innerText = 'ID 확인 또는 빈칸을 확인해주세요'
+        checkMsg.style.color = 'red'
+    }
+    if(dupCk && idUse && pwInput.value != '' && nameInput.value != '' && nickInput.value != ''){
         // 중복체크 확인과 아이디 사용 가능 시 form 제출
         const myForm = document.getElementById('myform');
         myForm.submit(); // 폼 제출
@@ -77,3 +83,5 @@ subBtn.addEventListener('click',(event)=>{
         })
     }
 })
+
+

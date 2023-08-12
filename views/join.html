@@ -15,9 +15,9 @@
         <div class="login-content login-content-signin" ng-hide="showSignIn">
             <div>
                 <h2>로그인</h2>
-                <form class="wrapper-box" role="form" ng-submit="login()" action="/user/login" method="post">
-                    <input type="id" ng-model="id" class="form-control form-control-id" placeholder="ID" required name="userId">
-                    <input type="password" ng-model="password" class="form-control form-control-password" name='userPw'
+                <form id='loginForm' class="wrapper-box" role="form" ng-submit="login()" action="/user/login" method="post">
+                    <input id='loginId' type="id" ng-model="id" class="form-control form-control-id" placeholder="ID" required name="userId">
+                    <input id='loginPw' type="password" ng-model="password" class="form-control form-control-password" name='userPw'
                         placeholder="Password" required>
                     <!-- <div class="checkbox pull-left">
                 <label>
@@ -40,17 +40,19 @@
                     <input type="id" ng-model="id" class="form-control form-control-id" placeholder="ID입력" required name="userId" id="inputId">
                     <button type="button" class="duplicate" id="idBtn">ID중복확인</button>
                     <span id="idCk"></span>
-                    <input type="password" ng-model="password" class="form-control form-control-password" placeholder="Password입력" required name="userPw">
-                        <input type="text" ng-model="name" class="form-control form-control-name" placeholder="이름"
-                        required name="userName">
-                    <input type="text" ng-model="username" class="form-control form-control-username" placeholder="닉네임"
+                    <input id='pwInput' type="password" ng-model="password" class="form-control form-control-password" placeholder="Password입력" required name="userPw">
+                        <input id='userName' name="userName" type="text" ng-model="name" class="form-control form-control-name" placeholder="이름"
+                        required >
+                    <input id='userNick' type="text" ng-model="username" class="form-control form-control-username" placeholder="닉네임"
                         required name="userNick">
                     <div>
+                        
                         <select name="dev_year" id="dev_year">
+                            <option value="default" selected disabled hidden>개발 경력</option>
                             <option value="신입">신입 개발자</option>
                             <option value="경력">경력 개발자</option>
                         </select>
-
+                        
                         <select name="school" id="school">
                             <option value="멘토">멘토</option>
                             <option value="멘티">멘티</option>
@@ -58,7 +60,7 @@
                     </div>
 
                     <div class="login_lang">
-                        <label for="lang">언어</label><br>
+                        <label for="lang">개발 언어</label><br>
                         <input type="checkbox" name="js" value="javaScript" class="check"> JavaScript  
                         <input type="checkbox" name="py" value="python"> Python
                     </div>
@@ -95,6 +97,12 @@
     <script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
     <!-- <script src="/js/kakaoLogin.js"></script> -->
     <script src="/js/join.js"></script>
+    <script>
+        let loginFalse = '{{loginFalse}}'
+        if(loginFalse){
+            alert('아이디 또는 비밀번호를 확인해주세요')
+        }
+    </script>
 </body>
 
 </html>
