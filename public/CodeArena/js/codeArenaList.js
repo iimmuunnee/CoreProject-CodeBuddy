@@ -653,8 +653,6 @@ $("#login_btn").on("click", () => {
 
 // code arena  -------설아---------
 
-// 타이머 기능 구현 추가
-<<<<<<< HEAD
     // 타이머 기능 구현 추가
     const Timer = document.getElementById('timer'); //스코어 기록창-분
     const Timer_zip = document.getElementById('c_a_above1'); //스코어 기록창-분
