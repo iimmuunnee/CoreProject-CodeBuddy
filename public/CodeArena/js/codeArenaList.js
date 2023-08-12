@@ -58,7 +58,7 @@ const handleRoomSubmit = (event) => {
   const room_name = $room_name.value;
   const dev_lang = $dev_lang.value;
   // 지훈 코드 삽입 (방생성)
-  axios.get("/room/createRoom", { room: "hi" }).then((res) => {
+  axios.get("/codeArena/createRoom", { room: "hi" }).then((res) => {
     currentNickname = res.data; // 방 생성자의 닉네임
     arenaSocket.emit("create_room", {
       room_name: room_name,
@@ -161,7 +161,7 @@ arenaSocket.on("updateRoomList", () => {
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
   const $trs = $tbody.querySelectorAll("tr");
-  axios.get("/room/arenaList", { re: "hi" }).then((res) => {
+  axios.get("/codeArena/arenaList", { re: "hi" }).then((res) => {
     let roomList = JSON.parse(res.data);
     console.log("roomList : ", roomList);
     $trs.forEach(($tr) => {
@@ -177,7 +177,7 @@ arenaSocket.on("updateRoomList2", () => {
   const $board_table = $board_list.querySelector(".board-table");
   const $tbody = $board_table.querySelector("tbody");
   const $trs = $tbody.querySelectorAll("tr");
-  axios.get("/room/arenaList", { re: "hi" }).then((res) => {
+  axios.get("/codeArena/arenaList", { re: "hi" }).then((res) => {
     let roomList = JSON.parse(res.data);
     $trs.forEach(($tr) => {
       $tr.remove();
@@ -205,7 +205,7 @@ arenaSocket.on("host_enterRoom", (data) => {
   let roomNum = data[0].room_number;
   console.log("", data);
   const addRoomToTable = (updateRooms) => {
-    axios.post("/room/updateroom", { updateRooms }).then((res) => {
+    axios.post("/codeArena/updateroom", { updateRooms }).then((res) => {
       let roomInfo = JSON.parse(res.data);
     });
   };
@@ -225,7 +225,7 @@ arenaSocket.on("update_room_list", (roomInfo) => {
 
 // //방 목록 database에 새로운 방 추가하는 함수
 const addRoomToTable = (updateRooms) => {
-  axios.post("/room/updateroom", { updateRooms }).then((res) => {
+  axios.post("/codeArena/updateroom", { updateRooms }).then((res) => {
     let roomInfo = JSON.parse(res.data);
     arenaSocket.emit("newlist");
   });
@@ -233,7 +233,7 @@ const addRoomToTable = (updateRooms) => {
 const enterRoom = (roomName, roomNum, roomHost) => {
   console.log("enterRoom 실행");
   // console.log("enterRoom 함수의 currentNickname : ", currentNickname);
-  axios.post("/room/enterRoom", { roomNum }).then((res) => {
+  axios.post("/codeArena/enterRoom", { roomNum }).then((res) => {
     let data = JSON.parse(res.data);
     currentNickname = data.name;
     arenaSocket.emit("enter_room", {
@@ -245,7 +245,7 @@ const enterRoom = (roomName, roomNum, roomHost) => {
     arenaSocket.emit("userCount", { data: data.result });
   });
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저접속
-  axios.post("/room/connectUser", { roomNum }).then((res) => {
+  axios.post("/codeArena/connectUser", { roomNum }).then((res) => {
     let data = JSON.parse(res.data);
     console.log("가져와져랏", data);
   });
@@ -281,9 +281,9 @@ const leaveRoomBtn = () => {
 };
 arenaSocket.on("leaveuser", (data) => {
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
-  axios.post("/room/disconnectUser", { data });
+  axios.post("/codeArena/disconnectUser", { data });
 
-  axios.post("/room/leave", { data }).then((res) => {
+  axios.post("/codeArena/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
     arenaSocket.emit("userCount", { data: data.result });
     location.reload();

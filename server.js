@@ -11,7 +11,7 @@ const qs = require("qs");
 // routes 폴더 내 파일 사용
 const page = require("./routes/page");
 const user = require("./routes/user");
-const room = require("./routes/room");
+const codeChat = require("./routes/codeChat");
 const kakao = require("./routes/kakaoLogin");
 const codeArena = require("./routes/codeArena");
 
@@ -78,7 +78,7 @@ app.use(
 app.use("/page", page);
 app.use("/user", user);
 app.use(kakao);
-app.use("/room", room);
+app.use("/codeChat", codeChat);
 app.use("/codeArena", codeArena);
 
 // "Chat" namespace에 접속한 클라이언트 처리
