@@ -142,17 +142,17 @@ ChatNamespace.on("connection", (socket) => {
     console.log("서버 enter_room 이벤트 활성화");
     // console.log("enter_room의 room_name", room_name);
     console.log("enter_room의 nickname", nickname);
-    console.log("enter_room의 roomNum : ", room_number);
-    socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
+    // console.log("enter_room의 roomNum : ", room_number);
+    // socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
-    if (countRoomUsers(roomNum) >= 4) socket.join(room_number); // 방에 입장하기
+    // if (countRoomUsers(roomNum) >= 4) socket.join(room_number); // 방에 입장하기
 
     socket.emit("userInfo", { nickname });
     console.log("입장한 후 소켓이 들어간 방", socket.rooms);
 
-    io.of("/CodeChat")
-      .to(roomNum)
-      .emit("user_count", { user_count: countRoomUsers(roomNum) });
+    // io.of("/CodeChat")
+    //   .to(roomNum)
+    //   .emit("user_count", { user_count: countRoomUsers(roomNum) });
   });
 
   // 사용자에게 받은 코드에디터 개인코드 전체사용자에게 전송 -지훈-
@@ -288,6 +288,7 @@ ArenaNamespace.on("connection", (socket) => {
             room_host,
             room_number,
           });
+          socket.emit('normal_user_ready')
         } else {
           ArenaNamespace.to(room_number).emit("enter_host_user", {
             conn_user,

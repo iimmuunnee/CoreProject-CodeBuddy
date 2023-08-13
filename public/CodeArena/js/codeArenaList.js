@@ -31,7 +31,10 @@ const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 �
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
 const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2");
 
-const openarena = () => {
+const $startBtn = document.getElementById('startBtn')
+const $readyBtn = document.getElementById('readyBtn')
+
+const openarena = (user) => {
   let page = document.getElementById("code_arena_zip");
   page.style.display = "block";
 
@@ -43,14 +46,9 @@ const openarena = () => {
 
   let header = document.getElementById("head");
   header.style.display = "none";
-
-  //code editor 기본 값 입력
-  js.setValue(`function codeBuddy(n){
-    let result;
-    result = '정답을입력하세요';
-    return result;
-}`);
 };
+
+
 let currentNickname;
 // 방 생성 함수
 const handleRoomSubmit = (event) => {
@@ -85,6 +83,7 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
     arenaSocket["isAdmin"] = isAdmin;
+    $startBtn.style.display = 'block';
   }
 });
 
@@ -281,6 +280,12 @@ const leaveRoomBtn = () => {
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
 
+  let header = document.getElementById("head");
+  header.style.display = "block";
+
+  $startBtn.style.display = 'none';
+  $readyBtn.style.display = 'none';
+
   arenaSocket.emit("leave_room", { currentNickname });
   arenaSocket.emit("leave_count");
 };
@@ -397,11 +402,19 @@ arenaSocket.on("enter_host_user", ({ conn_user, room_host, room_number }) => {
 arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
   const $c_a_p_user = document.querySelector(".c_a_p_user");
   const $divs = $c_a_p_user.querySelectorAll("div");
+  
   $divs.forEach(($div) => {
     $div.remove();
   });
   updateArenaNickname(conn_user, room_host, room_number);
+  
 });
+
+arenaSocket.on('normal_user_ready',()=>{
+  
+        readyBtn.style.display = 'block';
+
+})
 
 arenaSocket.on("leave_normal_user", ({ disconn_arena_user, room_number }) => {
   console.log("leave_normal_user");
@@ -429,7 +442,7 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         </div>
         <div class="u_remain">
         <div div class="u_r_ques">
-        <div class="u_r_circle">ok</div>
+        <div class="u_r_circle" style="display:none;">ok</div>
         </div>
         </div>
         `;
@@ -444,11 +457,12 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         </div>
         <div class="u_remain">
         <div div class="u_r_ques">
-        <div class="u_r_circle">ok</div>
+        <div class="u_r_circle" style="display:none;">ok</div>
         </div>
         </div>
         `;
         $c_a_p_user.append(newUser);
+        
       }
     }
   });
@@ -473,7 +487,7 @@ const updateArenaNickname2 = (conn_user, room_number) => {
           </div>
           <div class="u_remain">
           <div div class="u_r_ques">
-          <div class="u_r_circle">ok</div>
+          <div class="u_r_circle" style="display:none;">ok</div>
           </div>
           </div>
           `;
@@ -723,7 +737,9 @@ $("#login_btn").on("click", () => {
 // 타이머 기능 구현 추가
 const Timer = document.getElementById("timer"); //스코어 기록창-분
 const Timer_zip = document.getElementById("c_a_above1"); //스코어 기록창-분
-const startButton = document.getElementById("c_a_center_button");
+const buttonDiv = document.getElementById('c_a_center_button')
+const startButton = document.getElementById("startBtn"); // start 버튼
+const readybutton = document.getElementById('readyBtn'); // ready 버튼
 const question_div = document.getElementById("c_a_left");
 const question_div2 = document.getElementById("c_a_right");
 let time = 600000;
@@ -767,8 +783,15 @@ function TIMER() {
 }
 
 startButton.addEventListener("click", function () {
-  startButton.style.display = "none";
+  buttonDiv.style.display = "none";
   TIMER();
   question_div.style.display = "block";
   question_div2.style.display = "block";
+
+   //code editor 기본 값 입력
+   js.setValue(`function codeBuddy(n){
+    let result;
+    result = '정답을입력하세요';
+    return result;
+}`);
 });
