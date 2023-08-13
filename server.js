@@ -321,6 +321,12 @@ ArenaNamespace.on("connection", (socket) => {
     // 방 이름 정보를 가져와서 해결해야함
   });
 
+  socket.on("click_start_btn", () => {
+    console.log("서버 click_start_btn");
+    let roomNum = socket.room_number;
+    socket.broadcast.to(roomNum).emit("start_timer");
+  });
+
   let disconn_arena_user;
   let room_number;
   let user_name;
