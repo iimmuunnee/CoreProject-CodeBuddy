@@ -319,6 +319,13 @@ arenaSocket.on("start_timer", () => {
   TIMER();
   question_div.style.display = "block";
   question_div2.style.display = "block";
+
+  //code editor 기본 값 입력
+  js.setValue(`function codeBuddy(n){
+    let result;
+    result = '정답을입력하세요';
+    return result;
+}`);
 });
 
 // 방장이 start 버튼을 눌렀을 때
@@ -354,6 +361,7 @@ const leaveRoomBtn = () => {
   chat.style.display = "none";
   let header = document.getElementById("head");
   header.style.display = "block";
+
 
   $startBtn.style.display = "none";
   $readyBtn.style.display = "none";
