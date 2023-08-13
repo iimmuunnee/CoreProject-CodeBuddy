@@ -410,8 +410,7 @@ arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
   
 });
 
-arenaSocket.on('normal_user_ready',()=>{
-  
+arenaSocket.on('normal_user_ready',()=>{  
         readyBtn.style.display = 'block';
 
 })
@@ -737,7 +736,7 @@ $("#login_btn").on("click", () => {
 // 타이머 기능 구현 추가
 const Timer = document.getElementById("timer"); //스코어 기록창-분
 const Timer_zip = document.getElementById("c_a_above1"); //스코어 기록창-분
-const buttonDiv = document.getElementById('c_a_center_button')
+const buttonDiv = document.getElementById('c_a_center_button') //start / ready 버튼 div
 const startButton = document.getElementById("startBtn"); // start 버튼
 const readybutton = document.getElementById('readyBtn'); // ready 버튼
 const question_div = document.getElementById("c_a_left");
