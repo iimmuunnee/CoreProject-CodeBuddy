@@ -31,7 +31,7 @@ const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 �
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
 const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2");
 
-const openarena = () => {
+const openarena = (user) => {
   let page = document.getElementById("code_arena_zip");
   page.style.display = "block";
 
@@ -43,14 +43,8 @@ const openarena = () => {
 
   let header = document.getElementById("head");
   header.style.display = "none";
-
-  //code editor 기본 값 입력
-  js.setValue(`function codeBuddy(n){
-    let result;
-    result = '정답을입력하세요';
-    return result;
-}`);
 };
+
 let currentNickname;
 // 방 생성 함수
 const handleRoomSubmit = (event) => {
@@ -85,7 +79,7 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
     arenaSocket["isAdmin"] = isAdmin;
-    console.log("arenaSocket에 저장됨?", arenaSocket);
+    $startBtn.style.display = "block";
   }
 });
 
@@ -273,7 +267,9 @@ const enterRoom = (roomName, roomNum, roomHost) => {
 // 타이머 기능 구현 추가
 const Timer = document.getElementById("timer"); //스코어 기록창-분
 const Timer_zip = document.getElementById("c_a_above1"); //스코어 기록창-분
-const startButton = document.getElementById("c_a_center_button");
+const buttonDiv = document.getElementById("c_a_center_button");
+const $startBtn = document.getElementById("startBtn");
+const $readyBtn = document.getElementById("readyBtn");
 const question_div = document.getElementById("c_a_left");
 const question_div2 = document.getElementById("c_a_right");
 let time = 600000;
@@ -318,23 +314,30 @@ const TIMER = () => {
 
 arenaSocket.on("start_timer", () => {
   console.log("같은 방에 있는 다른 사람들의 타이머 작동");
-  startButton.style.display = "none";
+  $startBtn.style.display = "none";
+  $readyBtn.style.display = "none";
   TIMER();
   question_div.style.display = "block";
   question_div2.style.display = "block";
 });
 
 // 방장이 start 버튼을 눌렀을 때
-startButton.addEventListener("click", () => {
+$startBtn.addEventListener("click", () => {
   if (arenaSocket.isAdmin) {
     console.log("방장이 start를 눌렀습니다");
     arenaSocket.emit("click_start_btn");
 
-    startButton.style.display = "none";
+    $startBtn.style.display = "none";
     TIMER();
     question_div.style.display = "block";
     question_div2.style.display = "block";
   }
+  //code editor 기본 값 입력
+  js.setValue(`function codeBuddy(n){
+      let result;
+      result = '정답을입력하세요';
+      return result;
+  }`);
 });
 
 const $leave_room = document.getElementById("leave_room");
@@ -349,6 +352,11 @@ const leaveRoomBtn = () => {
 
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
+  let header = document.getElementById("head");
+  header.style.display = "block";
+
+  $startBtn.style.display = "none";
+  $readyBtn.style.display = "none";
 
   clearInterval(PLYATIME); // 기존의 타이머 인터벌 초기화
 
@@ -361,13 +369,6 @@ const leaveRoomBtn = () => {
   arenaSocket.emit("leave_room", { currentNickname });
   arenaSocket.emit("leave_count");
 
-  // 뒤로가기 버튼 눌렀을 때~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // const Timer = document.getElementById("timer"); //스코어 기록창-분
-  // const Timer_zip = document.getElementById("c_a_above1"); //스코어 기록창-분
-  // const startButton = document.getElementById("c_a_center_button");
-  // const question_div = document.getElementById("c_a_left");
-  // const question_div2 = document.getElementById("c_a_right");
-  startButton.style.display = "block";
   question_div.style.display = "none";
   question_div2.style.display = "none";
 };
@@ -485,10 +486,16 @@ arenaSocket.on("enter_host_user", ({ conn_user, room_host, room_number }) => {
 arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
   const $c_a_p_user = document.querySelector(".c_a_p_user");
   const $divs = $c_a_p_user.querySelectorAll("div");
+
   $divs.forEach(($div) => {
     $div.remove();
   });
   updateArenaNickname(conn_user, room_host, room_number);
+});
+
+arenaSocket.on("normal_user_ready", () => {
+  $readyBtn.style.display = "block";
+  $startBtn.style.display = "none";
 });
 
 arenaSocket.on("leave_normal_user", ({ disconn_arena_user, room_number }) => {
@@ -517,7 +524,7 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         </div>
         <div class="u_remain">
         <div div class="u_r_ques">
-        <div class="u_r_circle">ok</div>
+        <div class="u_r_circle" style="display:none;">ok</div>
         </div>
         </div>
         `;
@@ -532,7 +539,7 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         </div>
         <div class="u_remain">
         <div div class="u_r_ques">
-        <div class="u_r_circle">ok</div>
+        <div class="u_r_circle" style="display:none;">ok</div>
         </div>
         </div>
         `;
@@ -561,7 +568,7 @@ const updateArenaNickname2 = (conn_user, room_number) => {
           </div>
           <div class="u_remain">
           <div div class="u_r_ques">
-          <div class="u_r_circle">ok</div>
+          <div class="u_r_circle" style="display:none;">ok</div>
           </div>
           </div>
           `;
