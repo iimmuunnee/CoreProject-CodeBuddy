@@ -31,9 +31,6 @@ const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 �
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
 const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2");
 
-const $startBtn = document.getElementById('startBtn')
-const $readyBtn = document.getElementById('readyBtn')
-
 const openarena = (user) => {
   let page = document.getElementById("code_arena_zip");
   page.style.display = "block";
@@ -47,7 +44,6 @@ const openarena = (user) => {
   let header = document.getElementById("head");
   header.style.display = "none";
 };
-
 
 let currentNickname;
 // 방 생성 함수
@@ -83,7 +79,7 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
     arenaSocket["isAdmin"] = isAdmin;
-    $startBtn.style.display = 'block';
+    $startBtn.style.display = "block";
   }
 });
 
@@ -162,7 +158,7 @@ arenaSocket.on("updateRoomList", () => {
   const $trs = $tbody.querySelectorAll("tr");
   axios.get("/codeArena/arenaList", { re: "hi" }).then((res) => {
     let roomList = JSON.parse(res.data);
-    console.log("roomList : ", roomList);
+    // console.log("roomList : ", roomList);
     $trs.forEach(($tr) => {
       $tr.remove();
     });
@@ -202,7 +198,6 @@ arenaSocket.on("host_enterRoom", (data) => {
   let nickName = data[0].createdBy;
   let roomName = data[0].room_name;
   let roomNum = data[0].room_number;
-  console.log("", data);
   const addRoomToTable = (updateRooms) => {
     axios.post("/codeArena/updateroom", { updateRooms }).then((res) => {
       let roomInfo = JSON.parse(res.data);
@@ -258,7 +253,7 @@ const enterRoom = (roomName, roomNum, roomHost) => {
   $c_a_u_r_name2.textContent = roomName; // Arena 제한 시간 위 방제
 
   arenaSocket.on("user_count", ({ user_count }) => {
-    console.log("user_count 이벤트 도착");
+    // console.log("user_count 이벤트 도착");
     console.log(user_count);
     $c_content_num.textContent = `${user_count}/4`;
     $mini_room_users.textContent = `${user_count}/4`;
@@ -266,6 +261,84 @@ const enterRoom = (roomName, roomNum, roomHost) => {
 
   openarena(); // 방 입장
 };
+
+// Code Arena  -------설아---------
+
+// 타이머 기능 구현 추가
+const Timer = document.getElementById("timer"); //스코어 기록창-분
+const Timer_zip = document.getElementById("c_a_above1"); //스코어 기록창-분
+const buttonDiv = document.getElementById("c_a_center_button");
+const $startBtn = document.getElementById("startBtn");
+const $readyBtn = document.getElementById("readyBtn");
+const question_div = document.getElementById("c_a_left");
+const question_div2 = document.getElementById("c_a_right");
+let time = 600000;
+let min = 10;
+let sec = 60;
+let PLYATIME;
+Timer.value = min + ":" + "00";
+const TIMER = () => {
+  PLYATIME = setInterval(() => {
+    time = time - 1000; //1초씩 줄어듦
+    min = time / (60 * 1000); //초를 분으로 나눠준다.
+    if (sec > 0) {
+      //sec=60 에서 1씩 빼서 출력해준다.
+      sec = sec - 1;
+      // sec이 10보다 작을 때 '0'을 붙여서 2자리 형식으로 만들어줍니다.
+      Timer.value = Math.floor(min) + ":" + (sec < 10 ? "0" : "") + sec;
+      // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
+      if (Math.floor(min) === 0) {
+        if (sec < 11 && sec >= 0) {
+          // 여기에 원하는 CSS 변경 코드를 추가합니다.
+          Timer_zip.style.boxShadow = "1px 0px 12px 8px red";
+          Timer_zip.style.animation = "blink 1s infinite";
+          if (sec == 0) {
+            console.log("여기 들어옴");
+            clearInterval(PLYATIME);
+          }
+        } else {
+          // 원하는 CSS 초기 상태를 설정합니다.
+          Timer_zip.style.boxShadow = "1px 0px 12px 8px white";
+          Timer_zip.style.animation = "none";
+        }
+      }
+    }
+    if (sec === 0) {
+      // 0에서 -1을 하면 -59가 출력된다.
+      // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
+      sec = 60;
+      Timer.value = Math.floor(min) + ":" + "00";
+    }
+  }, 1000); //1초마다
+};
+
+arenaSocket.on("start_timer", () => {
+  console.log("같은 방에 있는 다른 사람들의 타이머 작동");
+  $startBtn.style.display = "none";
+  $readyBtn.style.display = "none";
+  TIMER();
+  question_div.style.display = "block";
+  question_div2.style.display = "block";
+});
+
+// 방장이 start 버튼을 눌렀을 때
+$startBtn.addEventListener("click", () => {
+  if (arenaSocket.isAdmin) {
+    console.log("방장이 start를 눌렀습니다");
+    arenaSocket.emit("click_start_btn");
+
+    $startBtn.style.display = "none";
+    TIMER();
+    question_div.style.display = "block";
+    question_div2.style.display = "block";
+  }
+  //code editor 기본 값 입력
+  js.setValue(`function codeBuddy(n){
+      let result;
+      result = '정답을입력하세요';
+      return result;
+  }`);
+});
 
 const $leave_room = document.getElementById("leave_room");
 
@@ -279,25 +352,35 @@ const leaveRoomBtn = () => {
 
   let chat = document.getElementById("chat_open");
   chat.style.display = "none";
-
   let header = document.getElementById("head");
   header.style.display = "block";
 
-  $startBtn.style.display = 'none';
-  $readyBtn.style.display = 'none';
+  $startBtn.style.display = "none";
+  $readyBtn.style.display = "none";
+
+  clearInterval(PLYATIME); // 기존의 타이머 인터벌 초기화
+
+  // 10분으로 제한시간 설정
+  time = 600000;
+  min = 10;
+  sec = 60;
+  Timer.value = min + ":" + "00";
 
   arenaSocket.emit("leave_room", { currentNickname });
   arenaSocket.emit("leave_count");
+
+  question_div.style.display = "none";
+  question_div2.style.display = "none";
 };
 
 let disconn_user_data;
 arenaSocket.on("leaveuser", (data) => {
-  console.log("leaveuser의 data", data);
+  // console.log("leaveuser의 data", data);
   // data안엔 room_number, user_name
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
   axios.post("/codeArena/disconnectUser", { data }).then((res) => {
     disconn_user_data = JSON.parse(res.data);
-    console.log("이거 뭐임?", disconn_user_data);
+    // console.log("이거 뭐임?", disconn_user_data);
     arenaSocket.emit("disconn_arena_user", { user_data: disconn_user_data });
     // arenaSocket.emit("disconn_arena_user", {disconn_user_data})
   });
@@ -308,6 +391,7 @@ arenaSocket.on("leaveuser", (data) => {
     // location.reload();
   });
 });
+
 $leave_room.addEventListener("click", leaveRoomBtn);
 
 // 인원 수 초과 됐을 때
@@ -347,7 +431,7 @@ const handleMessageSubmit = (event) => {
   const message = $form_input.value; // 메시지 입력값 가져오기
   // console.log("메세지 핸들러, 메세지 : ", message);
   // console.log("userInfo : ", currentNickname);
-  console.log("핸들메세지함수", currentNickname); // 보낸 사람의 닉네임
+  // console.log("핸들메세지함수", currentNickname); // 보낸 사람의 닉네임
 
   arenaSocket.emit("new_message", { currentNickname, message: message });
 
@@ -360,14 +444,14 @@ arenaSocket.on("connect", () => {
 });
 
 arenaSocket.on("my_message", ({ currentNickname, message }) => {
-  console.log("new_message이벤트 프론트에서 받음");
+  console.log("내 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
   $div.textContent = `(본인)${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
 });
 
 arenaSocket.on("other_message", ({ currentNickname, message }) => {
-  console.log("new_message이벤트 프론트에서 받음");
+  console.log("다른사람 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
   $div.textContent = `(상대)${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
@@ -391,32 +475,31 @@ arenaSocket.on("enter_host_user", ({ conn_user, room_host, room_number }) => {
     $div.remove();
   });
   // userList는 전체 유저가 입장한 방번호와 닉네임을 객체로 배열에 넣은 것
-  console.log("enter_host_user", conn_user);
+  // console.log("enter_host_user", conn_user);
   // room_number는 입장하는 방의 번호
-  console.log("enter_host_user", room_host);
+  // console.log("enter_host_user", room_host);
   // room_host는 입장하는 방을 만든 이
-  console.log("enter_host_user", room_number);
+  // console.log("enter_host_user", room_number);
   updateArenaNickname(conn_user, room_host, room_number);
 });
 
 arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
   const $c_a_p_user = document.querySelector(".c_a_p_user");
   const $divs = $c_a_p_user.querySelectorAll("div");
-  
+
   $divs.forEach(($div) => {
     $div.remove();
   });
   updateArenaNickname(conn_user, room_host, room_number);
-  
 });
 
-arenaSocket.on('normal_user_ready',()=>{  
-        readyBtn.style.display = 'block';
-
-})
+arenaSocket.on("normal_user_ready", () => {
+  $readyBtn.style.display = "block";
+  $startBtn.style.display = "none";
+});
 
 arenaSocket.on("leave_normal_user", ({ disconn_arena_user, room_number }) => {
-  console.log("leave_normal_user");
+  // console.log("leave_normal_user");
   $("div").remove(".c_a_p_u2");
   updateArenaNickname2(disconn_arena_user, room_number);
 });
@@ -426,7 +509,7 @@ arenaSocket.on("get_out", () => {
 });
 
 const updateArenaNickname = (conn_user, room_host, room_number) => {
-  console.log("conn_user", conn_user);
+  // console.log("conn_user", conn_user);
   const $c_a_p_user = document.querySelector(".c_a_p_user");
   conn_user.forEach((userInfo) => {
     const newUser = document.createElement("div");
@@ -461,7 +544,6 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         </div>
         `;
         $c_a_p_user.append(newUser);
-        
       }
     }
   });
@@ -731,66 +813,4 @@ $("#login_btn").on("click", () => {
 
 // Code Arena Code Editor -----지훈--------
 
-// code arena  -------설아---------
 
-// 타이머 기능 구현 추가
-const Timer = document.getElementById("timer"); //스코어 기록창-분
-const Timer_zip = document.getElementById("c_a_above1"); //스코어 기록창-분
-const buttonDiv = document.getElementById('c_a_center_button') //start / ready 버튼 div
-const startButton = document.getElementById("startBtn"); // start 버튼
-const readybutton = document.getElementById('readyBtn'); // ready 버튼
-const question_div = document.getElementById("c_a_left");
-const question_div2 = document.getElementById("c_a_right");
-let time = 600000;
-let min = 10;
-let sec = 60;
-let PlAYTIME;
-Timer.value = min + ":" + "00";
-function TIMER() {
-  PlAYTIME = setInterval(function () {
-    time = time - 1000; //1초씩 줄어듦
-    min = time / (60 * 1000); //초를 분으로 나눠준다.
-    if (sec > 0) {
-      //sec=60 에서 1씩 빼서 출력해준다.
-      sec = sec - 1;
-      // sec이 10보다 작을 때 '0'을 붙여서 2자리 형식으로 만들어줍니다.
-      Timer.value = Math.floor(min) + ":" + (sec < 10 ? "0" : "") + sec;
-      // sec이 10보다 작고 0보다 크거나 같을 때, 즉 10초가 남았을 때 CSS 변경
-      if (Math.floor(min) === 0) {
-        if (sec < 11 && sec >= 0) {
-          // 여기에 원하는 CSS 변경 코드를 추가합니다.
-          Timer_zip.style.boxShadow = "1px 0px 12px 8px red";
-          Timer_zip.style.animation = "blink 1s infinite";
-          if (sec == 0) {
-            console.log("여기 들어옴");
-            clearInterval(PlAYTIME);
-          }
-        } else {
-          // 원하는 CSS 초기 상태를 설정합니다.
-          Timer_zip.style.boxShadow = "1px 0px 12px 8px white";
-          Timer_zip.style.animation = "none";
-        }
-      }
-    }
-    if (sec === 0) {
-      // 0에서 -1을 하면 -59가 출력된다.
-      // 그래서 0이 되면 바로 sec을 60으로 돌려주고 value에는 0을 출력하도록 해준다.
-      sec = 60;
-      Timer.value = Math.floor(min) + ":" + "00";
-    }
-  }, 1000); //1초마다
-}
-
-startButton.addEventListener("click", function () {
-  buttonDiv.style.display = "none";
-  TIMER();
-  question_div.style.display = "block";
-  question_div2.style.display = "block";
-
-   //code editor 기본 값 입력
-   js.setValue(`function codeBuddy(n){
-    let result;
-    result = '정답을입력하세요';
-    return result;
-}`);
-});
