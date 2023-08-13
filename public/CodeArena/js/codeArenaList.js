@@ -288,7 +288,6 @@ const leaveRoomBtn = () => {
 let disconn_user_data;
 arenaSocket.on("leaveuser", (data) => {
   console.log("leaveuser의 data", data);
-  let room_host = data.room_host;
   // data안엔 room_number, user_name
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
   axios.post("/codeArena/disconnectUser", { data }).then((res) => {
@@ -408,6 +407,10 @@ arenaSocket.on("leave_normal_user", ({ disconn_arena_user, room_number }) => {
   console.log("leave_normal_user");
   $("div").remove(".c_a_p_u2");
   updateArenaNickname2(disconn_arena_user, room_number);
+});
+
+arenaSocket.on("get_out", () => {
+  leaveRoomBtn();
 });
 
 const updateArenaNickname = (conn_user, room_host, room_number) => {

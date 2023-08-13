@@ -327,9 +327,11 @@ ArenaNamespace.on("connection", (socket) => {
   socket.on("leave_room", (currentNickname, user_data) => {
     room_number = socket.room_number;
     user_name = currentNickname.currentNickname;
+    console.log("이거 뭐냐????", user_name);
     const roomInfo = rooms.get(room_number);
     console.log("leave_room / roomInfo : ", roomInfo);
     const disconn_arena_user = user_data;
+
     socket.emit("leaveuser", {
       room_number: room_number,
       user_name: user_name,
@@ -350,8 +352,15 @@ ArenaNamespace.on("connection", (socket) => {
       }
       socket.room_number = null; // 방 이름 정보 초기화
     }
+    currentNickname = socket.nickname; // 퇴장하는 사람의 닉네임
 
-    currentNickname = socket.nickname;
+    if (roomInfo) {
+      if (roomInfo.createdBy == currentNickname) {
+        ArenaNamespace.to(room_number).emit("get_out");
+      }
+    }
+
+    console.log("bye에 들어가는 닉네임", currentNickname);
     console.log("socket.nickname", socket.nickname);
     ArenaNamespace.to(room_number).emit("bye", { currentNickname });
     // ArenaNamespace.to(room_number).emit("enter_normal_user", {conn_user, room_host, room_number})
