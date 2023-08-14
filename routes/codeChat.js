@@ -121,11 +121,11 @@ router.get('/arenaList',(req,res)=>{
 router.post('/connectUser',(req,res)=>{
     let userName = req.session.userName
     let roomNum = req.body.roomNum
-    console.log(roomNum)
-    let sql = 'INSERT INTO CHAT_USER VALUES(?,?);'
+    let socketId = req.body.socketId
+    let sql = 'INSERT INTO CHAT_USER VALUES(?,?,?);'
     let sql2 = 'SELECT * FROM CHAT_USER;'
     conn.connect()
-    conn.query(sql,[roomNum, userName],(err,result)=>{
+    conn.query(sql,[roomNum, userName,socketId],(err,result)=>{
         if(err){
             console.log('유저이름 추가 쿼리문 에러')
         }
@@ -182,6 +182,21 @@ router.post('/chat_enterRoom',(req,res)=>{
     })
 })
 
+router.post('/userSocket',(req,res)=>{
+    let roomNum = req.body.roomNum
+    let userName = req.body.name
+    let sql = 'SELECT * FROM CHAT_USER WHERE ROOM_NUMBER=? AND CONN_USER=?'
+    conn.connect()
+    conn.query(sql,[roomNum,userName],(err,result)=>{
+        if(err){
+            console.log('select 오류')
+        }
+        else{
+            console.log('socketID 포함 데이터')
+            res.json(JSON.stringify(result[0]))
+        }
+    })
+})
 
 
 module.exports = router

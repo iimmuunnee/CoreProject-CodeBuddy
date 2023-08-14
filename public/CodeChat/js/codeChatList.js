@@ -71,6 +71,7 @@ let roomName = "";
 let roomNum;
 let roomLinks;
 let clickEventHandler = null;
+let socketId;
 
 const handleClick = (e) => {
   const target = e.target;
@@ -193,80 +194,114 @@ chatSocket.on("host_enterRoom", (data) => {
 // 코드 보내기 클릭
 const codeSend = document.querySelector('#codeSend')
 codeSend.addEventListener('click',()=>{
+  chatSocket.emit('sendClick')
+  })
+
+chatSocket.on('socketUser',(data)=>{
   // console.log('내html',html.getValue())
   // console.log('내css',css.getValue())
   // console.log('내js',js.getValue())
+
   const checkUser = document.getElementsByName('checkuser')
   
   let myHtml = html ? html.getValue() : '';
   let myCss = css ? css.getValue() : '';
   let myJs = js ? js.getValue() : '';
-
-  chatSocket.emit('codeSendBtn', {html : myHtml, css : myCss, js : myJs})
+  
   checkUser.forEach((user)=>{
     if(user.checked == true){
       console.log('111',user.value)
-      
+      axios.post('/codeChat/userSocket', {name : user.value, roomNum : data.roomNum})
+        .then(res=>{
+          let data = JSON.parse(res.data)
+          console.log('제발제발젭잘',res.data)
+          chatSocket.emit('codeSendBtn', {html : myHtml, css : myCss, js : myJs, name:user.value, socketId : data.SOCKET_ID})
+        })
     }
   })
 })
 
 //코드 유저에게 전송
 chatSocket.on('codeSend',(data)=>{
-  console.log('보자',data)
+  const tabData = document.querySelector('.tab')
+  const $tabLang = document.querySelector('.tab-container__item2')
+  console.log('머냐',tabData.dataset.id)
+  console.log('보자',data.css)
   html2.setValue(data.html)
   css2.setValue(data.css)
   js2.setValue(data.js)
+
+  // if(data.socketId ==  tabData.dataset.id){
+  //   $tabLang.addEventListener('click',()=>{
+  //     if($tabLang.dataset.tab == 'tab4'){
+  //       html2.setValue(data.html)
+  //     }
+  //     else if($tabLang.dataset.tab == 'tab5'){
+  //       css2.setValue(data.css)
+  //     }
+  //     else if($tabLang.dataset.tab == 'tab6'){
+  //       js2.setValue(data.js)
+  //     }
+  //   })
+  // }
 })
+
 
 
 const $btn_group  = document.querySelector('.btn-group')
 /* codeChat 접속시 사용자 정보 */
 const updataChatUser = (conn_user, name, roomNum)=>{
   console.log('ㄹ아아아아',conn_user)
+  let count = 1
   conn_user.forEach((userInfo)=>{
-    if(userInfo.ROOM_NUMBER == roomNum){  // 체크박스
-      const checkUser = document.createElement('input')
-      // 사용자 이름
-      const labelUser = document.createElement('label')
-      // 체크박스 속성 값 지정
-      checkUser.setAttribute('type','checkbox')
-      checkUser.setAttribute('name','checkuser')
-      checkUser.setAttribute('value', `${userInfo.CONN_USER}`)
-      checkUser.className = 'btn-group'
-      checkUser.id = `${userInfo.CONN_USER}`
-      // 사용자 이름과 체크박스 연동 (for 와 id)
-      labelUser.className = 'btn btn-outline-secondary'
-      labelUser.setAttribute('for',`${userInfo.CONN_USER}`)
-      labelUser.innerText = `${userInfo.CONN_USER}`
-      // if(userInfo.CONN_USER != name){
-      //   $btn_group.append(checkUser);
-      //   $btn_group.append(labelUser);
-      // }
-      $btn_group.append(checkUser);
-      $btn_group.append(labelUser);}
-  })
-  
+    if(userInfo.CONN_USER != currentNickname){
+      if(userInfo.ROOM_NUMBER == roomNum){  // 체크박스
+        const checkUser = document.createElement('input')
+        // 사용자 이름
+        const labelUser = document.createElement('label')
+        // 체크박스 속성 값 지정
+        checkUser.setAttribute('type','checkbox')
+        checkUser.setAttribute('name','checkuser')
+        checkUser.setAttribute('value', `${userInfo.CONN_USER}`)
+        checkUser.className = 'btn-group'
+        checkUser.id = `${userInfo.CONN_USER}`
+        // 사용자 이름과 체크박스 연동 (for 와 id)
+        labelUser.className = 'btn btn-outline-secondary'
+        labelUser.setAttribute('for',`${userInfo.CONN_USER}`)
+        labelUser.innerText = `${userInfo.CONN_USER}`
+        // if(userInfo.CONN_USER != name){
+        //   $btn_group.append(checkUser);
+        //   $btn_group.append(labelUser);
+        // }
+        $btn_group.append(checkUser);
+        $btn_group.append(labelUser);
+        count++
+      }
+    }
+    })
   const $userTabs = document.querySelector('.tabs')
   let cnt = 1
   conn_user.forEach((userInfo)=>{
     if(userInfo.ROOM_NUMBER == roomNum){
-      if(cnt == 1){
-        $userTabs.innerHTML += `
-        <label class="tab" id="one-tab" for="one">${userInfo.CONN_USER}</label>
-        `      
-      }
-      else if(cnt == 2){
-        $userTabs.innerHTML += `
-        <label class="tab" id="two-tab" for="two">${userInfo.CONN_USER}</label>
-        `      
-      }
-      else{
-        $userTabs.innerHTML += `
-        <label class="tab" id="three-tab" for="three">${userInfo.CONN_USER}</label>
+      console.log('유저인포',userInfo)
+      if(userInfo.CONN_USER != currentNickname){
+        if(cnt == 1){
+          $userTabs.innerHTML += `
+          <label class="tab" id="one-tab" for="one" data-id='${chatSocket.id}'>${userInfo.CONN_USER}</label>
+          `      
+        }
+        else if(cnt == 2){
+          $userTabs.innerHTML += `
+          <label class="tab" id="one-tab" for="one" data-id='${chatSocket.id}'>${userInfo.CONN_USER}</label>
         `
+        }
+        else{
+          $userTabs.innerHTML += `
+          <label class="tab" id="one-tab" for="one" data-id='${chatSocket.id}'>${userInfo.CONN_USER}</label>
+         `
+        }
+        cnt++
       }
-      cnt++
     }
   })
   
@@ -317,7 +352,8 @@ const enterRoom = (roomName, roomNum, roomHost) => {
   console.log("enterRoom 실행");
   // console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저접속
-  axios.post("/codeChat/connectUser", { roomNum }).then((res) => {
+  axios.post("/codeChat/connectUser", { roomNum: roomNum, socketId : chatSocket.id }).then((res) => {
+    console.log('소켓아이디', chatSocket.id)
     conn_user_data = JSON.parse(res.data);
     console.log("가져와져랏", conn_user_data);
     // chatSocket.emit("conn_user", data) // 전체 유저가 접속한 방번호와 닉네임 객체
@@ -361,6 +397,12 @@ const leaveRoomBtn = (e) => {
     $("#container").css("display", "none");
     $(".m_header").css("display", "flex");
     $('.notice').css("display", "block");
+    html.setValue('')
+    css.setValue('')
+    js.setValue('')
+    html2.setValue('')
+    css2.setValue('')
+    js2.setValue('')
 
     chatSocket.emit('leave_room', {currentNickname})
 };
@@ -433,7 +475,7 @@ const handleMessageSubmit = (event) => {
 // ---------------함수 정의 끝------------------
 
 chatSocket.on("connect", () => {
-  console.log("프론트와 서버와의 연결 성공");
+  console.log("프론트와 서버와의 연결 성공",chatSocket.id);
 });
 
 chatSocket.on("my_message", ({ currentNickname, message }) => {

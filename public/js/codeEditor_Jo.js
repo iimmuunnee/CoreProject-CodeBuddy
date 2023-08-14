@@ -175,6 +175,7 @@ tabItems2.forEach((item, index) => {
         item.classList.add('active');
         contentContainers2[index].classList.add('target');
         updateOutput2();
+
     });
 });
 

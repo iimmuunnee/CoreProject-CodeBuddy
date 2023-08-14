@@ -191,7 +191,7 @@ ChatNamespace.on("connection", (socket) => {
       // socket.to(room_number).emit("welcome", {nickname});
       socket["nickname"] = nickname;
 
-      console.log("입장한 후 소켓이 들어간 방", socket.rooms);
+      console.log("입장한 후 소켓이 들어간 방", socket.id);
       console.log("countRoomUsers(room_name) : ", countRoomUsers(room_number));
 
       ChatNamespace.to(room_number).emit("user_count", {
@@ -329,10 +329,16 @@ ChatNamespace.on("connection", (socket) => {
   // 코드 에디터 코드전송
   socket.on('codeSendBtn',(data)=>{
     console.log('받아와라',data)
-    console.log('??',)
-    ChatNamespace.to(socket.room_number).emit('codeSend',data)
+    ChatNamespace.to(socket.room_number).to(data.socketId).emit('codeSend',data)
   })
 
+  socket.on('sendClick',()=>{
+    let room_num = socket.room_number
+    console.log('보자1212',socket.room_number);
+    ChatNamespace.to(socket.room_number).emit('socketUser',{
+      roomNum : socket.room_number
+    })
+  })
 
 
   socket.on("disconnet", () => {
