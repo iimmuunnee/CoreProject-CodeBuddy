@@ -121,12 +121,12 @@ router.post('/connectUser',(req,res)=>{
     let userName = req.session.userName
     let roomNum = req.body.roomNum
     console.log(roomNum)
-    let sql = 'INSERT INTO ARENA_USER VALUES(?,?);'
+    let sql = 'INSERT INTO ARENA_USER (ROOM_NUMBER, CONN_USER) VALUES(?,?);'
     let sql2 = 'SELECT * FROM ARENA_USER;'
     conn.connect()
     conn.query(sql,[roomNum, userName],(err,result)=>{
         if(err){
-            console.log('유저이름 추가 쿼리문 에러')
+            console.log('유저이름 추가 쿼리문 에러', err)
         }
         else{
             conn.query(sql2,(err,result)=>{
@@ -176,10 +176,72 @@ router.post('/codeStart',(req,res)=>{
         }
         else{
             res.json(JSON.stringify(result))
-        }
-        
-    })
+        }  
+    })  
+})
+
+router.post("/codeReady", (req, res) => {
+    let data = req.body.data
+    let roomNum = data.roomNum;
+    let nickName = data.nickName;
+    console.log("코드레디", roomNum, nickName);
+    console.log("/codeReady의 data", data);
+    let sql = "SELECT * FROM ARENA_USER WHERE ROOM_NUMBER = ? AND CONN_USER = ?"
+    let sqlY = "UPDATE ARENA_USER SET USER_READY = 'Y' WHERE ROOM_NUMBER = ? AND CONN_USER = ?"
+    let sqlN = "UPDATE ARENA_USER SET USER_READY = 'N' WHERE ROOM_NUMBER = ? AND CONN_USER = ?"
     
+    conn.connect()
+    conn.query(sql, [roomNum, nickName], (err, result) => {
+        if (err) {
+            console.log("READY SELECT 에러");
+        }
+        else {
+            console.log("ready : ", result);
+            if(result[0].USER_READY == "N") {
+                conn.query(sqlY, [roomNum, nickName], (err, result) => {
+                    if (err) {
+                        console.log("ready 변경 쿼리 에러", err);
+                    }
+                    else {
+                        console.log("Y로 변경 성공");
+                        conn.query(sql,[roomNum, nickName], (err, result) => {
+                            if (err) {
+                                console.log("ready 변경 후 select 에러");
+                            }
+                            else {
+                                res.json(JSON.stringify(result))
+                                console.log("11111111111111",result);
+                            }
+                        })
+                    }
+                })
+            }
+            else{
+                conn.query(sqlN, [roomNum, nickName], (err, result) => {
+                    if (err) {
+                        console.log("ready 변경 쿼리 에러", err);
+                    }
+                    else {
+                        console.log("N로 변경 성공");
+                        conn.query(sql,[roomNum, nickName], (err, result) => {
+                            if (err) {
+                                console.log("ready 변경 후 select 에러");
+                            }
+                            else {
+                                res.json(JSON.stringify(result))
+                                console.log("222222222222",result);
+                            }
+                        })
+                    }
+                })
+            }
+        }
+    }
+    )
+})
+
+router.post("/updateReady", (req, res) => {
+    console.log("업데이트 레디",req.body);
 })
 
 

@@ -508,6 +508,35 @@ ArenaNamespace.on("connection", (socket) => {
     socket.broadcast.to(roomNum).emit("start_timer");
   });
 
+  socket.on("click_ready_btn", (data) => {
+    console.log("서버 click_ready_btn");
+    console.log("닉네임닉네임",data.CONN_USER);
+    let roomNum = socket.room_number;
+    let nickName = data.nickName
+    socket.emit("my_ready", {roomNum : socket.room_number, nickName : nickName})
+  })
+  
+  socket.on("update_ready", (data) => {
+    console.log("update_ready : ", data);
+    let roomNum = data.ROOM_NUMBER
+    let nickName = data.CONN_USER
+    let isReady = data.USER_READY
+    ArenaNamespace.to(roomNum).emit("ready_on", {roomNum : roomNum, nickName : nickName, isReady : isReady})
+  })
+
+  let ready_count = 0 // 아무도 준비 안한 상태
+  socket.on("ready_count_up", () => {
+    let roomNum = socket.room_number
+    ready_count++ // 준비하면 1 증가
+    ArenaNamespace.to(roomNum).emit("ready_count", {count : ready_count})
+  })
+
+  socket.on("ready_count_down", () => {
+    let roomNum = socket.room_number
+    ready_count-- // 준비하면 1 감소
+    ArenaNamespace.to(roomNum).emit("ready_count", {count : ready_count})
+  })
+
   let disconn_arena_user;
   let room_number;
   let user_name;
@@ -522,6 +551,8 @@ ArenaNamespace.on("connection", (socket) => {
     socket.emit("leaveuser", {
       room_number: room_number,
       user_name: user_name,
+      roomNum : room_number,
+      nickName : user_name,
     });
 
     if (room_number) {
@@ -564,10 +595,9 @@ ArenaNamespace.on("connection", (socket) => {
   // leave_room 이벤트 끝
 
   socket.on("disconn_arena_user", ({ user_data }) => {
-    // console.log("disconn_arena_user : ", user_data);
+    console.log("disconn_arena_user : ", user_data);
     disconn_arena_user = user_data;
     // room_number = socket.room_number;
-    console.log("disconn_arena_user : ", room_number);
     ArenaNamespace.to(room_number).emit("leave_normal_user", {
       disconn_arena_user: user_data,
       room_number: room_number,

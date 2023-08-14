@@ -10,7 +10,7 @@ body {
     height: 100vh;
     padding: 0px;
     display: none;
-    background-color: #20222d;
+    background-color: rgba(0,0,0,0.9);
     
 }
 .left, .right{
@@ -379,7 +379,7 @@ box-shadow: 0 0.5rem 0.8rem #00000080;
 }
 
 .panels {
-    /* background: rgba(57, 55, 82, 0.5); */
+    background: #000;
     box-shadow: 0 2rem 2rem #00000080;
     max-height: 75.8dvb;
     width: 98dvb;
