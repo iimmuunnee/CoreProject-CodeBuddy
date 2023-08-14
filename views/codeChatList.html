@@ -109,105 +109,6 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>11</td>
-              <td>1:1채팅</td>
-              <td>JavaScript</td>
-              <th>
-                <a href="#">JavaScript에 대해 배우실분 들어오세요</a>
-                <p>테스트</p>
-              </th>
-              <td>어 금지(멘토)</td>
-              <td>2017.07.13</td>
-            </tr>
-
-            <tr>
-              <td>10</td>
-              <td>오픈채팅</td>
-              <td>JavaScript</td>
-              <th>
-                <a href="#">JavaScript 문제가 너무 어려워요 ㅠㅠ</a>
-                <p>테스트</p>
-              </th>
-              <td>legend A(멘티)</td>
-              <td>2017.07.02</td>
-            </tr>
-
-            <tr>
-              <td>9</td>
-              <td>1:1채팅</td>
-              <td>HTML/CSS</td>
-              <th>
-                <a href="#">Python 고수 분 모십니다</a>
-                <p>테스트</p>
-              </th>
-              <td>어렵다어려워(멘티)</td>
-              <td>2017.07.01</td>
-            </tr>
-
-            <tr>
-              <td>8</td>
-              <td>오픈채팅</td>
-              <td>Python</td>
-              <th>
-                <a href="#">Python 고수 분 모십니다</a>
-                <p>테스트</p>
-              </th>
-              <td>어렵다어려워(멘티)</td>
-              <td>2017.07.01</td>
-            </tr>
-
-            <tr>
-              <td>7</td>
-              <td>오픈채팅</td>
-              <td>Python</td>
-              <th>
-                <a href="#">Python 고수 분 모십니다</a>
-                <p>테스트</p>
-              </th>
-              <td>어렵다어려워(멘티)</td>
-              <td>2017.07.01</td>
-            </tr>
-
-            <tr>
-              <td>6</td>
-              <td>1:1채팅</td>
-              <td>Python</td>
-              <th>
-                <a href="#">Python 고수 분 모십니다</a>
-                <p>테스트</p>
-              </th>
-              <td>어렵다어려워(멘티)</td>
-              <td>2017.07.01</td>
-            </tr>
-
-
-
-            <tr>
-              <td>3</td>
-              <td>오픈채팅</td>
-              <td>Python</td>
-              <th>
-                <a href="#">Python 고수 분 모십니다</a>
-                <p>테스트</p>
-              </th>
-              <td>어렵다어려워(멘티)</td>
-              <td>2017.07.01</td>
-            </tr>
-
-
-
-            <tr>
-              <td>1</td>
-              <td>오픈채팅</td>
-              <td>Python</td>
-              <th>
-                <a href="#">Python 고수 분 모십니다</a>
-                <p>테스트</p>
-              </th>
-              <td>어렵다어려워(멘티)</td>
-              <td>2017.07.21</td>
-            </tr>
           </tbody>
         </table>
         <div class="pagination">
@@ -252,8 +153,8 @@
             <div class="m_div2">
               <label for="chat-method">채팅방식</label>
               <select name="chatRoomMethod" id="chatRoomMethod">
-                <option value="one_to_one">1:1채팅</option>
-                <option value="one_to_many">오픈채팅</option>
+                <option value="1:1채팅">1:1채팅</option>
+                <option value="오픈채팅">오픈채팅</option>
               </select>
             </div>
             <div class="m_div3">
@@ -280,7 +181,7 @@
         <!-- 메뉴바 -->
         <div class="menuBar">
           <button id="leave_room_cc"><i class="fa-solid fa-arrow-left fa-2x" style="color: #ffffff;"></i></button>
-          <!-- <nav>
+          <nav>
             <div class="menu-btn">
               <div class="line line--1"></div>
               <div class="line line--2"></div>
@@ -291,7 +192,7 @@
               <a href="/page/CodeChat" class="link">Code_Chat</a>
               <a href="/page/CodeArena" class="link">Code_Arena</a>
             </div>
-          </nav> -->
+          </nav>
         </div>
 
         <!-- 탭 버튼 -->
@@ -347,7 +248,7 @@
           <!-- 전송버튼 -->
           <div class="text-center">
             <!-- <button id="submit" class="btn btn-warning btn-lg">전송</button> -->
-            <a href="#" class="btn-3d blue">코드 보내기</a>
+            <a href="#" class="btn-3d blue" id="codeSend">코드 보내기</a>
           </div>
 
         </div>
@@ -591,10 +492,8 @@
     </div>
   </section>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/CodeChat/js/codeChatList.js"></script>
-  <script src="/CodeChat/js/popCodeChatRoom.js"></script>
-  <script src="/CodeChat/js/fillter.js"></script>
-
+  <!-- 비동기 통신 axios -->
+  <script type="text/javascript" src="https://unpkg.com/axios@0.26.0/dist/axios.min.js"></script>
   <!-- 코드에디터 -->
   <script src="/CodeChat/js/codeEditor.js"></script>
   <!-- 코드에디터 접속자js -->
@@ -602,6 +501,10 @@
   <!-- 메뉴바 js -->
   <script src="/js/codeEditor_menuBar.js"></script>
   <!-- 스크립트를 상단에 올리면 작동을 안하는 문제가 있음 -->
+  <script src="/CodeChat/js/codeChatList.js"></script>
+  <script src="/CodeChat/js/popCodeChatRoom.js"></script>
+  <script src="/CodeChat/js/fillter.js"></script>
+
 
   <!-- 세션 로그인 스크립트 -지훈- -->
   <script>
