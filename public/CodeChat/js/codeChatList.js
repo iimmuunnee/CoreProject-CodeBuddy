@@ -100,22 +100,41 @@ const updateArenaRoom = (roomList) => {
   console.log("updateArenaRoom", roomList);
 
   roomList.forEach((roomInfo) => {
-    const newRow = document.createElement("tr");
-    newRow.id = "room_" + roomInfo.ROOM_NUMBER;
-    // console.log(roomInfo);
-    // 방 정보를 td에 추가
-    newRow.innerHTML = `
-            <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
-            <td>${roomInfo.ROOM_METHOD}</td>
-            <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
-            <th>
-              <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 4 )</a>
-              <p>테스트</p>
-             </th>
-            <td>${roomInfo.ROOM_HOST}</td>
-      `;
-    // 새로운 행을 테이블의 맨 위에 추가
-    $tbody.prepend(newRow);
+      const newRow = document.createElement("tr");
+      if(roomInfo.ROOM_METHOD == '1:1채팅'){
+        newRow.id = "room_" + roomInfo.ROOM_NUMBER;
+        // console.log(roomInfo);
+        // 방 정보를 td에 추가
+        newRow.innerHTML = `
+                <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
+                <td>${roomInfo.ROOM_METHOD}</td>
+                <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
+                <th>
+                  <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 2 )</a>
+                  <p>테스트</p>
+                </th>
+                <td>${roomInfo.ROOM_HOST}</td>
+          `;
+        // 새로운 행을 테이블의 맨 위에 추가
+        $tbody.prepend(newRow);
+      }
+      else{
+        newRow.id = "room_" + roomInfo.ROOM_NUMBER;
+        // console.log(roomInfo);
+        // 방 정보를 td에 추가
+        newRow.innerHTML = `
+                <td id="room-Num">${roomInfo.ROOM_NUMBER}</td>
+                <td>${roomInfo.ROOM_METHOD}</td>
+                <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
+                <th>
+                  <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 4 )</a>
+                  <p>테스트</p>
+                </th>
+                <td>${roomInfo.ROOM_HOST}</td>
+          `;
+        // 새로운 행을 테이블의 맨 위에 추가
+        $tbody.prepend(newRow);
+      }
 
     // axios.get("/room/createRoom", { room: "hi" }).then((res) => {
     //   currentNickname = res.data;
@@ -397,14 +416,10 @@ const leaveRoomBtn = (e) => {
     $("#container").css("display", "none");
     $(".m_header").css("display", "flex");
     $('.notice').css("display", "block");
-    html.setValue('')
-    css.setValue('')
-    js.setValue('')
-    html2.setValue('')
-    css2.setValue('')
-    js2.setValue('')
+   
 
     chatSocket.emit('leave_room', {currentNickname})
+    chatSocket.emit("leave_count");
 };
 
 let disconn_user_data;
