@@ -6,6 +6,10 @@ table {
   font-family:'bitbit';
   src:url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff'),url('//cdn.df.nexon.com/img/common/font/DNFBitBit-Regular.woff2') ;
 }
+body{
+  background-image: url('/img/n.jpg');
+  background-size: cover;
+}
 section.notice {
   padding: 120px 0;
 }
@@ -16,7 +20,7 @@ section.notice {
 
 .page-title h3 {
   font-size: 28px;
-  color: #333333;
+  color: #fff;
   font-weight: border;
   text-align: center;
   font-family: 'Pretendard-Regular';
@@ -24,7 +28,7 @@ section.notice {
 
 #board-search .search-window {
   padding: 20px 0;
-  background-color: #333;
+  background-color: rgba(0,0,0,0.8);
   color: white;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -70,16 +74,21 @@ section.notice {
 }
 
 .board-table a {
-  color: #333;
+  color: #fff;
   display: inline-block;
-  line-height: 1.4;
   word-break: break-all;
   vertical-align: middle;
+  font-weight: normal;
 }
 
 .board-table a:hover {
   text-decoration: underline;
 }
+.board-table{
+  background-color: rgba(0,0,0,0.8);
+  color: white;
+}
+
 
 .board-table th {
   text-align: center;
@@ -211,27 +220,27 @@ button {
   padding: 20px;
   border-radius: 6px;
   box-shadow: 0px 4px 8px 0px rgba(31, 41, 55, 0.14);
-  background-color: #fff;
+  background-color: rgba(0,0,0,0.8);
   position: relative;
 }
 
 .pagination__number-indicator {
   position: absolute;
   height: 2px;
-  background-color: #4338ca;
+  background-color: #fff;
   opacity: 0;
-  bottom: 38px;
+  bottom: 36px;
   transition: all 0.2s ease;
 }
 
 .pagination__number {
   font-weight: 600;
   font-size: 16px;
-  color: #d1d5db;
+  color: gray;
 }
 
 .pagination__number--active {
-  color: #111827;
+  color: #fff;
   position: relative;
 }
 
@@ -275,7 +284,7 @@ button {
   width: 9px;
   height: 2px;
   border-radius: 1px;
-  background-color: #4338ca;
+  background-color: #fff;
   display: inline-block;
   position: absolute;
   transform-origin: 0px;
@@ -299,9 +308,13 @@ button {
   width: 8%;
   font-size: 0.9rem;
   height: 40%;
-  background-color: #333;
+  background-color: transparent;
   color: white;
   border-radius: 10px;
+}
+.write:hover{
+  background-color: #fff;
+  color: #000;
 }
 
 /* 모달 스타일 */
@@ -334,9 +347,12 @@ button {
   flex-direction: column;
   justify-content: space-between;
   align-items: flex-end;
-  background-color: #212121;
+  background-color: #000;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  border-top: 1px solid white;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
 }
 .modal-content2{
   height: 13%;
@@ -345,7 +361,9 @@ button {
   flex-direction: column;
   align-items: center;
   color: white;
-  background-color: #212121;
+  background-color: #000;
+  border-left: 1px solid white;
+  border-right: 1px solid white;
 }
 .modal-content3{
   height: 75%;
@@ -410,7 +428,11 @@ button {
   float: right;
   font-size: 0.8vw;
 }
-
+.make-btn:hover{
+  color: white;
+  background-color: #000;
+  border: 1px solid white;
+}
 .filter-button{
   border: 1px solid;
   border-radius: 1rem;
@@ -421,14 +443,17 @@ button {
 }
 
 .lang{
-  margin-left: 11%;
+  margin-left: 21%;
 }
 
 .filter-button.active {
   background-color: white; 
   color: #24283b; 
 }
-
+.filter-button:hover {
+  background-color: white; 
+  color: #000; 
+}
 /* header */
 .m_header {
   display: flex;
@@ -436,7 +461,7 @@ button {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: #333;
+  background-color: rgba(0,0,0,0.5);
   z-index: 999;
   /* border-bottom: 1px solid; */
   height: 80px;
