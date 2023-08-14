@@ -316,6 +316,7 @@ arenaSocket.on("start_timer", () => {
   console.log("같은 방에 있는 다른 사람들의 타이머 작동");
   $startBtn.style.display = "none";
   $readyBtn.style.display = "none";
+  buttonDiv.style.display = "none";
   TIMER();
   question_div.style.display = "block";
   question_div2.style.display = "block";
@@ -335,6 +336,7 @@ $startBtn.addEventListener("click", () => {
     arenaSocket.emit("click_start_btn");
 
     $startBtn.style.display = "none";
+    buttonDiv.style.display = "none";
     TIMER();
     question_div.style.display = "block";
     question_div2.style.display = "block";
