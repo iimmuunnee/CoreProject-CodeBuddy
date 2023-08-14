@@ -7,7 +7,7 @@ const getNamespaceFromURL = (url) => {
     return "/CodeArena";
   }
 };
-// 2023.08.12 22:41
+// 2023.08.14 14:42
 const currentURL = getCurrentURL();
 const namespace = getNamespaceFromURL(currentURL);
 const arenaSocket = io(namespace);
