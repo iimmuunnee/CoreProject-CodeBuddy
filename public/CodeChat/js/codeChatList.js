@@ -196,10 +196,19 @@ codeSend.addEventListener('click',()=>{
   // console.log('내html',html.getValue())
   // console.log('내css',css.getValue())
   // console.log('내js',js.getValue())
+  const checkUser = document.getElementsByName('checkuser')
+  
   let myHtml = html ? html.getValue() : '';
   let myCss = css ? css.getValue() : '';
   let myJs = js ? js.getValue() : '';
+
   chatSocket.emit('codeSendBtn', {html : myHtml, css : myCss, js : myJs})
+  checkUser.forEach((user)=>{
+    if(user.checked == true){
+      console.log('111',user.value)
+      
+    }
+  })
 })
 
 //코드 유저에게 전송
@@ -222,6 +231,8 @@ const updataChatUser = (conn_user, name, roomNum)=>{
       const labelUser = document.createElement('label')
       // 체크박스 속성 값 지정
       checkUser.setAttribute('type','checkbox')
+      checkUser.setAttribute('name','checkuser')
+      checkUser.setAttribute('value', `${userInfo.CONN_USER}`)
       checkUser.className = 'btn-group'
       checkUser.id = `${userInfo.CONN_USER}`
       // 사용자 이름과 체크박스 연동 (for 와 id)
@@ -235,10 +246,39 @@ const updataChatUser = (conn_user, name, roomNum)=>{
       $btn_group.append(checkUser);
       $btn_group.append(labelUser);}
   })
+  
+  const $userTabs = document.querySelector('.tabs')
+  let cnt = 1
+  conn_user.forEach((userInfo)=>{
+    if(userInfo.ROOM_NUMBER == roomNum){
+      if(cnt == 1){
+        $userTabs.innerHTML += `
+        <label class="tab" id="one-tab" for="one">${userInfo.CONN_USER}</label>
+        `      
+      }
+      else if(cnt == 2){
+        $userTabs.innerHTML += `
+        <label class="tab" id="two-tab" for="two">${userInfo.CONN_USER}</label>
+        `      
+      }
+      else{
+        $userTabs.innerHTML += `
+        <label class="tab" id="three-tab" for="three">${userInfo.CONN_USER}</label>
+        `
+      }
+      cnt++
+    }
+  })
+  
 }
+
+
+// codechat 유저 접속시 리스트 업데이트
 chatSocket.on('userConnectInfo',(data)=>{
   let data1 = data.data
   let roomNum = data.roomNum
+  const $tabs = document.querySelector('.tabs')
+  const userTab = $tabs.querySelectorAll('label')
   const userCheck = $btn_group.querySelectorAll('input')
   const userLabel = $btn_group.querySelectorAll('label')
   userCheck.forEach((check)=>{
@@ -246,6 +286,10 @@ chatSocket.on('userConnectInfo',(data)=>{
   })
   userLabel.forEach((label)=>{
     label.remove()
+  })
+  userTab.forEach((tab)=>{
+    console.log('hi',tab)
+    tab.remove()
   })
   updataChatUser(data1,currentNickname,roomNum)
 })
@@ -447,6 +491,8 @@ chatSocket.on("leave_normal_user", ({ disconn_chat_user, room_number }) => {
   console.log('1231241254125',disconn_chat_user, room_number)
   let data1 = disconn_chat_user
   let roomNum = room_number
+  const $tabs = document.querySelector('.tabs')
+  const userTab = $tabs.querySelectorAll('label')
   const userCheck = $btn_group.querySelectorAll('input')
   const userLabel = $btn_group.querySelectorAll('label')
   userCheck.forEach((check)=>{
@@ -454,6 +500,10 @@ chatSocket.on("leave_normal_user", ({ disconn_chat_user, room_number }) => {
   })
   userLabel.forEach((label)=>{
     label.remove()
+  })
+  userTab.forEach((tab)=>{
+    console.log('hi',tab)
+    tab.remove()
   })
   updataChatUser(data1,currentNickname,roomNum)
 });
