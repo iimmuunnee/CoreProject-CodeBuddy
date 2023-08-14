@@ -164,12 +164,10 @@ ChatNamespace.on("connection", (socket) => {
     ({ room_name, nickname: nickname, room_number, room_host, conn_user }) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
-      console.log("enter_room의 nickname", nickname);
       console.log("입장방", room_number);
       socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
 
       const roomInfo = rooms.get(room_number);
-      console.log("enter_room 이벤트에서 roomInfo 제대로가져와지나?", roomInfo);
       if (roomInfo) {
         roomInfo.userCount = (roomInfo.userCount || 0) + 1;
         rooms.set(room_number, roomInfo);
@@ -188,21 +186,6 @@ ChatNamespace.on("connection", (socket) => {
         socket.join(room_number); // 들어가기 전에 방의 인원이 3의 이하면 입장
         console.log("입장한 방의 방장 닉네임", room_host); // 입장한 방의 방장 닉네임 room_host
         ChatNamespace.to(room_number).emit("welcome", { nickname });
-
-        if (room_host != nickname) {
-          ChatNamespace.to(room_number).emit("enter_normal_user", {
-            conn_user,
-            room_host,
-            room_number,
-          });
-          socket.emit('normal_user_ready')
-        } else {
-          ChatNamespace.to(room_number).emit("enter_host_user", {
-            conn_user,
-            room_host,
-            room_number,
-          });
-        }
       }
 
       // socket.to(room_number).emit("welcome", {nickname});
@@ -214,8 +197,9 @@ ChatNamespace.on("connection", (socket) => {
       ChatNamespace.to(room_number).emit("user_count", {
         user_count: countRoomUsers(room_number),
       });
-    }
-  );
+      ChatNamespace.to(room_number).emit('userConnectInfo', {data :conn_user, roomNum : room_number})
+    });
+  // enter_room 끝
 
   socket.on("new_message", ({ currentNickname, message: message }) => {
     let roomNum = socket.room_number;
@@ -290,13 +274,15 @@ ChatNamespace.on("connection", (socket) => {
   });
   // leave_room 이벤트 끝
 
-  socket.on("disconn_arena_user", ({ user_data }) => {
-    // console.log("disconn_arena_user : ", user_data);
+  socket.on("disconn_chat_user", ({ user_data }) => {
     disconn_arena_user = user_data;
+
     // room_number = socket.room_number;
     console.log("disconn_arena_user : ", room_number);
+    console.log('111111111251251',room_number)
+    console.log('123124125',user_data)
     ChatNamespace.to(room_number).emit("leave_normal_user", {
-      disconn_arena_user: user_data,
+      disconn_chat_user: user_data,
       room_number: room_number,
     });
   });
@@ -343,8 +329,11 @@ ChatNamespace.on("connection", (socket) => {
   // 코드 에디터 코드전송
   socket.on('codeSendBtn',(data)=>{
     console.log('받아와라',data)
+    console.log('??',)
     ChatNamespace.to(socket.room_number).emit('codeSend',data)
   })
+
+
 
   socket.on("disconnet", () => {
     console.log("서버 disconnect 이벤트 활성화");

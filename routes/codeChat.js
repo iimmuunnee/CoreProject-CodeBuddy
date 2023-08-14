@@ -168,5 +168,20 @@ router.post('/disconnectUser',(req,res)=>{
 })
 
 
+router.post('/chat_enterRoom',(req,res)=>{
+    let roomNum = req.body.roomNum
+    let sql = 'SELECT * FROM CHAT_USER WHERE ROOM_NUMBER =?'
+    conn.connect()
+    conn.query(sql,[roomNum],(err,result)=>{
+        if(err){
+            console.log('chat_enterRoom select 쿼리문 에러')
+        }
+        else{
+            res.json(JSON.stringify(result))
+        }
+    })
+})
+
+
 
 module.exports = router

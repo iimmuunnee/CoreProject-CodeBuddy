@@ -210,6 +210,46 @@ chatSocket.on('codeSend',(data)=>{
   js2.setValue(data.js)
 })
 
+
+const $btn_group  = document.querySelector('.btn-group')
+/* codeChat 접속시 사용자 정보 */
+const updataChatUser = (conn_user, name, roomNum)=>{
+  console.log('ㄹ아아아아',conn_user)
+  conn_user.forEach((userInfo)=>{
+    if(userInfo.ROOM_NUMBER == roomNum){  // 체크박스
+      const checkUser = document.createElement('input')
+      // 사용자 이름
+      const labelUser = document.createElement('label')
+      // 체크박스 속성 값 지정
+      checkUser.setAttribute('type','checkbox')
+      checkUser.className = 'btn-group'
+      checkUser.id = `${userInfo.CONN_USER}`
+      // 사용자 이름과 체크박스 연동 (for 와 id)
+      labelUser.className = 'btn btn-outline-secondary'
+      labelUser.setAttribute('for',`${userInfo.CONN_USER}`)
+      labelUser.innerText = `${userInfo.CONN_USER}`
+      // if(userInfo.CONN_USER != name){
+      //   $btn_group.append(checkUser);
+      //   $btn_group.append(labelUser);
+      // }
+      $btn_group.append(checkUser);
+      $btn_group.append(labelUser);}
+  })
+}
+chatSocket.on('userConnectInfo',(data)=>{
+  let data1 = data.data
+  let roomNum = data.roomNum
+  const userCheck = $btn_group.querySelectorAll('input')
+  const userLabel = $btn_group.querySelectorAll('label')
+  userCheck.forEach((check)=>{
+    check.remove()
+  })
+  userLabel.forEach((label)=>{
+    label.remove()
+  })
+  updataChatUser(data1,currentNickname,roomNum)
+})
+
 // --------------------지훈 끝--------------------------------
 //
 $make_room_form.addEventListener("submit", handleRoomSubmit);
@@ -262,37 +302,35 @@ const enterRoom = (roomName, roomNum, roomHost) => {
     $mini_room_users.textContent = `${user_count}/4`;
   });
 
+
+
   openarena(); // 방 입장
 };
 
 
-const $leave_room = document.getElementById("leave_room");
+const $leave_room = document.getElementById("leave_room_cc");
 
-const leaveRoomBtn = () => {
+const leaveRoomBtn = (e) => {
+  e.preventDefault()
   console.log("leaveRoomBtn 함수 활성화");
-  let page = document.getElementById("code_arena_zip");
-  page.style.display = "none";
+    console.log("보이는 화면 none 처리");
+    $("#container").css("display", "none");
+    $(".m_header").css("display", "flex");
+    $('.notice').css("display", "block");
 
-  let page2 = document.getElementById("notice");
-  page2.style.display = "block";
-
-  let chat = document.getElementById("chat_open");
-  chat.style.display = "none";
-  let header = document.getElementById("head");
-  header.style.display = "block";
-
-
+    chatSocket.emit('leave_room', {currentNickname})
 };
 
 let disconn_user_data;
 chatSocket.on("leaveuser", (data) => {
-  // console.log("leaveuser의 data", data);
+  console.log("leaveuser의 data", data);
   // data안엔 room_number, user_name
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
   axios.post("/codeChat/disconnectUser", { data }).then((res) => {
     disconn_user_data = JSON.parse(res.data);
     // console.log("이거 뭐임?", disconn_user_data);
-    chatSocket.emit("disconn_arena_user", { user_data: disconn_user_data });
+    console.log('머야',res.data)
+    chatSocket.emit("disconn_chat_user", { user_data: disconn_user_data });
     // chatSocket.emit("disconn_arena_user", {disconn_user_data})
   });
 
@@ -303,7 +341,7 @@ chatSocket.on("leaveuser", (data) => {
   });
 });
 
-// $leave_room.addEventListener("click", leaveRoomBtn);
+$leave_room.addEventListener("click", leaveRoomBtn);
 
 // 인원 수 초과 됐을 때
 chatSocket.on("user_full", () => {
@@ -404,88 +442,28 @@ chatSocket.on("welcome", ({ nickname }) => {
 //   updateArenaNickname(conn_user, room_host, room_number);
 // });
 
-
-// chatSocket.on("leave_normal_user", ({ disconn_arena_user, room_number }) => {
-//   // console.log("leave_normal_user");
-//   $("div").remove(".c_a_p_u2");
-//   updateArenaNickname2(disconn_arena_user, room_number);
-// });
+//여기요
+chatSocket.on("leave_normal_user", ({ disconn_chat_user, room_number }) => {
+  console.log('1231241254125',disconn_chat_user, room_number)
+  let data1 = disconn_chat_user
+  let roomNum = room_number
+  const userCheck = $btn_group.querySelectorAll('input')
+  const userLabel = $btn_group.querySelectorAll('label')
+  userCheck.forEach((check)=>{
+    check.remove()
+  })
+  userLabel.forEach((label)=>{
+    label.remove()
+  })
+  updataChatUser(data1,currentNickname,roomNum)
+});
 
 chatSocket.on("get_out", () => {
   leaveRoomBtn();
 });
 
-const updateArenaNickname = (conn_user, room_host, room_number) => {
-  // console.log("conn_user", conn_user);
-  const $c_a_p_user = document.querySelector(".c_a_p_user");
-  conn_user.forEach((userInfo) => {
-    const newUser = document.createElement("div");
-    if (userInfo.ROOM_NUMBER == room_number) {
-      if (room_host == userInfo.CONN_USER) {
-        // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 방장일 때
-        newUser.className = `c_a_p_u1`;
-        newUser.innerHTML += `
-        <div class="u_info">
-        <div class="u_i_img">방장</div>
-        <div class="u_i_nick">${room_host}</div>
-        </div>
-        <div class="u_remain">
-        <div div class="u_r_ques">
-        <div class="u_r_circle" style="display:none;">ok</div>
-        </div>
-        </div>
-        `;
-        $c_a_p_user.append(newUser);
-      } else {
-        // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
-        newUser.className = `c_a_p_u2`;
-        newUser.innerHTML += `
-        <div class="u_info">
-        <div class="u_i_img">일반</div>
-        <div class="u_i_nick">${userInfo.CONN_USER}</div>
-        </div>
-        <div class="u_remain">
-        <div div class="u_r_ques">
-        <div class="u_r_circle" style="display:none;">ok</div>
-        </div>
-        </div>
-        `;
-        $c_a_p_user.append(newUser);
-      }
-    }
-  });
-};
 
-const updateArenaNickname2 = (conn_user, room_number) => {
-  console.log("updateArenaNickname2 함수 실행");
-  console.log("conn_user", conn_user);
-  const $c_a_p_user = document.querySelector(".c_a_p_user");
 
-  let cnt = 1;
-  conn_user.forEach((userInfo) => {
-    const newUser = document.createElement("div");
-    if (userInfo.ROOM_NUMBER == room_number) {
-      if (cnt != 1) {
-        // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
-        newUser.className = `c_a_p_u2`;
-        newUser.innerHTML += `
-          <div class="u_info">
-          <div class="u_i_img">일반</div>
-          <div class="u_i_nick">${userInfo.CONN_USER}</div>
-          </div>
-          <div class="u_remain">
-          <div div class="u_r_ques">
-          <div class="u_r_circle" style="display:none;">ok</div>
-          </div>
-          </div>
-          `;
-        $c_a_p_user.append(newUser);
-      } else {
-        cnt++;
-      }
-    }
-  });
-};
 
 // chatSocket.on("user_count", ({ user_count }) => {
 //   // console.log(`user_count 이벤트의 사용자 수: ${user_count}`);

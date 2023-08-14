@@ -234,15 +234,8 @@
 
           <!-- 접속자 전송 체크박스 -->
           <div class="checkbox_style">
-            <div class="btn-group " role="group" aria-label="Basic checkbox toggle button group">
-              <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off">
-              <label class="btn btn-outline-secondary" for="btncheck1">접속자 1</label>
-
-              <input type="checkbox" class="btn-check" id="btncheck2" autocomplete="off">
-              <label class="btn btn-outline-secondary" for="btncheck2">접속자 2</label>
-
-              <input type="checkbox" class="btn-check" id="btncheck3" autocomplete="off">
-              <label class="btn btn-outline-secondary" for="btncheck3">접속자 3</label>
+            <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+              <!-- checkbox 접속자 -->
             </div>
           </div>
           <!-- 전송버튼 -->
@@ -526,21 +519,21 @@
 
   <script>
     // 1. 방 생성 후 code mirror 열기
-    $(document).on("click", ".make-btn", (e) => {
+    /* $(document).on("click", ".make-btn", (e) => {
       console.log("팝업창 열기");
       $("#container").css("display", "flex");
       $(".m_header").css("display", "none");
       $('.notice').css("display", "none");
       $('.chat_open').css('display', 'block')
-    });
+    }); */
 
     // 2. code mirror -> CodeChat 목록페이지 이동
-    $(document).on("click", "#leave_room_cc", (e) => {
+    /* $(document).on("click", "#leave_room_cc", (e) => {
       console.log("보이는 화면 none 처리");
       $("#container").css("display", "none");
       $(".m_header").css("display", "flex");
       $('.notice').css("display", "block");
-    });
+    }); */
 
     // 1. 팝업창 열기
     $(document).on("click", ".chat_open", (e) => {
