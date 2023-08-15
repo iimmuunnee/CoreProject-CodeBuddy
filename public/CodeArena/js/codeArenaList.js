@@ -1,4 +1,3 @@
-
 const getCurrentURL = () => {
   return window.location.href;
 };
@@ -32,7 +31,7 @@ const $c_content_num = $c_content_name.querySelector(".c_content_num"); // 방 �
 const $mini_room_users = document.getElementById("$mini_room_users"); // 미니 방 인원수 적는 곳
 const $c_a_u_r_name2 = document.querySelector(".c_a_u_r_name2");
 
-const openarena = (user) => {
+const openarena = () => {
   let page = document.getElementById("code_arena_zip");
   page.style.display = "block";
 
@@ -80,6 +79,7 @@ arenaSocket.on("admin_status", ({ isAdmin }) => {
   if (isAdmin) {
     console.log("이 방의 방장입니다!");
     arenaSocket["isAdmin"] = isAdmin;
+    buttonDiv.style.display = "block";
     $startBtn.style.display = "block";
   }
 });
@@ -237,6 +237,7 @@ const enterRoom = (roomName, roomNum, roomHost) => {
     // arenaSocket.emit("conn_user", data) // 전체 유저가 접속한 방번호와 닉네임 객체
   });
 
+  arenaSocket["roomNum"] = roomNum;
   axios.post("/codeArena/enterRoom", { roomNum }).then((res) => {
     let data = JSON.parse(res.data);
     currentNickname = data.name;
@@ -330,17 +331,97 @@ arenaSocket.on("start_timer", () => {
 }`);
 });
 
+// 일반 사용자 준비 완료 / 취소 기능
+
+// 레디 버튼을 눌렀을 때 실행되는 함수
+const ready = () => {
+  console.log("ready함수안에서 누른사람 닉네임은? ", currentNickname);
+  arenaSocket.emit("click_ready_btn", { nickName: currentNickname });
+};
+// 클릭 이벤트 리스너 등록
+$readyBtn.addEventListener("click", ready);
+
+arenaSocket.on("my_ready", (data) => {
+  axios.post("/codeArena/codeReady", { data }).then((res) => {
+    let data = JSON.parse(res.data);
+    console.log("my_ready의 data", data);
+    arenaSocket.emit("update_ready", data[0]);
+  });
+});
+
+// 준비 / 준비 취소 기능
+arenaSocket.on("ready_on", (data) => {
+  let $normal_user = document.querySelectorAll(".normal_user"); // 들어온 일반유저 닉네임 태그 전부 가져오기
+  let click_nickname = data.nickName; // 클릭한 사용자의 닉네임
+  let roomNum = data.roomNum; // 클릭한 사용자가 속해있는 방 번호
+  let isReady = data.isReady;
+  console.log("ready_on이벤트에서 ", click_nickname);
+  console.log("$normal_user", $normal_user);
+
+  $normal_user.forEach((user_nick) => {
+    // user_nick : 각 일반유저의 닉네임
+    console.log("forEeach 안에서 user_nick", user_nick.dataset.user);
+    let foreach_nickname = user_nick.dataset.user;
+
+    if (isReady == "Y") {
+      // 준비X => 준비
+      if (click_nickname == foreach_nickname) {
+        // 클릭한 사용자만 활성화 하기위해
+        let ready_on = document.querySelector(`.${foreach_nickname}`);
+        console.log("if 성공~", ready_on);
+        ready_on.style.display = "block"; // 준비 표시 활성화
+        arenaSocket.emit("ready_count_up"); // 현재 준비한 인원수+ 체크
+      }
+    } else {
+      // 준비 => 준비X
+      if (click_nickname == foreach_nickname) {
+        // 클릭한 사용자만 활성화 하기위해
+        let ready_on = document.querySelector(`.${foreach_nickname}`);
+        console.log("if 성공~", ready_on);
+        ready_on.style.display = "none"; // 준비 표시 비활성화
+        // 여기에다가 DB USER_READY를 N로 변경
+        arenaSocket.emit("ready_count_down"); // 현재 준비한 인원수- 체크
+      }
+    }
+  });
+});
+
+let ready_count;
+let currentUsers;
+
+arenaSocket.on("user_count", (user_count) => {
+  currentUsers = user_count.user_count;
+  console.log("user_count 스타트버튼에서 쓸거임 : ", currentUsers);
+});
+
+arenaSocket.on("ready_count", () => {
+  console.log("ready_count로 보낼  roomNum", arenaSocket.roomNum);
+  axios
+    .post("/codeArena/readyCount", { roomNum: arenaSocket.roomNum })
+    .then((res) => {
+      let arenaUsers = JSON.parse(res.data);
+      console.log("가져와줘 제발", arenaUsers[0].COUNT);
+      ready_count = arenaUsers[0].COUNT;
+    });
+});
+
 // 방장이 start 버튼을 눌렀을 때
 $startBtn.addEventListener("click", () => {
   if (arenaSocket.isAdmin) {
-    console.log("방장이 start를 눌렀습니다");
-    arenaSocket.emit("click_start_btn");
+    console.log("스타트 눌렀을 때 현재 일반인수", currentUsers - 1);
+    console.log("스타트 눌렀을 때 현재 준비완료수", ready_count);
+    currentUsers = parseInt(currentUsers);
+    ready_count = parseInt(ready_count);
+    if (currentUsers - 1 == ready_count) {
+      console.log("방장이 start를 눌렀습니다");
+      arenaSocket.emit("click_start_btn");
 
-    $startBtn.style.display = "none";
-    buttonDiv.style.display = "none";
-    TIMER();
-    question_div.style.display = "block";
-    question_div2.style.display = "block";
+      $startBtn.style.display = "none";
+      buttonDiv.style.display = "none";
+      TIMER();
+      question_div.style.display = "block";
+      question_div2.style.display = "block";
+    }
   }
   //code editor 기본 값 입력
   js.setValue(`function codeBuddy(n){
@@ -349,64 +430,6 @@ $startBtn.addEventListener("click", () => {
       return result;
   }`);
 });
-
-
-// 일반 사용자 준비 완료 / 취소 기능
-
-// 레디 버튼을 눌렀을 때 실행되는 함수
-const ready = () => {
-  console.log("ready함수안에서 누른사람 닉네임은? ", currentNickname);
-  arenaSocket.emit("click_ready_btn", {nickName : currentNickname})
-
-
-}
-// 클릭 이벤트 리스너 등록
-$readyBtn.addEventListener("click", ready)
-
-arenaSocket.on("my_ready", (data) => {
-  axios.post("/codeArena/codeReady", {data}).then((res) => {
-    let data = JSON.parse(res.data)
-    console.log("my_ready의 data", data);
-    arenaSocket.emit("update_ready", data[0])
-  })
-})
-
-// 준비 / 준비 취소 기능
-arenaSocket.on("ready_on", (data) => {
-  let $normal_user = document.querySelectorAll(".normal_user") // 들어온 일반유저 닉네임 태그 전부 가져오기
-  let click_nickname = data.nickName // 클릭한 사용자의 닉네임
-  let roomNum = data.roomNum // 클릭한 사용자가 속해있는 방 번호
-  let isReady = data.isReady
-  console.log("ready_on이벤트에서 ", click_nickname);
-  console.log("$normal_user", $normal_user);
-
-  $normal_user.forEach((user_nick) => { // user_nick : 각 일반유저의 닉네임
-    console.log("forEeach 안에서 user_nick", user_nick.dataset.user);
-    let foreach_nickname = user_nick.dataset.user
-
-    if (isReady == "Y") { // 준비X => 준비
-      if (click_nickname == foreach_nickname) { // 클릭한 사용자만 활성화 하기위해
-        let ready_on = document.querySelector(`.${foreach_nickname}`)
-        console.log("if 성공~",ready_on);
-        ready_on.style.display = "block" // 준비 표시 활성화
-        arenaSocket.emit("ready_count_up") // 현재 준비한 인원수+ 체크
-      }
-    }
-    else { // 준비 => 준비X
-      if (click_nickname == foreach_nickname) { // 클릭한 사용자만 활성화 하기위해
-        let ready_on = document.querySelector(`.${foreach_nickname}`)
-        console.log("if 성공~",ready_on);
-        ready_on.style.display = "none" // 준비 표시 비활성화
-        // 여기에다가 DB USER_READY를 N로 변경
-        arenaSocket.emit("ready_count_down") // 현재 준비한 인원수- 체크
-      }
-    }
-  })
-})
-
-arenaSocket.on("ready_count", (data) => {
-  console.log("ready_count에서의 현재 준비한 사람 수", data.count);
-})
 
 const $leave_room = document.getElementById("leave_room");
 
@@ -423,9 +446,10 @@ const leaveRoomBtn = () => {
   let header = document.getElementById("head");
   header.style.display = "block";
 
-
   $startBtn.style.display = "none";
   $readyBtn.style.display = "none";
+
+  ready_count = 0;
 
   clearInterval(PLYATIME); // 기존의 타이머 인터벌 초기화
 
@@ -444,9 +468,9 @@ const leaveRoomBtn = () => {
 
 let disconn_user_data;
 arenaSocket.on("leaveuser", (data) => {
-  console.log("리브유저",data);
+  console.log("리브유저", data);
 
-  axios.post("/codeArena/updateReady", {data})
+  axios.post("/codeArena/updateReady", { data });
   // console.log("leaveuser의 data", data);
   // data안엔 room_number, user_name
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저 나감
@@ -543,22 +567,22 @@ arenaSocket.on("welcome", ({ nickname }) => {
 arenaSocket.on("enter_host_user", ({ conn_user, room_host, room_number }) => {
   const $c_a_p_user = document.querySelector(".c_a_p_user");
   const $divs = $c_a_p_user.querySelectorAll("div");
+  // $readyBtn.style.display = "none";
+  // $startBtn.style.display = "block";
   $divs.forEach(($div) => {
     $div.remove();
   });
   // userList는 전체 유저가 입장한 방번호와 닉네임을 객체로 배열에 넣은 것
-  // console.log("enter_host_user", conn_user);
   // room_number는 입장하는 방의 번호
-  // console.log("enter_host_user", room_host);
   // room_host는 입장하는 방을 만든 이
-  // console.log("enter_host_user", room_number);
   updateArenaNickname(conn_user, room_host, room_number);
 });
 
 arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
   const $c_a_p_user = document.querySelector(".c_a_p_user");
   const $divs = $c_a_p_user.querySelectorAll("div");
-
+  // $readyBtn.style.display = "block";
+  // $startBtn.style.display = "none";
   $divs.forEach(($div) => {
     $div.remove();
   });
@@ -566,6 +590,7 @@ arenaSocket.on("enter_normal_user", ({ conn_user, room_host, room_number }) => {
 });
 
 arenaSocket.on("normal_user_ready", () => {
+  buttonDiv.style.display = "block";
   $readyBtn.style.display = "block";
   $startBtn.style.display = "none";
 });
@@ -602,7 +627,8 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         `;
         $c_a_p_user.append(newUser);
       } else {
-        if(userInfo.USER_READY == "N"){ // 준비 안했을 때
+        if (userInfo.USER_READY == "N") {
+          // 준비 안했을 때
           // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
           newUser.className = `c_a_p_u2`;
           newUser.innerHTML += `
@@ -617,8 +643,8 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
           </div>
           `;
           $c_a_p_user.append(newUser);
-        }
-        else { // 기존에 준비했던 사람
+        } else {
+          // 기존에 준비했던 사람
           // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
           newUser.className = `c_a_p_u2`;
           newUser.innerHTML += `
@@ -649,7 +675,7 @@ const updateArenaNickname2 = (conn_user, room_number) => {
     const newUser = document.createElement("div");
     if (userInfo.ROOM_NUMBER == room_number) {
       if (cnt != 1) {
-        if (userInfo.USER_READY == "N"){
+        if (userInfo.USER_READY == "N") {
           // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
           newUser.className = `c_a_p_u2`;
           newUser.innerHTML += `
@@ -659,13 +685,12 @@ const updateArenaNickname2 = (conn_user, room_number) => {
             </div>
             <div class="u_remain">
             <div div class="u_r_ques">
-            <div class="u_r_circle" style="display:none;">ok</div>
+            <div class="u_r_circle ${userInfo.CONN_USER}" style="display:none;">ok</div>
             </div>
             </div>
             `;
           $c_a_p_user.append(newUser);
-        }
-        else{
+        } else {
           // 들어오는 사람이 방을 만든 사람의 닉네임과 같다면? = 일반일 때
           newUser.className = `c_a_p_u2`;
           newUser.innerHTML += `
@@ -675,14 +700,13 @@ const updateArenaNickname2 = (conn_user, room_number) => {
             </div>
             <div class="u_remain">
             <div div class="u_r_ques">
-            <div class="u_r_circle" style="display:block;">ok</div>
+            <div class="u_r_circle ${userInfo.CONN_USER}" style="display:block;">ok</div>
             </div>
             </div>
             `;
           $c_a_p_user.append(newUser);
         }
-      } 
-      else {
+      } else {
         cnt++;
       }
     }
@@ -921,5 +945,3 @@ $("#login_btn").on("click", () => {
 });
 
 // Code Arena Code Editor -----지훈--------
-
-
