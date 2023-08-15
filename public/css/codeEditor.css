@@ -339,6 +339,8 @@ border-color: white;
 .checkbox_style .btn-outline-secondary{
 color : white;
 }
+
+
 .text-center{
     border-radius: 0.375rem;
     height: 7%;
@@ -354,6 +356,20 @@ color : white;
 
 .text-center a{
     color: white;
+}
+
+
+.text-left{
+    border-radius: 0.375rem;
+    height: 7%;
+    width: 13%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 2%;
+    right: 15.2%;
+    background-color: #24283b;
 }
 
 

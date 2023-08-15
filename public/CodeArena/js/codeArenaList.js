@@ -460,7 +460,7 @@ arenaSocket.on("leaveuser", (data) => {
   axios.post("/codeArena/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
     arenaSocket.emit("userCount", { data: data.result });
-    // location.reload();
+    location.reload();
   });
 });
 

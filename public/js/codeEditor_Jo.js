@@ -1,3 +1,12 @@
+function resetEditor(editor) {
+    if (editor) {
+        editor.setValue(''); // 에디터 내용을 빈 문자열로 설정
+    }
+}
+
+const codeStarting = document.querySelector('#codeStart')
+const codeStarting2 = document.querySelector('#codeStart2')
+
 const texthtml = document.querySelector('#html');
 const textcss = document.querySelector('#css');
 const textjs = document.querySelector('#js');
@@ -61,26 +70,26 @@ tabItems.forEach((item, index) => {
         if (index === 0) {
             if (!html) {
                 html = createEditor(texthtml, 'html');
-                html.on('change', updateOutput);
+                codeStarting.addEventListener('click', updateOutput);
             }
             setActiveEditor(html);
         } else if (index === 1) {
             if (!css) {
                 css = createEditor(textcss, 'text/css');
-                css.on('change', updateOutput);
+                codeStarting.addEventListener('click', updateOutput);
             }
             setActiveEditor(css);
         } else if (index === 2) {
             if (!js) {
                 js = createEditor(textjs, 'text/javascript');
-                js.on('change', updateOutput);
+                codeStarting.addEventListener('click', updateOutput);
             }
             setActiveEditor(js);
         }
 
         item.classList.add('active');
         contentContainers[index].classList.add('target');
-        updateOutput();
+        // updateOutput();
     });
 });
 
@@ -103,10 +112,43 @@ function createEditor2(target, mode) {
         foldGutter: true,
     });
 }
-
-let html2 = null;
+ let html2 = null;
 let css2 = null;
 let js2 = null;
+
+html2 = CodeMirror.fromTextArea(texthtml2, {
+    mode: 'html',
+    theme: 'darcula',
+    lineNumbers: true,
+    spellcheck: true,
+    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+    foldGutter: true,
+});
+
+css2 = CodeMirror.fromTextArea(textcss2, {
+    mode: 'text/css',
+    theme: 'darcula',
+    lineNumbers: true,
+    spellcheck: true,
+    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+    foldGutter: true,
+});
+
+js2 = CodeMirror.fromTextArea(textjs2, {
+    mode: 'text/javascript',
+    theme: 'darcula',
+    lineNumbers: true,
+    spellcheck: true,
+    extraKeys: { 'Ctrl-Space': 'autocomplete' },
+    gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+    foldGutter: true,
+});
+
+
+
+
 
 function updateOutput2() {
     const outputHTML2 = html2 ? html2.getValue() : '';
@@ -135,11 +177,54 @@ function setActiveEditor2(editor2) {
     }
 }
 
+// 지훈 수정중
 
 
 
+// const tabItems2 = document.querySelectorAll('.tab-container__item2');
+// const contentContainers2 = document.querySelectorAll('.content-container__content2');
+
+// tabItems2.forEach((item, index) => {
+//     item.addEventListener('click', (e) => {
+//         e.preventDefault();
+//         console.log('뭐가뜨나',item, index)
+//         tabItems2.forEach((title) => {
+//             title.classList.remove('active');
+//         });
+//         setActiveEditor2(null);
+
+//         if (index === 0) {
+//             if (!html2) {
+//                 html2.on('change', updateOutput2);
+//             }
+//             setActiveEditor2(html2);
+//         } else if (index === 1) {
+//             if (!css2) {
+//                 css2.on('change', updateOutput2);
+//             }
+//             setActiveEditor2(css2);
+//         } else if (index === 2) {
+//             if (!js2) {
+//                 js2.on('change', updateOutput2);
+//             }
+//             setActiveEditor2(js2);
+//         }
+
+//         item.classList.add('active');
+//         contentContainers2[index].classList.add('target');
+//         updateOutput2();
+
+//     });
+// });
 
 
+
+// 지훈 수정끝
+
+codeStarting2.addEventListener('click', (e)=>{
+    e.preventDefault()
+    updateOutput2()
+})
 
 const tabItems2 = document.querySelectorAll('.tab-container__item2');
 const contentContainers2 = document.querySelectorAll('.content-container__content2');
@@ -153,36 +238,31 @@ tabItems2.forEach((item, index) => {
         setActiveEditor2(null);
 
         if (index === 0) {
-            if (!html2) {
-                html2 = createEditor2(texthtml2, 'html');
-                html2.on('change', updateOutput2);
-            }
+            // if (!html2) {
+            //     html2 = createEditor2(texthtml2, 'html');
+            //     html2.on('change', updateOutput2);
+            // }
             setActiveEditor2(html2);
         } else if (index === 1) {
-            if (!css2) {
-                css2 = createEditor2(textcss2, 'text/css');
-                css2.on('change', updateOutput2);
-            }
+            // if (!css2) {
+            //     css2 = createEditor2(textcss2, 'text/css');
+            //     css2.on('change', updateOutput2);
+            // }
             setActiveEditor2(css2);
         } else if (index === 2) {
-            if (!js2) {
-                js2 = createEditor2(textjs2, 'text/javascript');
-                js2.on('change', updateOutput2);
-            }
+            // if (!js2) {
+            //     js2 = createEditor2(textjs2, 'text/javascript');
+            //     js2.on('change', updateOutput2);
+            // }
             setActiveEditor2(js2);
         }
 
         item.classList.add('active');
         contentContainers2[index].classList.add('target');
-        updateOutput2();
+        // updateOutput2();
 
     });
 });
-
-
-
-
-
 
 
 

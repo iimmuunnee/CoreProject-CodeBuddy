@@ -136,14 +136,10 @@ const updateArenaRoom = (roomList) => {
         $tbody.prepend(newRow);
       }
 
-    // axios.get("/room/createRoom", { room: "hi" }).then((res) => {
-    //   currentNickname = res.data;
-    // });
 
     clickEventHandler = handleClick;
     $tbody.addEventListener("click", clickEventHandler);
 
-    // console.log("updateArenaRoom", roomInfo.USER_COUNT);
     $c_content_num.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 펼쳤을 때 인원 수
     $mini_room_users.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 접었을 때 인원 수
   });
@@ -416,11 +412,25 @@ const leaveRoomBtn = (e) => {
     $("#container").css("display", "none");
     $(".m_header").css("display", "flex");
     $('.notice').css("display", "block");
+
+    
+
+    console.log('??????')
    
 
     chatSocket.emit('leave_room', {currentNickname})
     chatSocket.emit("leave_count");
+    chatSocket.emit('textReset')
 };
+
+chatSocket.on('resetStart',()=>{  
+    resetEditor(html);
+    resetEditor(css);
+    resetEditor(js);
+    resetEditor(html2);
+    resetEditor(css2);
+    resetEditor(js2);
+})
 
 let disconn_user_data;
 chatSocket.on("leaveuser", (data) => {
@@ -438,7 +448,7 @@ chatSocket.on("leaveuser", (data) => {
   axios.post("/codeChat/leave", { data }).then((res) => {
     let data = JSON.parse(res.data);
     chatSocket.emit("userCount", { data: data.result });
-    // location.reload();
+    location.reload();
   });
 });
 

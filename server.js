@@ -340,6 +340,10 @@ ChatNamespace.on("connection", (socket) => {
     })
   })
 
+  socket.on('textReset',()=>{
+    socket.emit('resetStart')
+  })
+
 
   socket.on("disconnet", () => {
     console.log("서버 disconnect 이벤트 활성화");
