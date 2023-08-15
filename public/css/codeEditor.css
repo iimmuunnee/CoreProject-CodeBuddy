@@ -119,9 +119,10 @@ li {
     text-decoration: none;
     margin: 15px;
 }
-.content-container {
-    /* padding: 10px; */
-}
+
+/* .content-container {
+    padding: 10px;
+} */
 .content-container__content {
     display: none;
 }
@@ -181,9 +182,9 @@ li {
     text-decoration: none;
     margin: 15px;
 }
-.content-container {
-    /* padding: 10px; */
-}
+/* .content-container {
+    padding: 10px;
+} */
 .content-container__content2 {
     display: none;
 }
@@ -231,9 +232,9 @@ font-weight: 700;
 text-decoration: none;
 margin: 15px;
 }
-.content-container {
-/* padding: 10px; */
-}
+/* .content-container {
+padding: 10px;
+} */
 .content-container__content3 {
 display: none;
 }
