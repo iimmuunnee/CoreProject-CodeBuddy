@@ -1,4 +1,5 @@
 
+
 const getCurrentURL = () => {
   return window.location.href;
 };
@@ -422,6 +423,7 @@ arenaSocket.on("ready_count", () => {
 
 // 방장이 start 버튼을 눌렀을 때
 $startBtn.addEventListener("click", () => {
+  
   if (arenaSocket.isAdmin) {
     console.log("스타트 눌렀을 때 현재 일반인수", currentUsers - 1);
     console.log("스타트 눌렀을 때 현재 준비완료수", ready_count);
@@ -452,6 +454,12 @@ $startBtn.addEventListener("click", () => {
   }`);
 });
 
+//방장이 Game 시작시 모든유저 ready Y -> N 변경
+arenaSocket.on('gameStart',(roomNum)=>{
+  axios.post('/codeArena/gameStart', {roomNum})
+})
+
+// 방장이 Game 시작시 모든유저 ready 표시 해제
 arenaSocket.on("remove_ok", () => {
   let green_ok = document.querySelectorAll(".u_r_circle")
   green_ok.forEach((ok) => {
@@ -861,27 +869,30 @@ const outPut = document.querySelector('#live')
           // script 태그 생성
           const scriptElement = document.createElement("script");
           // 생성한 script 태그안에 사용자가 입력한 값 추가
-          scriptElement.innerHTML = `var n = ${resultInput};
-                                     var outPut = ${resultOutput};
+          scriptElement.innerHTML = `
+                                     var n = ${resultInput};
+                                     var outPut1 = ${resultOutput};
                                      var name = '${currentNickname}';
                                      var startResult;
                                      ${jsValue};
                                      try{
                                       console.log('코드실행중');
                                       if(typeof codeBuddy !== 'undefined'){
-                                        if(codeBuddy(n) == outPut){
+                                        if(codeBuddy(n) == outPut1){
+                                          console.log('잘되나?')
                                           let data = startResult = '작성한 함수에' + n + '를 대입한 결과는 ' + codeBuddy(n) + '입니다.'
-                                          document.body.innerHTML = '정답입니다.<br>'+data
-                                          var parent = window.parent.document;
-                                          let userS = parent.querySelectorAll('.u_i_nick')
+                                          let userS = document.querySelectorAll('.u_i_nick')
                                           userS.forEach((user)=>{
-                                            console.log(user.dataset.user)
+                                            if(name == user.dataset.user){                                              
+                                              arenaSocket.emit('please', name)
+                                              arenaSocket.emit('pleaesRoomNum')
+                                            }
                                           })
                                           
                                         }
                                         else{                                            
                                           let data = startResult = '작성한 함수에' + n + '를 대입한 결과는 ' + codeBuddy(n) + '입니다.'
-                                          document.body.innerHTML = '틀렸습니다.<br>'+data 
+                                          console.log('문제있나')
                                         }
                                       }
                                       else {
@@ -896,11 +907,34 @@ const outPut = document.querySelector('#live')
                                       
           
           // script를 body 태그 안에 추가(script가 정상작동하게 하기위함)
-          outPut.contentWindow.document.body.appendChild(scriptElement);
+          document.body.appendChild(scriptElement);
           
           
         })
     })
+
+arenaSocket.on('testSucess',(data)=>{
+  let name = data
+  let check = document.querySelector(`.${data}`)
+  console.log('뭐가문젠데',check)
+  check.style.display = 'block'
+})
+
+arenaSocket.on('okRoomNum',(data)=>{
+  let data1 = data.roomNum
+  axios.post('/codeArena/testSucess',{roomNum:data1, name:currentNickname})
+    .then(res=>{
+      let data = JSON.parse(res.data)
+      data = data.COUNT
+      if(data == currentUsers){
+        arenaSocket.emit('gameSet')
+      }
+    })
+})
+
+arenaSocket.on('gameClear',()=>{
+  alert('게임종료')
+})
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // 페이징 js
