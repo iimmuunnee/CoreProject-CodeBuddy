@@ -198,3 +198,5 @@ $(function () {
     $("#chat_mini").css("display", "none");
     $("#chat").css("display", "block");
   });
+
+  

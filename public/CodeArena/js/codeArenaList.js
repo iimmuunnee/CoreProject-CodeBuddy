@@ -553,8 +553,10 @@ const addNotice = (message) => {
   console.log("addNotice 함수 실행");
   const $div = document.createElement("div");
   // console.log("message : ", message);
+  $div.id = 'notice'
   $div.textContent = message;
   $c_main_content.appendChild($div);
+  scrollToBottom()
 };
 
 const handleMessageSubmit = (event) => {
@@ -574,6 +576,7 @@ const handleMessageSubmit = (event) => {
   }
 
   $form_input.value = ""; // 입력 창 초기화
+  scrollToBottom()
 };
 // ---------------함수 정의 끝------------------
 
@@ -581,20 +584,29 @@ arenaSocket.on("connect", () => {
   console.log("프론트와 서버와의 연결 성공");
 });
 
+function scrollToBottom() {
+  $c_main_content.scrollTop = $c_main_content.scrollHeight;
+}
+
 arenaSocket.on("my_message", ({ currentNickname, message }) => {
   console.log("내 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
+  const $Div = document.createElement('div')
+  $Div.id ='my_M'
   $div.id = "my_message"
-  $div.textContent = `(본인)${currentNickname} : ${message}`;
-  $c_main_content.appendChild($div);
+  $div.textContent = `${message}`;
+  $Div.appendChild($div);
+  $c_main_content.appendChild($Div);
+  scrollToBottom()
 });
 
 arenaSocket.on("other_message", ({ currentNickname, message }) => {
   console.log("다른사람 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
   $div.id = "other_message"
-  $div.textContent = `(상대)${currentNickname} : ${message}`;
+  $div.textContent = `${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
+  scrollToBottom()
 });
 
 // 프론트로 온 이벤트 감지

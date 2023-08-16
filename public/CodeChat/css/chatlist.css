@@ -570,3 +570,31 @@ button {
 .tabs{
   height:42px;
 }
+
+
+#my_M{
+  width:100%;
+}
+
+#my_message{
+display: inline-block;
+width: 50%; /* 적절한 너비 설정 */
+margin: 10px 0;
+padding: 10px;
+border-radius: 6px;
+float: right;
+background-color: #00aaff;
+color: #fff;
+clear: both;
+}
+#other_message{
+  display: inline-block;
+width: 50%; /* 적절한 너비 설정 */
+margin: 10px 0;
+padding: 10px;
+border-radius: 6px;
+float: left;
+background-color: #ffaa00;
+color: #fff;
+clear: both;
+}
