@@ -584,6 +584,7 @@ arenaSocket.on("connect", () => {
 arenaSocket.on("my_message", ({ currentNickname, message }) => {
   console.log("내 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
+  $div.id = "my_message"
   $div.textContent = `(본인)${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
 });
@@ -591,6 +592,7 @@ arenaSocket.on("my_message", ({ currentNickname, message }) => {
 arenaSocket.on("other_message", ({ currentNickname, message }) => {
   console.log("다른사람 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
+  $div.id = "other_message"
   $div.textContent = `(상대)${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
 });
