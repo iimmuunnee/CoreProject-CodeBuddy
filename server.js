@@ -484,6 +484,7 @@ ArenaNamespace.on("connection", (socket) => {
     }
   );
 
+  // 아레나
   socket.on("new_message", ({ currentNickname, message: message }) => {
     let roomNum = socket.room_number;
     console.log(socket.nickname);
@@ -499,6 +500,7 @@ ArenaNamespace.on("connection", (socket) => {
   socket.on("click_start_btn", () => {
     console.log("서버 click_start_btn");
     let roomNum = socket.room_number;
+    ArenaNamespace.to(roomNum).emit("remove_ok")
     socket.broadcast.to(roomNum).emit("start_timer");
   });
 
