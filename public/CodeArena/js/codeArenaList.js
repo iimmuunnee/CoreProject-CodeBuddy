@@ -651,7 +651,7 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         newUser.innerHTML += `
         <div class="u_info">
         <div class="u_i_img">방장</div>
-        <div class="u_i_nick">${userInfo.CONN_USER}</div>
+        <div class="u_i_nick" data-user="${userInfo.CONN_USER}">${userInfo.CONN_USER}</div>
         </div>
         <div class="u_remain">
         <div div class="u_r_ques">
