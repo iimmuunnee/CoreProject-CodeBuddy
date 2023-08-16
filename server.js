@@ -83,7 +83,7 @@ app.use("/codeArena", codeArena);
 
 // "Chat" namespace에 접속한 클라이언트 처리-----------------------------------------------------
 ChatNamespace.on("connection", (socket) => {
-  console.log("Code 네임스페이스에 클라이언트가 연결되었습니다.");
+  console.log("Chat 네임스페이스에 클라이언트가 연결되었습니다.");
 
   const usedRoomNumbers = new Set(); // 사용된 방 번호를 저장하는 Set
   const rooms = new Map(); // 방 정보를 저장할 Map
@@ -168,7 +168,7 @@ ChatNamespace.on("connection", (socket) => {
       console.log("서버 enter_room 이벤트 활성화");
       // console.log("enter_room의 room_name", room_name);
       console.log("입장방", room_number);
-      socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
+      socket["room_number"] = room_number; // 소캣 객체에 "room_number"이라는 속성 추가
 
       const roomInfo = rooms.get(room_number);
       if (roomInfo) {
@@ -225,8 +225,8 @@ ChatNamespace.on("connection", (socket) => {
   let user_name;
   socket.on("leave_room", (currentNickname, user_data) => {
     room_number = socket.room_number;
+    console.log("리브룸의 룸넘버", room_number);
     user_name = currentNickname.currentNickname;
-    console.log("이거 뭐냐????", user_name);
     const roomInfo = rooms.get(room_number);
     console.log("leave_room / roomInfo : ", roomInfo);
     const disconn_arena_user = user_data;
@@ -432,7 +432,7 @@ ArenaNamespace.on("connection", (socket) => {
       console.log("enter_room의 conn_user", conn_user);
       console.log("서버 enter_room", conn_user);
 
-      socket["room_number"] = room_number; // 소캣 객체에 "room_name"이라는 속성 추가
+      socket["room_number"] = room_number; // 소캣 객체에 "room_number"이라는 속성 추가
 
       const roomInfo = rooms.get(room_number);
 

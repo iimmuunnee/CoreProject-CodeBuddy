@@ -12,31 +12,31 @@
 // // const roomName = localStorage.getItem("roomName"); // localStorage에서 방 이름을 가져오기
 // // let nickname = localStorage.getItem("nickname"); // localStorage에서 닉네임을 가져오기
 
-// // // 1. 팝업창 열기
-// // $(document).on("click", ".chat_open", (e) => {
-// //   console.log("팝업창 열기");
-// //   $("#chat").css("display", "block");
-// // });
+// // 1. 팝업창 열기
+// $(document).on("click", ".chat_open", (e) => {
+//   console.log("팝업창 열기");
+//   $("#chat").css("display", "block");
+// });
 
-// // // 1. 팝업창 닫기
-// // $(document).on("click", ".c_content_close button", (e) => {
-// //   console.log("팝업창 닫기");
-// //   $("#chat").css("display", "none");
-// // });
+// // 1. 팝업창 닫기
+// $(document).on("click", ".c_content_close button", (e) => {
+//   console.log("팝업창 닫기");
+//   $("#chat").css("display", "none");
+// });
 
-// // // 2. chat 축소판 다시 열기
-// // $(document).on("click", ".c_content_mini_btn", (e) => {
-// //   console.log("팝업창 키우기");
-// //   $("#chat_mini").css("display", "flex");
-// //   $("#chat").css("display", "none");
-// // });
+// // 2. chat 축소판 다시 열기
+// $(document).on("click", ".c_content_mini_btn", (e) => {
+//   console.log("팝업창 키우기");
+//   $("#chat_mini").css("display", "flex");
+//   $("#chat").css("display", "none");
+// });
 
-// // // 2. chat 축소판 닫기
-// // $(document).on("click", ".chat_mini_1_2btn", (e) => {
-// //   console.log("팝업창 줄이기");
-// //   $("#chat_mini").css("display", "none");
-// //   $("#chat").css("display", "block");
-// // });
+// // 2. chat 축소판 닫기
+// $(document).on("click", ".chat_mini_1_2btn", (e) => {
+//   console.log("팝업창 줄이기");
+//   $("#chat_mini").css("display", "none");
+//   $("#chat").css("display", "block");
+// });
 
 // // 움직이는 모달
 // $(document).on("ready", () => {

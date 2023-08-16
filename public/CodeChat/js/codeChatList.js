@@ -619,7 +619,8 @@ chatSocket.on("leave_normal_user", ({ disconn_chat_user, room_number }) => {
 });
 
 chatSocket.on("get_out", () => {
-  leaveRoomBtn();
+  console.log("get_out 받음 ㅅㄱ");
+  $leave_room.click()
 });
 
 
