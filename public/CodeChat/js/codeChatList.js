@@ -80,8 +80,34 @@ const handleClick = (e) => {
     roomNumber = parseInt(roomNumber);
     const roomName = target.getAttribute("data-roomname");
     const roomHost = target.getAttribute("data-roomhost");
-    if (roomNumber) {
-      enterRoom(roomName, roomNumber, roomHost);
+    console.log("rommhost 핸들", roomHost);
+    const method = target.getAttribute("data-method");
+    console.log("method 핸들", method);
+    if(method == "1:1채팅"){
+      axios.post("/codeChat/userFull", {roomNumber})
+      .then(res => {
+        let data = JSON.parse(res.data)
+        console.log("왜 안됨?", data);
+        if (data.USER_COUNT >= 2){
+          alert("방의 인원수가 초과되었습니다.")
+        }
+        else {
+          enterRoom(roomName, roomNumber, roomHost);
+        }
+      })
+    }
+    else if (method == "오픈채팅"){
+      axios.post("/codeChat/userFull", {roomNumber})
+      .then(res => {
+        let data = JSON.parse(res.data)
+        console.log("왜 안됨?", data);
+        if (data.USER_COUNT >= 4){
+          alert("방의 인원수가 초과되었습니다.")
+        }
+        else {
+          enterRoom(roomName, roomNumber, roomHost);
+        }
+      })
     }
   }
 };
@@ -110,7 +136,7 @@ const updateArenaRoom = (roomList) => {
                 <td>${roomInfo.ROOM_METHOD}</td>
                 <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
                 <th>
-                  <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 2 )</a>
+                  <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}" data-method="${roomInfo.ROOM_METHOD}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 2 )</a>
                   <p>테스트</p>
                 </th>
                 <td>${roomInfo.ROOM_HOST}</td>
@@ -127,7 +153,7 @@ const updateArenaRoom = (roomList) => {
                 <td>${roomInfo.ROOM_METHOD}</td>
                 <td class="item ${roomInfo.ROOM_LANG}">${roomInfo.ROOM_LANG}</td>
                 <th>
-                  <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 4 )</a>
+                  <a align='center' id='123' class="room-link room-${roomInfo.ROOM_NUMBER}" data-roomnumber="${roomInfo.ROOM_NUMBER}" data-roomname="${roomInfo.ROOM_NAME}" data-roomhost="${roomInfo.ROOM_HOST}" data-method="${roomInfo.ROOM_METHOD}">${roomInfo.ROOM_NAME} ( ${roomInfo.USER_COUNT} / 4 )</a>
                   <p>테스트</p>
                 </th>
                 <td>${roomInfo.ROOM_HOST}</td>

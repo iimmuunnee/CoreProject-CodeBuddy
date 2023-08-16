@@ -1,3 +1,4 @@
+
 const getCurrentURL = () => {
   return window.location.href;
 };
@@ -6,7 +7,7 @@ const getNamespaceFromURL = (url) => {
     return "/CodeArena";
   }
 };
-// 2023.08.16 10:35
+// 2023.08.16 11:24
 const currentURL = getCurrentURL();
 const namespace = getNamespaceFromURL(currentURL);
 const arenaSocket = io(namespace);
@@ -98,9 +99,17 @@ const handleClick = (e) => {
     roomNumber = parseInt(roomNumber);
     const roomName = target.getAttribute("data-roomname");
     const roomHost = target.getAttribute("data-roomhost");
-    if (roomNumber) {
-      enterRoom(roomName, roomNumber, roomHost);
-    }
+    axios.post("/codeArena/userFull", {roomNumber})
+      .then(res => {
+        let data = JSON.parse(res.data)
+        console.log("왜 안됨?", data);
+        if (data.USER_COUNT >= 4){
+          alert("방의 인원수가 초과되었습니다.")
+        }
+        else {
+          enterRoom(roomName, roomNumber, roomHost);
+        }
+      })
   }
 };
 //최신화 함수
@@ -237,7 +246,18 @@ const enterRoom = (roomName, roomNum, roomHost) => {
     // arenaSocket.emit("conn_user", data) // 전체 유저가 접속한 방번호와 닉네임 객체
   });
 
+  let userCount;
+  arenaSocket.on("user_count", ({ user_count }) => {
+    // console.log("user_count 이벤트 도착");
+    console.log(user_count);
+    userCount = user_count
+    $c_content_num.textContent = `${user_count}/4`;
+    $mini_room_users.textContent = `${user_count}/4`;
+  });
+  openarena(); // 방 입장
+
   arenaSocket["roomNum"] = roomNum;
+
   axios.post("/codeArena/enterRoom", { roomNum }).then((res) => {
     let data = JSON.parse(res.data);
     currentNickname = data.name;
@@ -250,18 +270,13 @@ const enterRoom = (roomName, roomNum, roomHost) => {
     });
     arenaSocket.emit("userCount", { data: data.result });
   });
+
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
   $c_a_u_r_name2.textContent = roomName; // Arena 제한 시간 위 방제
 
-  arenaSocket.on("user_count", ({ user_count }) => {
-    // console.log("user_count 이벤트 도착");
-    console.log(user_count);
-    $c_content_num.textContent = `${user_count}/4`;
-    $mini_room_users.textContent = `${user_count}/4`;
-  });
 
-  openarena(); // 방 입장
+  
 };
 
 // Code Arena  -------설아---------
