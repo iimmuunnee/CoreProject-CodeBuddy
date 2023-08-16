@@ -240,8 +240,21 @@ router.post("/codeReady", (req, res) => {
   });
 });
 
-router.post("/updateReady", (req, res) => {
-  console.log("업데이트 레디", req.body);
+// 코드 아레나 방 유저 인원수 제한 하기위해 유저수 가져오기
+router.post("/userFull", (req, res) => {
+  console.log("룸넘버 : ", req.body.roomNumber);
+  let roomNum = req.body.roomNumber
+  let sql = "SELECT USER_COUNT FROM TB_ARENAROOM WHERE ROOM_NUMBER = ?"
+  conn.connect()
+  conn.query(sql, [roomNum], (err, result) => {
+    if (err) {
+      console.log("유저 카운트 쿼리문 에러");
+    }
+    else{
+      console.log("가져와지나아아앙", result);
+      res.json(JSON.stringify(result[0]))
+    }
+  })
 });
 
 module.exports = router;

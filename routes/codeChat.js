@@ -198,5 +198,21 @@ router.post('/userSocket',(req,res)=>{
     })
 })
 
+router.post("/userFull", (req, res) => {
+    console.log("룸넘버 : ", req.body.roomNumber);
+    let roomNum = req.body.roomNumber
+    let sql = "SELECT USER_COUNT FROM TB_CHATROOM WHERE ROOM_NUMBER = ?"
+    conn.connect()
+    conn.query(sql, [roomNum], (err, result) => {
+      if (err) {
+        console.log("유저 카운트 쿼리문 에러");
+      }
+      else{
+        console.log("가져와지나아아앙", result);
+        res.json(JSON.stringify(result[0]))
+      }
+    })
+  });
+
 
 module.exports = router
