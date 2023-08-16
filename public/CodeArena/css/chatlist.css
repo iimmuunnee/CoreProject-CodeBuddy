@@ -518,3 +518,13 @@ button {
 .logout:hover{
   text-decoration: underline;
 }
+
+#resultTable{
+  width: 15px;
+}
+
+.table-cell {
+  border: 1px solid black;
+  padding: 10px; /* 적절한 패딩 설정 */
+  text-align: center; /* 텍스트 중앙 정렬 */
+}

@@ -186,10 +186,11 @@ body{
 .c_a_l_ans{
     width: 95%;
     height: 25%;
-    display: flex;
-    text-align: center;
+    /* display: flex; */
+    /* text-align: center; */
+    margin-bottom: 15px;
     color: white;
-    border: 1px solid black;
+    /* border: 3px solid black; */
 }
 .c_a_right{
     width: 45%;
@@ -584,4 +585,9 @@ display: inline-block;
     color: black;
     text-decoration: none;
     cursor: pointer;
+  }
+
+
+  pre{
+    font-size: 20px;
   }
