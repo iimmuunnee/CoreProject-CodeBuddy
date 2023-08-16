@@ -237,15 +237,31 @@ chatSocket.on('socketUser',(data)=>{
   })
 })
 
+
 //코드 유저에게 전송
 chatSocket.on('codeSend',(data)=>{
   const tabData = document.querySelector('.tab')
-  const $tabLang = document.querySelector('.tab-container__item2')
-  console.log('머냐',tabData.dataset.id)
-  console.log('보자',data.css)
+  const $tabLang = document.querySelectorAll('.tab-container__item2')
+  // console.log('머냐',tabData.dataset.id)
+  // console.log('보자',data.css)
   html2.setValue(data.html)
   css2.setValue(data.css)
   js2.setValue(data.js)
+  
+  $tabLang.forEach((tab)=>{
+    tab.addEventListener('click',()=>{
+      if(tab.dataset.tab == 'tab4'){
+        html2.setValue(data.html)
+      }
+      else if(tab.dataset.tab == 'tab5'){
+        css2.setValue(data.css)
+      }
+      else if(tab.dataset.tab == 'tab6'){
+        js2.setValue(data.js)
+      }
+    })
+  })
+
 
   // if(data.socketId ==  tabData.dataset.id){
   //   $tabLang.addEventListener('click',()=>{
