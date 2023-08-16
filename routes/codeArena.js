@@ -257,4 +257,42 @@ router.post("/userFull", (req, res) => {
   })
 });
 
+
+//방장이 Game 시작시 모든유저 ready Y -> N 변경
+router.post('/gameStart',(req,res)=>{
+  let data = req.body.roomNum
+  let sql = 'UPDATE ARENA_USER SET USER_READY = "N" WHERE ROOM_NUMBER=?;'
+  conn.connect()
+  conn.query(sql,[data],(err,result)=>{
+    if(err){
+      console.log('유저 준비상태 업데이트 실패')
+    }
+    else{
+      console.log('N으로변경 성공')
+    }
+  })
+})
+
+// 문제풀이 성공시 N => Y 변경 후 Y갯수 카운트
+router.post('/testSucess',(req,res)=>{
+  let roomNum = req.body.roomNum
+  let name = req.body.name
+  console.log(roomNum,name)
+  let sql = 'UPDATE ARENA_USER SET USER_READY = "Y" WHERE ROOM_NUMBER=? AND CONN_USER =?;'
+  let sql2 = 'SELECT COUNT(*) AS COUNT FROM ARENA_USER WHERE USER_READY = "Y" AND ROOM_NUMBER =?'
+  conn.connect()
+  conn.query(sql,[roomNum,name],(err,result)=>{
+    if(err){
+      console.log('캐리')
+    }
+    else{
+      conn.query(sql2,[roomNum],(err,result)=>{
+        console.log('뭔데이거')
+        res.json(JSON.stringify(result[0]))
+      })
+    }
+  })
+
+})
+
 module.exports = router;

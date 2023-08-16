@@ -461,7 +461,7 @@ body{
     justify-content: space-evenly;
 }
 .u_info{
-    width: 70%;
+    width: 60%;
     height: 70%;
     display: flex;
     justify-content: space-evenly;
@@ -487,7 +487,7 @@ body{
     white-space: nowrap;
 }
 .u_remain{
-    width: 15%;
+    width: 40%;
     height: 80%;
     display: flex;
     justify-content: space-around;
@@ -506,13 +506,15 @@ body{
     flex-direction: column;
 }
 .u_r_circle{
-    width: 80%;
+    width: 100%;
     height: 100%;
-    border-radius: 50%;
+    border-radius: 5px;
     background-color: green;
     /* background-color: white; */
     display: flex;
     justify-content: center;
     align-items: center;
     align-content: center;
+    text-align: center;
+    line-height: 200%;
 }

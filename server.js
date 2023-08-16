@@ -502,6 +502,7 @@ ArenaNamespace.on("connection", (socket) => {
     let roomNum = socket.room_number;
     ArenaNamespace.to(roomNum).emit("remove_ok")
     socket.broadcast.to(roomNum).emit("start_timer");
+    socket.emit('gameStart',roomNum)
   });
 
   socket.on("click_ready_btn", (data) => {
@@ -514,6 +515,14 @@ ArenaNamespace.on("connection", (socket) => {
       nickName: nickName,
     });
   });
+
+  socket.on('pleaesRoomNum',()=>{
+    socket.emit('okRoomNum',{roomNum:socket.room_number})
+  })
+
+  socket.on('gameSet',()=>{
+    ArenaNamespace.to(socket.room_number).emit('gameClear')
+  })
 
   socket.on("update_ready", (data) => {
     console.log("update_ready : ", data);
@@ -641,7 +650,9 @@ ArenaNamespace.on("connection", (socket) => {
     console.log("방에서 퇴장한 후 소켓이 들어간 방", socket.rooms);
     console.log("방에서 퇴장한 후 인원 수 : ", countRoomUsers(room_number));
   });
-  // ArenaNamespace.
+  socket.on('please',(name)=>{
+    ArenaNamespace.to(socket.room_number).emit('testSucess', name)
+  })
 
   socket.on("disconnet", () => {
     console.log("서버 disconnect 이벤트 활성화");
