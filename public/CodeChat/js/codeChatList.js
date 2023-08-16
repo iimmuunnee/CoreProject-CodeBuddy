@@ -134,6 +134,7 @@ const updateArenaRoom = (roomList) => {
           `;
         // 새로운 행을 테이블의 맨 위에 추가
         $tbody.prepend(newRow);
+        filter()
       }
 
 

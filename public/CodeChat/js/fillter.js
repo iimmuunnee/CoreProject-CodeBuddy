@@ -1,27 +1,47 @@
-// Add this function to your JS code
-function filterRooms(filterValue) {
-  const tableRows = document.querySelectorAll('#board-list tbody tr');
+function filterRooms(chatFilter, langFilter) {
+  const tableRows = document.querySelectorAll("#board-list tbody tr");
 
   tableRows.forEach((row) => {
-    const langColumn = row.querySelector('.item');
-    if (filterValue === 'all' || langColumn.textContent === filterValue) {
-      row.style.display = '';
+    const chatTypeColumn = row.querySelector("td:nth-child(2)"); 
+    const langColumn = row.querySelector("td:nth-child(3)"); 
+
+    if (
+      (langFilter === "all" || langColumn.textContent === langFilter) &&
+      (chatFilter === "전체" || chatTypeColumn.textContent === chatFilter)
+    ) {
+      row.style.display = "";
     } else {
-      row.style.display = 'none';
+      row.style.display = "none";
     }
   });
 }
 
-// Add this code to your JS file to attach click handlers
-const filterButtons = document.querySelectorAll('.filter-button');
-filterButtons.forEach((button) => {
-  button.addEventListener('click', (event) => {
-    event.preventDefault();
-    const filterValue = button.dataset.filter;
-    filterRooms(filterValue);
 
-    // Change button color
-    filterButtons.forEach((btn) => btn.classList.remove('active'));
-    button.classList.add('active');
+const chatFilterButtons = document.querySelectorAll(".filter");
+const langFilterButtons = document.querySelectorAll(".filter-button");
+
+chatFilterButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    button.classList.toggle("active");
+    filter();
   });
 });
+
+langFilterButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    button.classList.toggle("active");
+    filter();
+  });
+});
+
+function filter() {
+  const activeChatFilter = document.querySelector(".filter.active");
+  const activeLangFilter = document.querySelector(".filter-button.active");
+
+  const chatFilterValue = activeChatFilter ? activeChatFilter.textContent.trim() : "전체";
+  const langFilterValue = activeLangFilter ? activeLangFilter.dataset.filter : "all";
+
+  filterRooms(chatFilterValue, langFilterValue);
+}
