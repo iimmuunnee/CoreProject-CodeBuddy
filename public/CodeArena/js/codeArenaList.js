@@ -341,7 +341,7 @@ arenaSocket.on("start_timer", () => {
   //code editor 기본 값 입력
   js.setValue(`function codeBuddy(n){
     let result;
-    result = '정답을입력하세요';
+    result = 정답을입력하세요;
     return result;
 }`);
 });
@@ -447,7 +447,7 @@ $startBtn.addEventListener("click", () => {
   //code editor 기본 값 입력
   js.setValue(`function codeBuddy(n){
       let result;
-      result = '정답을입력하세요';
+      result = 정답을입력하세요;
       return result;
   }`);
 });
@@ -745,12 +745,149 @@ arenaSocket.on("bye", ({ currentNickname }) => {
   addNotice(`${currentNickname}(이)가 방에서 나갔습니다.`);
 });
 
+// 채팅 전송 클릭 or 엔터
 $c_chatting_2_btn.addEventListener("click", handleMessageSubmit);
 const enterChat = (e)=>{
   if(e.keyCode == 13){
     $c_chatting_2_btn.click()
   }
 }
+
+// CodeArena CodeEditor 생성
+const textjs = document.querySelector('#js')
+const outPut = document.querySelector('#live')
+
+    let js = CodeMirror.fromTextArea(textjs, {
+      mode: "text/javascript",
+      theme: "darcula",
+      lineNumbers: true,
+      spellcheck: true,
+      extraKeys: { "Ctrl-Space": "autocomplete" }
+    })
+
+    // 코드 실행 버튼
+    const codeStart = document.getElementById('codeStart')
+    // 코드 제출 버튼
+    const codeSubmit = document.getElementById('codeSubmit')
+    let jsValue    
+
+    // 입력한 코드 문자열로 가져와서 jsValue 변수에 담기
+    function executeJavaScript() {      
+      jsValue = js.getValue().replace(/\n/g,'')
+    }
+
+    // code editor에 입력할때마다 입력값 변수에 담는 함수 실행
+    CodeMirror.on(js, 'change', executeJavaScript);
+
+    // 코드실행 버튼 클릭 이벤트
+    codeStart.addEventListener('click', async(e)=>{
+      e.preventDefault()
+       // codeStart 요청을 보내서 문제번호와 일치하는 입력값과 출력값 database에서 반환
+       const res = await axios.post('/codeArena/codeStart', {jsValue})
+       .then(res=>{
+         let data = JSON.parse(res.data)
+         //입력값
+         let resultInput = data[0].RESULT_INPUT
+         //출력값
+         let resultOutput = data[0].RESULT_OUTPUT   
+
+         // script 태그 생성
+         const scriptElement = document.createElement("script");
+         // 생성한 script 태그안에 사용자가 입력한 값 추가
+         scriptElement.innerHTML = `var n = ${resultInput};
+                                    var outPut = ${resultOutput};
+                                    ${jsValue};
+                                    try{
+                                     console.log('코드실행중');
+                                       if(typeof codeBuddy !== 'undefined'){
+                                          if(codeBuddy(n) == outPut){
+                                            let data = startResult = '작성한 함수에' + n + '를 대입한 결과는 ' + codeBuddy(n) + '입니다.'
+                                            document.body.innerHTML = '정답입니다.<br>'+data                                           
+                                            
+                                          }
+                                          else{                                            
+                                            let data = startResult = '작성한 함수에' + n + '를 대입한 결과는 ' + codeBuddy(n) + '입니다.'
+                                            document.body.innerHTML = '틀렸습니다.<br>'+data 
+                                          
+                                          }
+                                        }
+                                       else {
+                                         throw new Error('codeBuddy 함수가 정의되지 않았습니다.');
+                                       }
+                                     }
+                                     catch(err){
+                                       console.error('에러발생',err);
+                                       var body = document.body                      
+                                       body.innerHTML = err
+                                       body.style.color = 'red'
+                                     }
+                                     `
+                                     
+         
+         // script를 body 태그 안에 추가(script가 정상작동하게 하기위함)
+         outPut.contentWindow.document.body.appendChild(scriptElement);
+         
+         
+       })
+
+    })
+  
+
+    // 코드제출 버튼 클릭 이벤트
+    codeSubmit.addEventListener('click', async(e)=>{
+      e.preventDefault()
+      // codeStart 요청을 보내서 문제번호와 일치하는 입력값과 출력값 database에서 반환
+      const res = await axios.post('/codeArena/codeStart', {jsValue})
+        .then(res=>{
+          let data = JSON.parse(res.data)
+          //입력값
+          let resultInput = data[0].RESULT_INPUT
+          //출력값
+          let resultOutput = data[0].RESULT_OUTPUT   
+
+          // script 태그 생성
+          const scriptElement = document.createElement("script");
+          // 생성한 script 태그안에 사용자가 입력한 값 추가
+          scriptElement.innerHTML = `var n = ${resultInput};
+                                     var outPut = ${resultOutput};
+                                     var name = '${currentNickname}';
+                                     var startResult;
+                                     ${jsValue};
+                                     try{
+                                      console.log('코드실행중');
+                                      if(typeof codeBuddy !== 'undefined'){
+                                        if(codeBuddy(n) == outPut){
+                                          let data = startResult = '작성한 함수에' + n + '를 대입한 결과는 ' + codeBuddy(n) + '입니다.'
+                                          document.body.innerHTML = '정답입니다.<br>'+data
+                                          var parent = window.parent.document;
+                                          let userS = parent.querySelectorAll('.u_i_nick')
+                                          userS.forEach((user)=>{
+                                            console.log(user.dataset.user)
+                                          })
+                                          
+                                        }
+                                        else{                                            
+                                          let data = startResult = '작성한 함수에' + n + '를 대입한 결과는 ' + codeBuddy(n) + '입니다.'
+                                          document.body.innerHTML = '틀렸습니다.<br>'+data 
+                                        }
+                                      }
+                                      else {
+                                        throw new Error('codeBuddy 함수가 정의되지 않았습니다.');
+                                      }
+                                    }              
+                                      catch(err){
+                                        console.error('에러발생',err);
+                                    
+                                      }
+                                      `
+                                      
+          
+          // script를 body 태그 안에 추가(script가 정상작동하게 하기위함)
+          outPut.contentWindow.document.body.appendChild(scriptElement);
+          
+          
+        })
+    })
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // 페이징 js
