@@ -746,6 +746,11 @@ arenaSocket.on("bye", ({ currentNickname }) => {
 });
 
 $c_chatting_2_btn.addEventListener("click", handleMessageSubmit);
+const enterChat = (e)=>{
+  if(e.keyCode == 13){
+    $c_chatting_2_btn.click()
+  }
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // 페이징 js

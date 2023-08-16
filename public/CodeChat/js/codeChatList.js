@@ -636,7 +636,13 @@ chatSocket.on("bye", ({ currentNickname }) => {
   addNotice(`${currentNickname}(이)가 방에서 나갔습니다.`);
 });
 
+//채팅 보내기
 $c_chatting_2_btn.addEventListener("click", handleMessageSubmit);
+const enterChat = (e)=>{
+  if(e.keyCode == 13){
+    $c_chatting_2_btn.click()
+  }
+}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
 // 페이징 js

@@ -86,15 +86,15 @@ function susubmit(f) {
   }
 }
 // textarea -> 줄바꿈_Shift+Enter 버튼 실행
-$(function () {
-  $("textarea").on("keydown", function (event) {
-    if (event.keyCode == 13)
-      if (!event.shiftKey) {
-        event.preventDefault();
-        $("#testForm").submit();
-      }
-  });
-});
+// $(function () {
+//   $("textarea").on("keydown", function (event) {
+//     if (event.keyCode == 13)
+//       if (!event.shiftKey) {
+//         event.preventDefault();
+//         $("#testForm").submit();
+//       }
+//   });
+// });
 
 // 채팅 내용 왔다리 갔다리
 const Chat = (function () {
