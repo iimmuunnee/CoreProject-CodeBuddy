@@ -6,7 +6,7 @@ const getNamespaceFromURL = (url) => {
     return "/CodeArena";
   }
 };
-// 2023.08.14 14:42
+// 2023.08.16 10:35
 const currentURL = getCurrentURL();
 const namespace = getNamespaceFromURL(currentURL);
 const arenaSocket = io(namespace);
@@ -421,6 +421,12 @@ $startBtn.addEventListener("click", () => {
       TIMER();
       question_div.style.display = "block";
       question_div2.style.display = "block";
+    }
+    else { // 시작 조건 미충족일 때 클릭 시 start 빨간색 => 하얀색
+      $startBtn.classList.add("clicked"); // clicked 클래스 추가
+      setTimeout(() => {
+        $startBtn.classList.remove("clicked")
+      }, 500)
     }
   }
   //code editor 기본 값 입력
