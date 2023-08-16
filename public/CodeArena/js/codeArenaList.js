@@ -16,7 +16,7 @@ const arenaSocket = io(namespace);
 
 // socket.io 사용
 // 방의 이름을 입력받고 방에 입장할 수 있는 페이지 담당 js
-
+const modal1 = document.getElementById("myModal5");
 const $make_room_form = document.querySelector("#make_room_form"); // 방 정보 입력 폼
 const $room_name = document.getElementById("room_name"); // 방 이름 입력 input
 const $dev_lang = document.getElementById("dev_lang"); // 방의 언어 방식 select
@@ -949,7 +949,7 @@ arenaSocket.on('okRoomNum',(data)=>{
 })
 
 arenaSocket.on('gameClear',()=>{
-  alert('게임종료')
+  modal1.style.display = "block";
 })
 
 //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -1171,3 +1171,9 @@ $("#login_btn").on("click", () => {
 });
 
 // Code Arena Code Editor -----지훈--------
+
+const toMain = document.querySelector('#toMain')
+toMain.addEventListener('click',(e)=>{
+  e.preventDefault()
+  window.location.href = `${window.location.origin}/page`;
+})
