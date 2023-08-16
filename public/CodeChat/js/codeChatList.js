@@ -92,7 +92,7 @@ const handleClick = (e) => {
           alert("방의 인원수가 초과되었습니다.")
         }
         else {
-          enterRoom(roomName, roomNumber, roomHost);
+          enterRoom(roomName, roomNumber, roomHost, method);
         }
       })
     }
@@ -105,7 +105,7 @@ const handleClick = (e) => {
           alert("방의 인원수가 초과되었습니다.")
         }
         else {
-          enterRoom(roomName, roomNumber, roomHost);
+          enterRoom(roomName, roomNumber, roomHost, method);
         }
       })
     }
@@ -128,6 +128,7 @@ const updateArenaRoom = (roomList) => {
   roomList.forEach((roomInfo) => {
       const newRow = document.createElement("tr");
       if(roomInfo.ROOM_METHOD == '1:1채팅'){
+        console.log("1대1채팅 선택시",roomInfo.ROOM_METHOD);
         newRow.id = "room_" + roomInfo.ROOM_NUMBER;
         // console.log(roomInfo);
         // 방 정보를 td에 추가
@@ -143,8 +144,12 @@ const updateArenaRoom = (roomList) => {
           `;
         // 새로운 행을 테이블의 맨 위에 추가
         $tbody.prepend(newRow);
+
+        // $c_content_num.textContent = `${roomInfo.USER_COUNT}/2`; // 채팅방 펼쳤을 때 인원 수
+        // $mini_room_users.textContent = `${roomInfo.USER_COUNT}/2`; // 채팅방 접었을 때 인원 수
       }
-      else{
+      else if (roomInfo.ROOM_METHOD == '오픈채팅'){
+        console.log("오픈채팅선택시",roomInfo.ROOM_METHOD);
         newRow.id = "room_" + roomInfo.ROOM_NUMBER;
         // console.log(roomInfo);
         // 방 정보를 td에 추가
@@ -161,14 +166,14 @@ const updateArenaRoom = (roomList) => {
         // 새로운 행을 테이블의 맨 위에 추가
         $tbody.prepend(newRow);
         filter()
+
+        // $c_content_num.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 펼쳤을 때 인원 수
+        // $mini_room_users.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 접었을 때 인원 수
       }
 
 
     clickEventHandler = handleClick;
     $tbody.addEventListener("click", clickEventHandler);
-
-    $c_content_num.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 펼쳤을 때 인원 수
-    $mini_room_users.textContent = `${roomInfo.USER_COUNT}/4`; // 채팅방 접었을 때 인원 수
   });
 };
 
@@ -221,16 +226,18 @@ chatSocket.on("countUpdate", (data) => {
 
 //방장이 방 생성시 database에 방 정보 입력 및 방 입장 처리
 chatSocket.on("host_enterRoom", (data) => {
+  console.log("method", data);
   let nickName = data[0].createdBy;
   let roomName = data[0].room_name;
   let roomNum = data[0].room_number;
+  let method = data[0].chatRoomMethod;
   const addRoomToTable = (updateRooms) => {
     axios.post("/codeChat/updateroom", { updateRooms }).then((res) => {
       let roomInfo = JSON.parse(res.data);
     });
   };
   addRoomToTable(data);
-  enterRoom(roomName, roomNum, nickName);
+  enterRoom(roomName, roomNum, nickName, method);
 });
 
 // 코드 보내기 클릭
@@ -406,7 +413,7 @@ const addRoomToTable = (updateRooms) => {
 };
 
 let conn_user_data;
-const enterRoom = (roomName, roomNum, roomHost) => {
+const enterRoom = (roomName, roomNum, roomHost, method) => {
   console.log("enterRoom 실행");
   // console.log("enterRoom 함수의 currentNickname : ", currentNickname);
   //휘훈아!!!!!!!!!!!!!!!!!!!!! 유저접속
@@ -419,6 +426,7 @@ const enterRoom = (roomName, roomNum, roomHost) => {
 
   axios.post("/codeChat/enterRoom", { roomNum }).then((res) => {
     let data = JSON.parse(res.data);
+    console.log("enterRoom", data);
     currentNickname = data.name;
     chatSocket.emit("enter_room", {
       room_name: roomName,
@@ -432,13 +440,23 @@ const enterRoom = (roomName, roomNum, roomHost) => {
   $c_c_name.textContent = roomName; // 채팅방 펼쳤을 때 방제
   $mini_room_name.textContent = roomName; // 채팅방 접었을 때 방제
   // $c_a_u_r_name2.textContent = roomName; // Arena 제한 시간 위 방제
-
+  console.log("으아ㅡㅇ가아ㅏㄱㄱ악", method);
+  let userCount;
   chatSocket.on("user_count", ({ user_count }) => {
     // console.log("user_count 이벤트 도착");
     console.log(user_count);
-    $c_content_num.textContent = `${user_count}/4`;
-    $mini_room_users.textContent = `${user_count}/4`;
+    userCount = user_count;
+    if(method == "1:1채팅"){
+      $c_content_num.textContent = `${userCount}/2`; // 채팅방 펼쳤을 때 인원 수
+      $mini_room_users.textContent = `${userCount}/2`; // 채팅방 접었을 때 인원 수
+    }
+    else if (method == "오픈채팅"){
+      $c_content_num.textContent = `${userCount}/4`; // 채팅방 펼쳤을 때 인원 수
+      $mini_room_users.textContent = `${userCount}/4`; // 채팅방 접었을 때 인원 수
+    }
   });
+
+
 
 
 
@@ -554,6 +572,7 @@ chatSocket.on("connect", () => {
 chatSocket.on("my_message", ({ currentNickname, message }) => {
   console.log("내 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
+  $div.id = "my_message"
   $div.textContent = `(본인)${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
 });
@@ -561,6 +580,7 @@ chatSocket.on("my_message", ({ currentNickname, message }) => {
 chatSocket.on("other_message", ({ currentNickname, message }) => {
   console.log("다른사람 new_message이벤트 프론트에서 받음");
   const $div = document.createElement("div");
+  $div.id = "other_message"
   $div.textContent = `(상대)${currentNickname} : ${message}`;
   $c_main_content.appendChild($div);
 });
