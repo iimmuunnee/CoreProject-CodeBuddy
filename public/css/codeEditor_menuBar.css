@@ -151,3 +151,9 @@ a:hover{
   color: #222;
 }
 
+.menu-btn{
+    visibility: hidden;
+}
+.nav-links{
+    visibility: hidden;
+}
