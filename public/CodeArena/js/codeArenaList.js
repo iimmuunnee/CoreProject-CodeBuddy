@@ -452,6 +452,13 @@ $startBtn.addEventListener("click", () => {
   }`);
 });
 
+arenaSocket.on("remove_ok", () => {
+  let green_ok = document.querySelectorAll(".u_r_circle")
+  green_ok.forEach((ok) => {
+    ok.style.display = "none"
+  })
+})
+
 const $leave_room = document.getElementById("leave_room");
 
 const leaveRoomBtn = () => {
@@ -549,8 +556,14 @@ const handleMessageSubmit = (event) => {
   // console.log("메세지 핸들러, 메세지 : ", message);
   // console.log("userInfo : ", currentNickname);
   // console.log("핸들메세지함수", currentNickname); // 보낸 사람의 닉네임
+  // 메세지의 공백이나 줄바꿈을 빈 문자열로 바꿔서 빈문자열만 있으면 보내지않기
+  console.log("공백 거르기전", message);
+  let checkMessage = message.replace(/\s| /gi, '');
 
-  arenaSocket.emit("new_message", { currentNickname, message: message });
+  if(checkMessage !== ""){
+    console.log("메시지 공백 거르기", message);
+    arenaSocket.emit("new_message", { currentNickname, message: message });
+  }
 
   $form_input.value = ""; // 입력 창 초기화
 };
@@ -638,11 +651,11 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
         newUser.innerHTML += `
         <div class="u_info">
         <div class="u_i_img">방장</div>
-        <div class="u_i_nick">${room_host}</div>
+        <div class="u_i_nick" data-user="${userInfo.CONN_USER}">${userInfo.CONN_USER}</div>
         </div>
         <div class="u_remain">
         <div div class="u_r_ques">
-        <div class="u_r_circle" style="display:none;">ok</div>
+        <div class="u_r_circle ${userInfo.CONN_USER}" style="display:none;">ok</div>
         </div>
         </div>
         `;
