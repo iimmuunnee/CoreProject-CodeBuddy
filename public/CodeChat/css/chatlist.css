@@ -566,3 +566,7 @@ button {
   background-color: white; 
   color: blackd; 
 }
+
+.tabs{
+  height:42px;
+}
