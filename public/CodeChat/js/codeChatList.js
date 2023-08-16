@@ -535,9 +535,14 @@ const handleMessageSubmit = (event) => {
   // console.log("메세지 핸들러, 메세지 : ", message);
   // console.log("userInfo : ", currentNickname);
   // console.log("핸들메세지함수", currentNickname); // 보낸 사람의 닉네임
+  
+  // 메세지의 공백이나 줄바꿈을 빈 문자열로 바꿔서 빈문자열만 있으면 보내지않기
+  let checkMessage = message.replace(/\s| /gi, ''); 
 
-  chatSocket.emit("new_message", { currentNickname, message: message });
-
+  if(checkMessage !== ""){ 
+    console.log("메시지 공백 거르기", message);
+    chatSocket.emit("new_message", { currentNickname, message: message });
+  }
   $form_input.value = ""; // 입력 창 초기화
 };
 // ---------------함수 정의 끝------------------
