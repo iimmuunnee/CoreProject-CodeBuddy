@@ -277,6 +277,7 @@ router.post('/gameStart',(req,res)=>{
 router.post('/testSucess',(req,res)=>{
   let roomNum = req.body.roomNum
   let name = req.body.name
+  console.log(roomNum,name)
   let sql = 'UPDATE ARENA_USER SET USER_READY = "Y" WHERE ROOM_NUMBER=? AND CONN_USER =?;'
   let sql2 = 'SELECT COUNT(*) AS COUNT FROM ARENA_USER WHERE USER_READY = "Y" AND ROOM_NUMBER =?'
   conn.connect()
@@ -286,6 +287,7 @@ router.post('/testSucess',(req,res)=>{
     }
     else{
       conn.query(sql2,[roomNum],(err,result)=>{
+        console.log('뭔데이거')
         res.json(JSON.stringify(result[0]))
       })
     }

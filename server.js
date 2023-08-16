@@ -517,7 +517,7 @@ ArenaNamespace.on("connection", (socket) => {
   });
 
   socket.on('pleaesRoomNum',()=>{
-    socket.to(socket.room_number).emit('okRoomNum',{roomNum:socket.room_number})
+    socket.emit('okRoomNum',{roomNum:socket.room_number})
   })
 
   socket.on('gameSet',()=>{

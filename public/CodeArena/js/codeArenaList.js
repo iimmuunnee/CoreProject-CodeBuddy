@@ -680,7 +680,7 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
           </div>
           <div class="u_remain">
           <div div class="u_r_ques">
-          <div class="u_r_circle ${userInfo.CONN_USER}" style="display:none;">ok</div>
+          <div class="u_r_circle ${userInfo.CONN_USER}" style="display:none;">READY</div>
           </div>
           </div>
           `;
@@ -696,7 +696,7 @@ const updateArenaNickname = (conn_user, room_host, room_number) => {
           </div>
           <div class="u_remain">
           <div div class="u_r_ques">
-          <div class="u_r_circle ${userInfo.CONN_USER}" style="display:block;">ok</div>
+          <div class="u_r_circle ${userInfo.CONN_USER}" style="display:block;">READY</div>
           </div>
           </div>
           `;
@@ -742,7 +742,7 @@ const updateArenaNickname2 = (conn_user, room_number) => {
             </div>
             <div class="u_remain">
             <div div class="u_r_ques">
-            <div class="u_r_circle ${userInfo.CONN_USER}" style="display:block;">ok</div>
+            <div class="u_r_circle ${userInfo.CONN_USER}" style="display:block;">READY</div>
             </div>
             </div>
             `;
@@ -918,6 +918,8 @@ arenaSocket.on('testSucess',(data)=>{
   let check = document.querySelector(`.${data}`)
   console.log('뭐가문젠데',check)
   check.style.display = 'block'
+  check.innerText = 'ok'
+
 })
 
 arenaSocket.on('okRoomNum',(data)=>{
