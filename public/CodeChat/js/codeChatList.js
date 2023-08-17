@@ -275,7 +275,7 @@ chatSocket.on('socketUser',(data)=>{
 chatSocket.on('codeSend',(data)=>{
   const tabData = document.querySelector('.tab')
   const $tabLang = document.querySelectorAll('.tab-container__item2')
-  // console.log('머냐',tabData.dataset.id)
+  console.log('머냐',tabData.dataset.id)
   // console.log('보자',data.css)
   html2.setValue(data.html)
   css2.setValue(data.css)

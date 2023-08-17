@@ -327,9 +327,8 @@ ChatNamespace.on("connection", (socket) => {
   // 코드 에디터 코드전송
   socket.on("codeSendBtn", (data) => {
     console.log("받아와라", data);
-    ChatNamespace.to(socket.room_number)
-      .to(data.socketId)
-      .emit("codeSend", data);
+    socket.to(data.socketId).emit("codeSend", data);
+    //socket.to(socket.room_number).emit("codeSend", data);
   });
 
   socket.on("sendClick", () => {
