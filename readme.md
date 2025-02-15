@@ -12,7 +12,7 @@
 
 ### 🎥 시연영상
 ![코드버디 시연GIF](https://github.com/asdfgl98/Project-CodeBuddy/assets/83624652/9b5dfa73-168b-4ed0-9306-c15e50b63691)<br/>
-<a href="https://www.youtube.com/watch?v=4jiMqKOPrkU">Youtube에서 영상보기</a>
+<a href="https://youtu.be/KVuhtuZ7f8U">Youtube에서 시연영상보기</a>
 
 
 <br/>
@@ -23,9 +23,9 @@
 <br/>
 
 ## 🧑‍🤝‍🧑 팀원 및 역할
- * 팀원 : **박지훈(BE)** - DataBase 설계 및 작성, Code Editor 기능 구현, 실시간 코드전송 및 채팅방 목록 업데이트 기능 구현, 사용자가 작성한 알고리즘 문제풀이 검증 로직 구현
- * 팀원 : 임휘훈(BE) - 실시간 통신 및 채팅 기능 구현, CodeArena 사용자간의 상태 실시간 변화 구현
- * 팀장  : 전설아(FE) - CodeArena 페이지 제작, 채팅 모달창 제작, PPT 제작
+ * 팀원 : 임휘훈(BE) - 실시간 통신 (Socket.io) 및 채팅 기능 구현, CodeArena 사용자간의 상태 실시간 변화 구현, 백엔드 서버 연결
+ * 팀원 : 박지훈(BE) - DataBase 설계 및 작성, Code Editor 기능 구현, 실시간 코드전송 및 채팅방 목록 업데이트 기능 구현, 사용자가 작성한 알고리즘 문제풀이 검증 로직 구현
+ * 팀장 : 전설아(FE) - CodeArena 페이지 제작, 채팅 모달창 제작, PPT 제작
  * 팀원 : 조명성(FE) - CodeChat 페이지 제작, 프로젝트 발표 
  * 팀원 : 장민혁(FE) - 회원가입 페이지 제작, 로그인 페이지 제작, 채팅방 목록 페이지 제작
  
